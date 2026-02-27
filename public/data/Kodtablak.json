@@ -1,0 +1,2095 @@
+{
+    "PvOnHeader": {
+        "generated": "2026-02-25T17:00:00.081049757+01:00",
+        "val_dat": "2026-04-12T00:00:00+02:00",
+        "vl_id": 467,
+        "nvv_id": 542
+    },
+    "list": [
+        {
+            "tabla": "ALLAPOT",
+            "kod": "0",
+            "megnev": "Bejelentve"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "1",
+            "megnev": "Nyilvántartásba véve"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "11",
+            "megnev": "Jelölő szervezete törölve"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "12",
+            "megnev": "Ajánlóíveket átvette"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "13",
+            "megnev": "Ajánlóíveket nem adta le határidőben"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "14",
+            "megnev": "Ajánlóíveket leadta határidőben"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "15",
+            "megnev": "Nem kíván indulni"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "16",
+            "megnev": "Ajánlóívet igényelt"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "17",
+            "megnev": "Ajánlóív igénylése visszautasítva"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "18",
+            "megnev": "Lista  a nyilvántartásból törölve (nem jogerős)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "19",
+            "megnev": "Lista  a nyilvántartásból törölve"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "2",
+            "megnev": "Nyilvántartásba vétel visszautasítva (nem jogerős)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "20",
+            "megnev": "Törlés jogorvoslat alatt"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "21",
+            "megnev": "Jogorvoslat alatt"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "22",
+            "megnev": "Kiesett (Listája vagy szervezete törölve)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "23",
+            "megnev": "Ismételten bejelentve"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "24",
+            "megnev": "Nyilvántartásba vétele visszautasítva (nem jogerős)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "25",
+            "megnev": "Nyilvántartásba vétele visszautasítva"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "26",
+            "megnev": "Nem állít listát"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "27",
+            "megnev": "Kiesett (Visszavonva)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "28",
+            "megnev": "Jelölt kiesett (Törölték a névjegyzékből)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "29",
+            "megnev": "Technikai törölt"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "3",
+            "megnev": "Nyilvántartásból törölve"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "33",
+            "megnev": "Kiesett"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "333",
+            "megnev": "Törölt"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "34",
+            "megnev": "Kérelmét visszavonta"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "4",
+            "megnev": "Nyilvántartásba vétel visszautasítva"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "5",
+            "megnev": "Nyilvántartásba véve (nem jogerős)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "6",
+            "megnev": "Nyilvántartásból törölve (nem jogerős)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "7",
+            "megnev": "Jelölt kiesett (Lemondott)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "8",
+            "megnev": "Jelölt kiesett (Elhunyt)"
+        },
+        {
+            "tabla": "ALLAPOT",
+            "kod": "9",
+            "megnev": "Jelölt kiesett (Választhatóságát elveszítette)"
+        },
+        {
+            "tabla": "ERALLAPOT",
+            "kod": "I",
+            "megnev": "Jogerős"
+        },
+        {
+            "tabla": "ERALLAPOT",
+            "kod": "J",
+            "megnev": "Jogorvoslat alatt"
+        },
+        {
+            "tabla": "ERALLAPOT",
+            "kod": "N",
+            "megnev": "Nem jogerős"
+        },
+        {
+            "tabla": "ERJEL",
+            "kod": "0",
+            "megnev": "Nincs értékelve"
+        },
+        {
+            "tabla": "ERJEL",
+            "kod": "1",
+            "megnev": "A választás eredményes"
+        },
+        {
+            "tabla": "ERJEL",
+            "kod": "2",
+            "megnev": "A választás eredménytelen"
+        },
+        {
+            "tabla": "IN",
+            "kod": "I",
+            "megnev": "Igen"
+        },
+        {
+            "tabla": "IN",
+            "kod": "N",
+            "megnev": "Nem"
+        },
+        {
+            "tabla": "JELIDO",
+            "kod": "1",
+            "megnev": "07:00"
+        },
+        {
+            "tabla": "JELIDO",
+            "kod": "2",
+            "megnev": "09:00"
+        },
+        {
+            "tabla": "JELIDO",
+            "kod": "3",
+            "megnev": "11:00"
+        },
+        {
+            "tabla": "JELIDO",
+            "kod": "4",
+            "megnev": "13:00"
+        },
+        {
+            "tabla": "JELIDO",
+            "kod": "5",
+            "megnev": "15:00"
+        },
+        {
+            "tabla": "JELIDO",
+            "kod": "6",
+            "megnev": "17:30"
+        },
+        {
+            "tabla": "JKVALL",
+            "kod": "0",
+            "megnev": "Nincs rögzítve,nem érkezett"
+        },
+        {
+            "tabla": "JKVALL",
+            "kod": "1",
+            "megnev": "Törölt,visszavont"
+        },
+        {
+            "tabla": "JKVALL",
+            "kod": "2",
+            "megnev": "Hibás"
+        },
+        {
+            "tabla": "JKVALL",
+            "kod": "3",
+            "megnev": "Jó"
+        },
+        {
+            "tabla": "JKVALL",
+            "kod": "5",
+            "megnev": "Megsemmisített"
+        },
+        {
+            "tabla": "LAKTIP",
+            "kod": "1",
+            "megnev": "10e, vagy az alatti település"
+        },
+        {
+            "tabla": "LAKTIP",
+            "kod": "2",
+            "megnev": "10 e feletti település"
+        },
+        {
+            "tabla": "LISTATIP",
+            "kod": "K",
+            "megnev": "Közös lista"
+        },
+        {
+            "tabla": "LISTATIP",
+            "kod": "O",
+            "megnev": "Önálló lista"
+        },
+        {
+            "tabla": "LISTIP",
+            "kod": "K",
+            "megnev": "Közös lista"
+        },
+        {
+            "tabla": "LISTIP",
+            "kod": "N",
+            "megnev": "Nemzetiségi lista"
+        },
+        {
+            "tabla": "LISTIP",
+            "kod": "O",
+            "megnev": "Önálló lista"
+        },
+        {
+            "tabla": "MANDT",
+            "kod": "1",
+            "megnev": "Egyéni vál.kerületi képviselő"
+        },
+        {
+            "tabla": "MANDT",
+            "kod": "2",
+            "megnev": "Országos pártlistás képviselő"
+        },
+        {
+            "tabla": "MANDT",
+            "kod": "3",
+            "megnev": "Nemzetiségi képviselő"
+        },
+        {
+            "tabla": "MANDT",
+            "kod": "4",
+            "megnev": "Nemzetiségi szószóló"
+        },
+        {
+            "tabla": "MDTIP",
+            "kod": "10",
+            "megnev": "Fővárosi közgyűlés tagja "
+        },
+        {
+            "tabla": "MDTIP",
+            "kod": "6",
+            "megnev": "Polgármester"
+        },
+        {
+            "tabla": "MDTIP",
+            "kod": "7",
+            "megnev": "Települési önkormányzati képviselő-testületi tag"
+        },
+        {
+            "tabla": "MDTIP",
+            "kod": "8",
+            "megnev": "Megyei közgyűlés tagja "
+        },
+        {
+            "tabla": "MDTIP",
+            "kod": "9",
+            "megnev": "Főpolgármester"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "1",
+            "megnev": "Bolgár"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "10",
+            "megnev": "Szerb"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "11",
+            "megnev": "Szlovák"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "12",
+            "megnev": "Szlovén"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "13",
+            "megnev": "Ukrán"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "2",
+            "megnev": "Görög"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "3",
+            "megnev": "Horvát"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "4",
+            "megnev": "Lengyel"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "5",
+            "megnev": "Német"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "6",
+            "megnev": "Örmény"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "7",
+            "megnev": "Roma"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "8",
+            "megnev": "Román"
+        },
+        {
+            "tabla": "NEMZETISEG",
+            "kod": "9",
+            "megnev": "Ruszin"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "0",
+            "megnev": "országos nemzetiségi listás jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "1",
+            "megnev": "polgármesterjelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "2",
+            "megnev": "főpolgármester-jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "3",
+            "megnev": "egyéni listás jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "4",
+            "megnev": "egyéni választókerületi jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "5",
+            "megnev": "települési kompenzációs listás jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "6",
+            "megnev": "vármegyei listás jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "7",
+            "megnev": "fővárosi kompenzációs listás jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "8",
+            "megnev": "települési nemzetiségi egyéni jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "9",
+            "megnev": "területi nemzetiségi listás jelölt"
+        },
+        {
+            "tabla": "ONKJELTIPE",
+            "kod": "F",
+            "megnev": "fővárosi listás jelölt"
+        },
+        {
+            "tabla": "OSZINT",
+            "kod": "0",
+            "megnev": "Település/településrész (azonos OEVK)"
+        },
+        {
+            "tabla": "OSZINT",
+            "kod": "1",
+            "megnev": "OEVK-ra összesített"
+        },
+        {
+            "tabla": "OSZINT",
+            "kod": "2",
+            "megnev": "Településre"
+        },
+        {
+            "tabla": "OSZINT",
+            "kod": "4",
+            "megnev": "Megyére"
+        },
+        {
+            "tabla": "OSZINT",
+            "kod": "5",
+            "megnev": "Országra"
+        },
+        {
+            "tabla": "OSZINT",
+            "kod": "6",
+            "megnev": "Település/településrész (azonos ÖNK OEVK)"
+        },
+        {
+            "tabla": "OSZINT",
+            "kod": "7",
+            "megnev": "OEVK-ra összesített ÖNK választásnál"
+        },
+        {
+            "tabla": "SZAVLA",
+            "kod": "0",
+            "megnev": "Nem szerepel a szavazólapon"
+        },
+        {
+            "tabla": "SZAVLA",
+            "kod": "1",
+            "megnev": "Szerepel a szavazólapon"
+        },
+        {
+            "tabla": "SZAVLA",
+            "kod": "2",
+            "megnev": "Szavazólapon szerepel, de érvénytelenül "
+        },
+        {
+            "tabla": "SZINT",
+            "kod": "1",
+            "megnev": "Szavazatszámláló Bizottság"
+        },
+        {
+            "tabla": "SZINT",
+            "kod": "2",
+            "megnev": "HVI"
+        },
+        {
+            "tabla": "SZINT",
+            "kod": "3",
+            "megnev": "OEVI"
+        },
+        {
+            "tabla": "SZINT",
+            "kod": "4",
+            "megnev": "TVI"
+        },
+        {
+            "tabla": "SZINT",
+            "kod": "5",
+            "megnev": "NVI"
+        },
+        {
+            "tabla": "SZINT",
+            "kod": "6",
+            "megnev": "KÜVI"
+        },
+        {
+            "tabla": "SZTIPO",
+            "kod": "1",
+            "megnev": "Párt, egyéb egyesület"
+        },
+        {
+            "tabla": "SZTIPO",
+            "kod": "2",
+            "megnev": "Nemzetiségi szervezet"
+        },
+        {
+            "tabla": "SZTIPO",
+            "kod": "3",
+            "megnev": "Független jelölt"
+        },
+        {
+            "tabla": "TELTIP",
+            "kod": "1",
+            "megnev": "Fővárosi kerület"
+        },
+        {
+            "tabla": "TELTIP",
+            "kod": "2",
+            "megnev": "Megyei jogú város"
+        },
+        {
+            "tabla": "TELTIP",
+            "kod": "3",
+            "megnev": "Város"
+        },
+        {
+            "tabla": "TELTIP",
+            "kod": "4",
+            "megnev": "Község"
+        },
+        {
+            "tabla": "TELTIP",
+            "kod": "5",
+            "megnev": "Külképviseleti"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "0",
+            "megnev": "országos nemzetiségi önkormányzati választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "1",
+            "megnev": "polgármester-választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "2",
+            "megnev": "főpolgármester-választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "3",
+            "megnev": "egyéni listás választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "4",
+            "megnev": "egyéni választókerületi képviselő választása"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "5",
+            "megnev": "települési kompenzációs listás választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "6",
+            "megnev": "vármegyei közgyűlés választása"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "7",
+            "megnev": "fővárosi kompenzációs listás választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "8",
+            "megnev": "települési nemzetiségi önkormányzati képviselő választása"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "9",
+            "megnev": "területi nemzetiségi önkormányzati választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "E",
+            "megnev": "Európai parlamenti választások"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "F",
+            "megnev": "fővárosi közgyűlés választása"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "H",
+            "megnev": "Önkormányzati választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "J",
+            "megnev": "egyéni képviselő választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "L",
+            "megnev": "listás képviselő választás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "M",
+            "megnev": "területi szintű helyi népszavazás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "O",
+            "megnev": "Országos népszavazás"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "P",
+            "megnev": "Országgyülési választások"
+        },
+        {
+            "tabla": "VALALTIP",
+            "kod": "T",
+            "megnev": "települési helyi népszavazás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "1",
+            "megnev": "Országgyűlési választás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "2",
+            "megnev": "EU parlamenti"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "3",
+            "megnev": "Önkormányzati választás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "4",
+            "megnev": "Országos népszavazás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "5",
+            "megnev": "Nemzetiségi önkormányzati választás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "6",
+            "megnev": "Időközi országgyűlési választás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "7",
+            "megnev": "Időközi önkormányzati választás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "8",
+            "megnev": "Időközi nemzetiségi önkormányzati választás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "9",
+            "megnev": "Helyi népszavazás"
+        },
+        {
+            "tabla": "VALTIP",
+            "kod": "A",
+            "megnev": "Aktuális vál.-hoz beállítandó"
+        },
+        {
+            "tabla": "HATICSOPPO",
+            "kod": "1",
+            "megnev": "Választópolgár"
+        },
+        {
+            "tabla": "HATICSOPPO",
+            "kod": "2",
+            "megnev": "Jelölt"
+        },
+        {
+            "tabla": "HATICSOPPO",
+            "kod": "3",
+            "megnev": "Választópolgár és Jelölt"
+        },
+        {
+            "tabla": "ERTCIMJEL",
+            "kod": "E",
+            "megnev": "Az értesítést e-mailben kéri"
+        },
+        {
+            "tabla": "ERTCIMJEL",
+            "kod": "F",
+            "megnev": "Az értesítést faxon kéri"
+        },
+        {
+            "tabla": "ERTCIMJEL",
+            "kod": "H",
+            "megnev": "Hibásan megadott értesítési cím"
+        },
+        {
+            "tabla": "ERTCIMJEL",
+            "kod": "K",
+            "megnev": "Kettős állampolgárságot tiltó országok"
+        },
+        {
+            "tabla": "ERTCIMJEL",
+            "kod": "N",
+            "megnev": "Nincs megadott értesítési cím"
+        },
+        {
+            "tabla": "ERTCIMJEL",
+            "kod": "P",
+            "megnev": "Postai cím"
+        },
+        {
+            "tabla": "ITIP",
+            "kod": "1",
+            "megnev": "Teljes település"
+        },
+        {
+            "tabla": "ITIP",
+            "kod": "2",
+            "megnev": "Teljes közterület"
+        },
+        {
+            "tabla": "ITIP",
+            "kod": "3",
+            "megnev": "Páros házszámok"
+        },
+        {
+            "tabla": "ITIP",
+            "kod": "4",
+            "megnev": "Páratlan házszámok"
+        },
+        {
+            "tabla": "ITIP",
+            "kod": "5",
+            "megnev": "Folyamatos házszámok"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ALA",
+            "megnev": "Aaland"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "110",
+            "megnev": "Abházia (Oroszország)"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "AFG",
+            "megnev": "Afganisztán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ALB",
+            "megnev": "Albánia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "DZA",
+            "megnev": "Algéria"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "USA",
+            "megnev": "Amerikai Egyesült Államok"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ASM",
+            "megnev": "Amerikai Szamoa"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "AND",
+            "megnev": "Andorra"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "AGO",
+            "megnev": "Angola"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "AIA",
+            "megnev": "Anguilla"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ATG",
+            "megnev": "Antigua és Barbuda"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ARG",
+            "megnev": "Argentína"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ABW",
+            "megnev": "Aruba"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ASC",
+            "megnev": "Ascension"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "AUT",
+            "megnev": "Ausztria"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "AUS",
+            "megnev": "Ausztrália"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "AZE",
+            "megnev": "Azerbajdzsán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BHS",
+            "megnev": "Bahama-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BHR",
+            "megnev": "Bahrein"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BGD",
+            "megnev": "Banglades"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BRB",
+            "megnev": "Barbados"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BLR",
+            "megnev": "Belarusz Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BEL",
+            "megnev": "Belgium"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BLZ",
+            "megnev": "Belize"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BEN",
+            "megnev": "Benin"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BMU",
+            "megnev": "Bermuda"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BTN",
+            "megnev": "Bhután"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GNB",
+            "megnev": "Bissau-Guinea"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BOL",
+            "megnev": "Bolívia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BES",
+            "megnev": "Bonaire,Saint Eustatius And Saba"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BIH",
+            "megnev": "Bosznia-Hercegovina"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BWA",
+            "megnev": "Botswana"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BRA",
+            "megnev": "Brazília"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "IOT",
+            "megnev": "Brit Indiai-óceáni Terület"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "VGB",
+            "megnev": "Brit Virgin-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BRN",
+            "megnev": "Brunei"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BGR",
+            "megnev": "Bulgária"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BFA",
+            "megnev": "Burkina Faso"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BDI",
+            "megnev": "Burundi"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CHL",
+            "megnev": "Chile"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CYP",
+            "megnev": "Ciprus"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "COM",
+            "megnev": "Comore-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "COK",
+            "megnev": "Cook-szigetek (Újzéland)"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CRI",
+            "megnev": "Costa Rica"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CZE",
+            "megnev": "Csehország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TCD",
+            "megnev": "Csád"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CUW",
+            "megnev": "Curacao"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "DOM",
+            "megnev": "Dominikai Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "DMA",
+            "megnev": "Dominikai Közösség"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "DJI",
+            "megnev": "Dzsibuti"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "DNK",
+            "megnev": "Dánia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SSD",
+            "megnev": "Dél-Szudán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ZAF",
+            "megnev": "Dél-afrikai Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ECU",
+            "megnev": "Ecuador"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GNQ",
+            "megnev": "Egyenlítői-Guinea"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ARE",
+            "megnev": "Egyesült Arab Emírségek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "EGY",
+            "megnev": "Egyiptom"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CIV",
+            "megnev": "Elefántcsontpart"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ERI",
+            "megnev": "Eritrea"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ETH",
+            "megnev": "Etiópia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "FLK",
+            "megnev": "Falkland-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "FRO",
+            "megnev": "Feröer-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "FJI",
+            "megnev": "Fidzsi-szigeteki Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "FIN",
+            "megnev": "Finnország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GUF",
+            "megnev": "Francia Guyana"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PYF",
+            "megnev": "Francia Polinézia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ATF",
+            "megnev": "Francia déli és antarktiszi területek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "FRA",
+            "megnev": "Franciaország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PHL",
+            "megnev": "Fülöp-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GAB",
+            "megnev": "Gabon"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GMB",
+            "megnev": "Gambia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GHA",
+            "megnev": "Ghána"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GIB",
+            "megnev": "Gibraltár"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GRD",
+            "megnev": "Grenada"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GRL",
+            "megnev": "Grönland"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GEO",
+            "megnev": "Grúzia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GLP",
+            "megnev": "Guadeloupe"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GUM",
+            "megnev": "Guam"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GTM",
+            "megnev": "Guatemala"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GGY",
+            "megnev": "Guernsey"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GIN",
+            "megnev": "Guinea"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GUY",
+            "megnev": "Guyana"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GRC",
+            "megnev": "Görögország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "HTI",
+            "megnev": "Haiti"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ANT",
+            "megnev": "Holland Antillák"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NLD",
+            "megnev": "Hollandia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "HND",
+            "megnev": "Honduras"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "HKG",
+            "megnev": "Hongkong"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ZZZ",
+            "megnev": "Hontalan 2001.11.22 után"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "000",
+            "megnev": "Hontalan(2001.11.22-ig)"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "HRV",
+            "megnev": "Horvátország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "IND",
+            "megnev": "India"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "IDN",
+            "megnev": "Indonézia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "IRQ",
+            "megnev": "Irak"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "IRN",
+            "megnev": "Irán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "XXX",
+            "megnev": "Ismeretlen"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ISM",
+            "megnev": "Ismeretlen"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ISL",
+            "megnev": "Izland"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ISR",
+            "megnev": "Izrael"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "JAM",
+            "megnev": "Jamaica"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "JPN",
+            "megnev": "Japán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "YEM",
+            "megnev": "Jemen"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "JEY",
+            "megnev": "Jersey"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "JOR",
+            "megnev": "Jordánia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CYM",
+            "megnev": "Kajmán-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "KHM",
+            "megnev": "Kambodzsa"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CMR",
+            "megnev": "Kamerun"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CAN",
+            "megnev": "Kanada"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CXR",
+            "megnev": "Karácsony-sziget"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "QAT",
+            "megnev": "Katar"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "KAZ",
+            "megnev": "Kazahsztán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TLS",
+            "megnev": "Kelet-Timor"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "KEN",
+            "megnev": "Kenya"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "KGZ",
+            "megnev": "Kirgizisztán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "KIR",
+            "megnev": "Kiribati"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "COL",
+            "megnev": "Kolumbia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "COG",
+            "megnev": "Kongó"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "COD",
+            "megnev": "Kongói Demokratikus Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "KOR",
+            "megnev": "Koreai Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PRK",
+            "megnev": "Koreai Népi Demokratikus Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "XKX",
+            "megnev": "Koszovó"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CUB",
+            "megnev": "Kuba"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "KWT",
+            "megnev": "Kuvait"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CHN",
+            "megnev": "Kína"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CCK",
+            "megnev": "Kókusz (Keeling)-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CAF",
+            "megnev": "Közép-afrikai Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LAO",
+            "megnev": "Laosz"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "POL",
+            "megnev": "Lengyelország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LSO",
+            "megnev": "Lesotho"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LVA",
+            "megnev": "Lettország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LBN",
+            "megnev": "Libanon"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LBR",
+            "megnev": "Libéria"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LIE",
+            "megnev": "Liechtenstein"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LTU",
+            "megnev": "Litvánia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LUX",
+            "megnev": "Luxemburg"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LBY",
+            "megnev": "Líbia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MDG",
+            "megnev": "Madagaszkár"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "HUN",
+            "megnev": "Magyarország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MAC",
+            "megnev": "Makaó"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MYS",
+            "megnev": "Malajzia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MWI",
+            "megnev": "Malawi"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MDV",
+            "megnev": "Maldív-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MLI",
+            "megnev": "Mali"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "IMN",
+            "megnev": "Man"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MAR",
+            "megnev": "Marokkó"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MHL",
+            "megnev": "Marshall-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MTQ",
+            "megnev": "Martinique"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MUS",
+            "megnev": "Mauritius"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MRT",
+            "megnev": "Mauritánia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MYT",
+            "megnev": "Mayotte"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MEX",
+            "megnev": "Mexikó"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MMR",
+            "megnev": "Mianmar"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "FSM",
+            "megnev": "Mikronéziai Szövetségi Államok"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MDA",
+            "megnev": "Moldova"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MCO",
+            "megnev": "Monaco"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MNG",
+            "megnev": "Mongólia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MNE",
+            "megnev": "Montenegró"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MSR",
+            "megnev": "Montserrat"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MOZ",
+            "megnev": "Mozambik"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MLT",
+            "megnev": "Málta"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "GBR",
+            "megnev": "Nagy-Britannia és Észak-Írország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NAM",
+            "megnev": "Namíbia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NRU",
+            "megnev": "Nauru"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NPL",
+            "megnev": "Nepál"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NIC",
+            "megnev": "Nicaragua"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NER",
+            "megnev": "Niger"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NGA",
+            "megnev": "Nigéria"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NIU",
+            "megnev": "Niue"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NFK",
+            "megnev": "Norfolk-sziget"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NOR",
+            "megnev": "Norvégia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "DEU",
+            "megnev": "Németország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ITA",
+            "megnev": "Olaszország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "OMN",
+            "megnev": "Omán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "RUS",
+            "megnev": "Oroszország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PAK",
+            "megnev": "Pakisztán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PLW",
+            "megnev": "Palau"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PSE",
+            "megnev": "Palesztina"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PAN",
+            "megnev": "Panama"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PRY",
+            "megnev": "Paraguay"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PER",
+            "megnev": "Peru"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PCN",
+            "megnev": "Pitcairn-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PRT",
+            "megnev": "Portugália"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PRI",
+            "megnev": "Puerto Rico"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "PNG",
+            "megnev": "Pápua Új-Guinea"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ROU",
+            "megnev": "Románia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "RWA",
+            "megnev": "Ruanda"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "REU",
+            "megnev": "Réunion"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "KNA",
+            "megnev": "Saint Kitts és Nevis"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LCA",
+            "megnev": "Saint Lucia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "VCT",
+            "megnev": "Saint Vincent és Grenadine"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MAF",
+            "megnev": "Saint-Barthélemy"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "BLM",
+            "megnev": "Saint-Barthélemy (Franciaország)"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SPM",
+            "megnev": "Saint-Pierre és Miquelon"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SLB",
+            "megnev": "Salamon-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SLV",
+            "megnev": "Salvador"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SMR",
+            "megnev": "San Marino"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "STP",
+            "megnev": "Sao Tomé és Príncipe"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SYC",
+            "megnev": "Seychelle-Szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SLE",
+            "megnev": "Sierra Leone"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SXM",
+            "megnev": "Sint Maarten"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ESP",
+            "megnev": "Spanyolország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SJM",
+            "megnev": "Spitzbergák és Jan Meyen-sziget"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "LKA",
+            "megnev": "Srí Lanka"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SUR",
+            "megnev": "Suriname"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CHE",
+            "megnev": "Svájc"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SWE",
+            "megnev": "Svédország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "WSM",
+            "megnev": "Szamoa"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SAU",
+            "megnev": "Szaúd-Arábia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SEN",
+            "megnev": "Szenegál"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SHN",
+            "megnev": "Szent Ilona"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SRB",
+            "megnev": "Szerbia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SGP",
+            "megnev": "Szingapúr"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SVK",
+            "megnev": "Szlovákia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SVN",
+            "megnev": "Szlovénia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SOM",
+            "megnev": "Szomália"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SDN",
+            "megnev": "Szudán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SWZ",
+            "megnev": "Szváziföld"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "SYR",
+            "megnev": "Szíria"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TWN",
+            "megnev": "Tajvan"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TZA",
+            "megnev": "Tanzánia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "THA",
+            "megnev": "Thaiföld"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TGO",
+            "megnev": "Togo"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TKL",
+            "megnev": "Tokelau-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TON",
+            "megnev": "Tonga"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TTO",
+            "megnev": "Trinidad és Tobago"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TAA",
+            "megnev": "Tristan da Cunha"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TUN",
+            "megnev": "Tunézia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TCA",
+            "megnev": "Turks- és Caicos-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TUV",
+            "megnev": "Tuvalu"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TJK",
+            "megnev": "Tádzsikisztán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TUR",
+            "megnev": "Törökország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "TKM",
+            "megnev": "Türkmenisztán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "UGA",
+            "megnev": "Uganda"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "UKR",
+            "megnev": "Ukrajna"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "URY",
+            "megnev": "Uruguay"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "VUT",
+            "megnev": "Vanuatu"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "VAT",
+            "megnev": "Vatikán"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "VEN",
+            "megnev": "Venezuela"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "VNM",
+            "megnev": "Vietnám"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "VIR",
+            "megnev": "Virgin-szigetek (USA)"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "UMI",
+            "megnev": "Wake-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "WLF",
+            "megnev": "Wallis és Futuna"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ZMB",
+            "megnev": "Zambia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ZWE",
+            "megnev": "Zimbabwe"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "CPV",
+            "megnev": "Zöld-foki Köztársaság"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MKD",
+            "megnev": "Észak-Macedónia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "MNP",
+            "megnev": "Északi-Mariana-szigetek"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "EST",
+            "megnev": "Észtország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "IRL",
+            "megnev": "Írország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "ARM",
+            "megnev": "Örményország"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NCL",
+            "megnev": "Új-Kaledónia"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "NZL",
+            "megnev": "Új-Zéland"
+        },
+        {
+            "tabla": "ORSZAG",
+            "kod": "UZB",
+            "megnev": "Üzbegisztán"
+        },
+        {
+            "tabla": "ONKLISTIP",
+            "kod": "0",
+            "megnev": "Országos nemzetiségi lista"
+        },
+        {
+            "tabla": "ONKLISTIP",
+            "kod": "5",
+            "megnev": "Települési kompenzációs lista"
+        },
+        {
+            "tabla": "ONKLISTIP",
+            "kod": "6",
+            "megnev": "Vármegyei lista"
+        },
+        {
+            "tabla": "ONKLISTIP",
+            "kod": "F",
+            "megnev": "Fővárosi lista"
+        },
+        {
+            "tabla": "ONKLISTIP",
+            "kod": "9",
+            "megnev": "Területi nemzetiségi lista"
+        },
+        {
+            "tabla": "ONKLISTIP",
+            "kod": "K",
+            "megnev": "Nemzetiségi települési komp.lista (generált)"
+        }
+    ]
+}
