@@ -223,6 +223,12 @@ export default function App() {
                             />
                         </ErrorBoundary>
                     )}
+
+                    {/* Lábjegyzet / Forrásmegjelölés */}
+                    <footer className="mt-16 pt-6 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
+                        <p>A felületen megjelenített adatok feldolgozása a <strong>Nemzeti Választási Iroda (NVI)</strong> hivatalos adatszolgáltatása (vtr.valasztas.hu) alapján történik.</p>
+                        <p className="mt-1">Az alkalmazás független fejlesztés, nem áll kapcsolatban állami szervekkel.</p>
+                    </footer>
                 </div>
             </main>
             <ToastContainer toast={toast} />
