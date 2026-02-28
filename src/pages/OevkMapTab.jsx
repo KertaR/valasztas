@@ -1,7 +1,8 @@
-import { useState, useMemo, useRef, useCallback } from 'react';
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
+import { geoContains } from 'd3-geo';
 import 'leaflet/dist/leaflet.css';
-import { MapPin, Users, Crosshair, ShieldAlert, X } from 'lucide-react';
+import { MapPin, Users, Crosshair, ShieldAlert, X, Search, Loader2 } from 'lucide-react';
 
 // Magyarország nagyjábóli határai: DNy (Lat, Lng), ÉK (Lat, Lng)
 const HUNGARY_BOUNDS = [
@@ -10,11 +11,30 @@ const HUNGARY_BOUNDS = [
 ];
 
 // ────────────────────────────────────────────────
+// Térkép Mozgató / Zoomoló Komponens
+// ────────────────────────────────────────────────
+function MapController({ centerPos }) {
+    const map = useMap();
+    useEffect(() => {
+        if (centerPos) {
+            map.flyTo(centerPos, 11, { animate: true, duration: 1.5 });
+        }
+    }, [centerPos, map]);
+    return null;
+}
+
+// ────────────────────────────────────────────────
 // Fő komponens
 // ────────────────────────────────────────────────
 export default function OevkMapTab({ districts, candidates, organizations, oevkPoligonok }) {
     const [selectedParty, setSelectedParty] = useState('all');
     const [selectedDistrict, setSelectedDistrict] = useState(null);
+
+    // Keresés Állapotai
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchError, setSearchError] = useState(null);
+    const [mapCenter, setMapCenter] = useState(null); // [lat, lng]
 
     // Tooltip állapot
     const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, html: '' });
@@ -185,6 +205,50 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
         .sort((a, b) => b.candidateCount - a.candidateCount);
 
     // ────────────────────────────────────────────────
+    // Cím keresés logika (Nominatim + D3 geoContains)
+    // ────────────────────────────────────────────────
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        if (!searchQuery.trim() || !oevkPoligonok?.features) return;
+
+        setIsSearching(true);
+        setSearchError(null);
+
+        try {
+            // Cím geokódolása Nominatim segítségével
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&countrycodes=hu`;
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                const lon = parseFloat(data[0].lon);
+                const lat = parseFloat(data[0].lat);
+
+                // D3 geoContains-szal megnézzük melyik GeoJSON poligonba esik a pont
+                const point = [lon, lat];
+                const matchingFeature = oevkPoligonok.features.find(feature =>
+                    geoContains(feature, point)
+                );
+
+                if (matchingFeature) {
+                    const geoName = `${matchingFeature.properties.maz}-${matchingFeature.properties.evk}`;
+                    setSelectedDistrict(geoName);
+                    setMapCenter([lat, lon]); // Térkép fókuszálása
+                } else {
+                    setSearchError("A cím nem esik egyetlen magyarországi választókerületbe sem.");
+                }
+            } else {
+                setSearchError("Nem található a cím. Kérjük, pontosítsa a keresést (Pl.: Budapest, Kossuth Lajos tér 1-3)!");
+            }
+        } catch (err) {
+            console.error("Geocoding hiba:", err);
+            setSearchError("Hiba a címkeresés során. Próbálja újra.");
+        } finally {
+            setIsSearching(false);
+        }
+    };
+
+    // ────────────────────────────────────────────────
     // Render
     // ────────────────────────────────────────────────
     return (
@@ -201,7 +265,34 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                     </p>
                 </div>
 
-                <div className="flex flex-wrap gap-2 w-full md:w-auto">
+                <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
+                    {/* Címkereső Input */}
+                    <form onSubmit={handleSearch} className="relative flex flex-col items-start w-full md:w-80 gap-1.5">
+                        <div className="relative flex items-center w-full">
+                            <input
+                                type="text"
+                                placeholder="Lakcím keresése (utca, hsz, város)"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl pl-10 pr-4 py-2 text-sm shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder-slate-400 dark:placeholder-slate-500"
+                            />
+                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                                {isSearching ? <Loader2 className="w-4 h-4 animate-spin text-indigo-500" /> : <Search className="w-4 h-4" />}
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={isSearching || !searchQuery.trim()}
+                                className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            >
+                                Keresés
+                            </button>
+                        </div>
+                        {searchError && (
+                            <span className="text-xs font-semibold text-red-500 dark:text-red-400 px-1.5 leading-tight">{searchError}</span>
+                        )}
+                    </form>
+
+                    {/* Szűrő */}
                     <select
                         className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl px-4 py-2 font-bold shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
                         value={selectedParty}
@@ -242,6 +333,7 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                             scrollWheelZoom={true}
                             style={{ height: '100%', width: '100%' }}
                         >
+                            <MapController centerPos={mapCenter} />
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
