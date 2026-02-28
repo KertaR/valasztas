@@ -231,13 +231,13 @@ export default function SeatCalculatorTab({ enrichedData }) {
                             </motion.circle>
                         ))}
                     </svg>
-                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center pointer-events-none w-full">
+                    <div className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pointer-events-none w-full px-2">
                         {leadingParty ? (
-                            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center -mt-8">
-                                <span className="text-[3.5rem] leading-none font-black drop-shadow-sm" style={{ color: leadingParty.color }}>
+                            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center">
+                                <span className="text-[4rem] md:text-[5rem] leading-none font-black drop-shadow-sm" style={{ color: leadingParty.color }}>
                                     {leadingParty.value}
                                 </span>
-                                <span className={`text-xs font-black uppercase tracking-[0.2em] mt-3 mb-2 px-4 py-1.5 bg-white/80 dark:bg-slate-900/80 rounded-full backdrop-blur-md shadow-sm border border-slate-200 dark:border-slate-700 ${leadingColor}`}>
+                                <span className={`text-[10px] md:text-xs font-black uppercase tracking-widest mt-2 md:mt-3 mb-2 px-3 py-1.5 bg-white/90 dark:bg-slate-900/90 rounded-xl backdrop-blur-md shadow-sm border border-slate-100 dark:border-slate-800 ${leadingColor} text-center leading-snug max-w-[90%] md:max-w-full`}>
                                     {leadingStatus}
                                 </span>
                             </motion.div>
@@ -245,20 +245,20 @@ export default function SeatCalculatorTab({ enrichedData }) {
                     </div>
                 </div>
 
-                <div className="absolute bottom-8 flex gap-12 items-end w-full justify-center opacity-90 z-10">
+                <div className="w-full flex gap-4 md:gap-12 items-end justify-center opacity-90 z-10 relative mt-4">
                     <div className="flex flex-col items-center">
-                        <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5">Kormánytöbbség</span>
-                        <div className="flex items-baseline gap-1 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-xl">
-                            <span className="text-xl font-black text-slate-700 dark:text-slate-300">100</span>
-                            <span className="text-xs text-slate-500 font-bold">mand.</span>
+                        <span className="text-[9px] md:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 md:mb-1.5 text-center">Kormánytöbbség</span>
+                        <div className="flex items-baseline gap-1 bg-slate-100 dark:bg-slate-800 px-3 md:px-4 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+                            <span className="text-lg md:text-xl font-black text-slate-700 dark:text-slate-300">100</span>
+                            <span className="text-[9px] md:text-xs text-slate-500 font-bold">mand.</span>
                         </div>
                     </div>
-                    <div className="w-px h-12 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent"></div>
+                    <div className="w-px h-10 md:h-12 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent flex-shrink-0"></div>
                     <div className="flex flex-col items-center">
-                        <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5">Alkotmányozó 2/3</span>
-                        <div className="flex items-baseline gap-1 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-xl">
-                            <span className="text-xl font-black text-slate-700 dark:text-slate-300">133</span>
-                            <span className="text-xs text-slate-500 font-bold">mand.</span>
+                        <span className="text-[9px] md:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 md:mb-1.5 text-center">Alkotmányozó 2/3</span>
+                        <div className="flex items-baseline gap-1 bg-slate-100 dark:bg-slate-800 px-3 md:px-4 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+                            <span className="text-lg md:text-xl font-black text-slate-700 dark:text-slate-300">133</span>
+                            <span className="text-[9px] md:text-xs text-slate-500 font-bold">mand.</span>
                         </div>
                     </div>
                 </div>
