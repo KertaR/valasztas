@@ -295,7 +295,61 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             };
         }).sort((a, b) => b.candidateCount - a.candidateCount);
 
-        // 4. Stats aggregation
+        // 4. Formations Progress (Listaállítási kalkuláció)
+        const formationsMap = {};
+        candidates.forEach(c => {
+            if (!c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0) return;
+
+            const sortedSzkods = [...c.jelolo_szervezetek].sort((a, b) => a - b);
+            const key = sortedSzkods.join(',');
+
+            if (!formationsMap[key]) {
+                const fullNames = sortedSzkods.map(id => orgMap[id]?.nev || 'Ismeretlen').join(' - ');
+                const abbrNames = sortedSzkods.map(id => orgMap[id]?.r_nev || orgMap[id]?.nev || 'Ismeretlen').join('-');
+
+                formationsMap[key] = {
+                    key, szkods: sortedSzkods, abbr: abbrNames, fullName: fullNames,
+                    registeredOevks: new Set(), pendingOevks: new Set(),
+                    registeredCounties: new Set(), pendingCounties: new Set()
+                };
+            }
+
+            const f = formationsMap[key];
+            const oevkObj = c.maz + '-' + c.evk;
+            const isRegistered = c.statusName.startsWith('Nyilvántartásba véve') || c.statusName === 'Bejelentve' || c.statusName === 'Ismételten bejelentve';
+
+            if (isRegistered) {
+                f.registeredOevks.add(oevkObj);
+                f.registeredCounties.add(c.maz);
+            } else {
+                f.pendingOevks.add(oevkObj);
+                f.pendingCounties.add(c.maz);
+            }
+        });
+
+        const formationsProgress = Object.values(formationsMap).map(f => {
+            const hasCapital = f.registeredCounties.has('01');
+            const pendingHasCapital = f.pendingCounties.has('01') || hasCapital;
+
+            const uniquePendingOevks = new Set([...f.pendingOevks].filter(x => !f.registeredOevks.has(x)));
+            const uniquePendingCounties = new Set([...f.pendingCounties].filter(x => !f.registeredCounties.has(x)));
+
+            const regOevkCount = f.registeredOevks.size;
+            const pendingOevkCount = uniquePendingOevks.size;
+            const regCountyCount = f.registeredCounties.size;
+            const pendingCountyCount = uniquePendingCounties.size;
+
+            const isSure = regOevkCount >= 71 && regCountyCount >= 15 && hasCapital;
+            const isPossible = (regOevkCount + pendingOevkCount) >= 71 && (regCountyCount + pendingCountyCount) >= 15 && pendingHasCapital;
+
+            return {
+                ...f, regOevkCount, pendingOevkCount, totalOevkCount: regOevkCount + pendingOevkCount,
+                regCountyCount, pendingCountyCount, totalCountyCount: regCountyCount + pendingCountyCount,
+                hasCapital, pendingHasCapital, isSure, isPossible
+            };
+        }).sort((a, b) => b.totalOevkCount - a.totalOevkCount);
+
+        // 5. Stats aggregation
         const topParties = Object.entries(partyCounts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
         const topRegisteredParties = organizations
             .filter(o => !o.isCoalitionPartner)
@@ -324,7 +378,7 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
         }
 
         return {
-            allCandidates, candidates, districts, organizations, countiesData,
+            allCandidates, candidates, districts, organizations, countiesData, formationsProgress,
             settlements: data.telepulesek || [],
             oevkPoligonok: {
                 type: 'FeatureCollection',

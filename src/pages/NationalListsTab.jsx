@@ -19,84 +19,8 @@ export default function NationalListsTab({ enrichedData }) {
             .sort((a, b) => b.nationalListCandidates.length - a.nationalListCandidates.length);
     }, [enrichedData]);
 
-    // 2. Haladás (Prognózis) kalkuláció
-    const formationsProgress = useMemo(() => {
-        if (!enrichedData || !enrichedData.candidates || !enrichedData.organizations) return [];
-
-        const orgMap = {};
-        enrichedData.organizations.forEach(o => { orgMap[o.szkod] = o; });
-
-        const formationsMap = {};
-
-        enrichedData.candidates.forEach(c => {
-            if (!c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0) return; // Nem tartozik párthoz
-
-            // Formáció egyedi azonosítója a szervezetek ID-inek sorrendbe rakott listája
-            const sortedSzkods = [...c.jelolo_szervezetek].sort((a, b) => a - b);
-            const key = sortedSzkods.join(',');
-
-            if (!formationsMap[key]) {
-                const fullNames = sortedSzkods.map(id => orgMap[id]?.nev || 'Ismeretlen').join(' - ');
-                const abbrNames = sortedSzkods.map(id => orgMap[id]?.r_nev || orgMap[id]?.nev || 'Ismeretlen').join('-');
-
-                formationsMap[key] = {
-                    key,
-                    szkods: sortedSzkods,
-                    abbr: abbrNames,
-                    fullName: fullNames,
-                    registeredOevks: new Set(),
-                    pendingOevks: new Set(),
-                    registeredCounties: new Set(),
-                    pendingCounties: new Set()
-                };
-            }
-
-            const f = formationsMap[key];
-            const oevkObj = c.maz + '-' + c.evk;
-            // OEVK induláshoz (és így a listaállításhoz) a bejelentett vagy nem jogerős nyilvántartásba vétel is elegendő.
-            const isRegistered = c.statusName.startsWith('Nyilvántartásba véve') || c.statusName === 'Bejelentve' || c.statusName === 'Ismételten bejelentve';
-
-            if (isRegistered) {
-                f.registeredOevks.add(oevkObj);
-                f.registeredCounties.add(c.maz);
-            } else {
-                f.pendingOevks.add(oevkObj);
-                f.pendingCounties.add(c.maz);
-            }
-        });
-
-        return Object.values(formationsMap).map(f => {
-            const hasCapital = f.registeredCounties.has('01');
-            const pendingHasCapital = f.pendingCounties.has('01') || hasCapital;
-
-            // Pendingből kivonjuk amik már eleve regisztráltak
-            const uniquePendingOevks = new Set([...f.pendingOevks].filter(x => !f.registeredOevks.has(x)));
-            const uniquePendingCounties = new Set([...f.pendingCounties].filter(x => !f.registeredCounties.has(x)));
-
-            const regOevkCount = f.registeredOevks.size;
-            const pendingOevkCount = uniquePendingOevks.size;
-
-            const regCountyCount = f.registeredCounties.size;
-            const pendingCountyCount = uniquePendingCounties.size;
-
-            const isSure = regOevkCount >= 71 && regCountyCount >= 15 && hasCapital;
-            const isPossible = (regOevkCount + pendingOevkCount) >= 71 && (regCountyCount + pendingCountyCount) >= 15 && pendingHasCapital;
-
-            return {
-                ...f,
-                regOevkCount,
-                pendingOevkCount,
-                totalOevkCount: regOevkCount + pendingOevkCount,
-                regCountyCount,
-                pendingCountyCount,
-                totalCountyCount: regCountyCount + pendingCountyCount,
-                hasCapital,
-                pendingHasCapital,
-                isSure,
-                isPossible
-            };
-        }).sort((a, b) => b.totalOevkCount - a.totalOevkCount);
-    }, [enrichedData]);
+    // 2. Haladás (Prognózis) kalkuláció (most már useEnrichedData-ból jön)
+    const formationsProgress = enrichedData.formationsProgress || [];
 
     // Keresés mindkét nézeten
     const filteredOfficial = officialListsData.filter(org =>

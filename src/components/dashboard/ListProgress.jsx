@@ -1,6 +1,6 @@
 import { Target } from 'lucide-react';
 
-export default function ListProgress({ organizations }) {
+export default function ListProgress({ formations = [] }) {
     return (
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 md:p-6 transition-colors">
             <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
@@ -8,34 +8,39 @@ export default function ListProgress({ organizations }) {
                 Listaállítási Haladás
             </h3>
             <div className="space-y-8">
-                {organizations
-                    .filter(org => !org.isCoalitionPartner && org.registeredFinalOevkCoverage > 0)
+                {formations
+                    .filter(f => f.totalOevkCount > 0)
                     .slice(0, 4)
-                    .map(org => {
-                        const oevkProgress = Math.min(100, (org.registeredFinalOevkCoverage / 71) * 100);
-                        const countyProgress = Math.min(100, (org.registeredFinalCountiesCount / 15) * 100);
-                        const hasList = org.registeredFinalOevkCoverage >= 71 && org.registeredFinalCountiesCount >= 15;
+                    .map(f => {
+                        const oevkProgress = Math.min(100, (f.regOevkCount / 71) * 100);
+                        const oevkTotProgress = Math.min(100, (f.totalOevkCount / 71) * 100);
+                        const countyProgress = Math.min(100, (f.regCountyCount / 15) * 100);
+                        const countyTotProgress = Math.min(100, (f.totalCountyCount / 15) * 100);
 
                         return (
-                            <div key={org.szkod} className="space-y-2">
+                            <div key={f.key} className="space-y-2">
                                 <div className="flex justify-between items-end">
                                     <div className="flex items-center gap-2">
-                                        <span className="font-bold text-slate-800 dark:text-white text-sm truncate max-w-[150px]">{org.coalitionFullName || org.nev}</span>
-                                        {hasList && <span className="bg-emerald-500 text-white text-[8px] px-1.5 py-0.5 rounded-full font-black animate-bounce shadow-sm shadow-emerald-500/50 uppercase">Elérve</span>}
+                                        <span className="font-bold text-slate-800 dark:text-white text-sm truncate max-w-[150px]">{f.fullName}</span>
+                                        {f.isSure && <span className="bg-emerald-500 text-white text-[8px] px-1.5 py-0.5 rounded-full font-black animate-pulse shadow-sm shadow-emerald-500/50 uppercase">Biztos</span>}
+                                        {!f.isSure && f.isPossible && <span className="bg-amber-500 text-white text-[8px] px-1.5 py-0.5 rounded-full font-black shadow-sm shadow-amber-500/50 uppercase">Esélyes</span>}
                                     </div>
-                                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Lista: {org.coalitionAbbr || org.r_nev}</span>
+                                    <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase">Formáció: {f.abbr}</span>
                                 </div>
 
                                 <div className="space-y-1">
                                     <div className="flex justify-between text-[9px] font-black uppercase tracking-tighter">
-                                        <span className="text-slate-500 dark:text-slate-400">71 OEVK Jelölt (Indult: {org.oevkCoverage})</span>
-                                        <span className={hasList ? 'text-emerald-500' : 'text-blue-500'}>{org.registeredFinalOevkCoverage} / 71</span>
+                                        <span className="text-slate-500 dark:text-slate-400">71 OEVK Jelölt (Indult: {f.totalOevkCount})</span>
+                                        <span className={f.isSure ? 'text-emerald-500' : 'text-blue-500'}>{f.regOevkCount} / 71</span>
                                     </div>
                                     <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200/50 dark:border-slate-700/50 relative">
-                                        {/* Background bar for total launched */}
-                                        <div className="w-full h-full bg-slate-200 dark:bg-slate-700 absolute inset-0 opacity-30"></div>
+                                        {/* Background bar for total launched (még nem regisztráltak) */}
                                         <div
-                                            className={`h-full transition-all duration-1000 relative z-10 ${hasList ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : 'bg-blue-500'}`}
+                                            className="h-full absolute inset-y-0 left-0 bg-blue-200 dark:bg-blue-900/50 transition-all duration-1000"
+                                            style={{ width: `${oevkTotProgress}%` }}
+                                        ></div>
+                                        <div
+                                            className={`h-full transition-all duration-1000 relative z-10 ${f.isSure ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : 'bg-blue-500'}`}
                                             style={{ width: `${oevkProgress}%` }}
                                         ></div>
                                     </div>
@@ -44,11 +49,15 @@ export default function ListProgress({ organizations }) {
                                 <div className="space-y-1">
                                     <div className="flex justify-between text-[9px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-tighter">
                                         <span>14 Vármegye + Budapest</span>
-                                        <span>{org.registeredFinalCountiesCount} / 15</span>
+                                        <span className={f.isSure ? 'text-emerald-500' : 'text-purple-500'}>{f.regCountyCount} / 15</span>
                                     </div>
-                                    <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200/50 dark:border-slate-700/50">
+                                    <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200/50 dark:border-slate-700/50 relative">
                                         <div
-                                            className={`h-full transition-all duration-1000 ${hasList ? 'bg-emerald-500' : 'bg-purple-500'}`}
+                                            className="h-full absolute inset-y-0 left-0 bg-purple-200 dark:bg-purple-900/50 transition-all duration-1000"
+                                            style={{ width: `${countyTotProgress}%` }}
+                                        ></div>
+                                        <div
+                                            className={`h-full transition-all duration-1000 relative z-10 ${f.isSure ? 'bg-emerald-500' : 'bg-purple-500'}`}
                                             style={{ width: `${countyProgress}%` }}
                                         ></div>
                                     </div>
@@ -59,7 +68,7 @@ export default function ListProgress({ organizations }) {
                 }
             </div>
             <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-[10px] text-slate-400 dark:text-slate-500 italic leading-tight">
-                * A választási törvény szerint országos listát az a párt állíthat, amely legalább 14 vármegyében és a fővárosban, összesen legalább 71 egyéni választókerületben állított jogerősen nyilvántartásba vett jelöltet.
+                * A választási törvény szerint országos listát az a párt (vagy pártszövetség) állíthat, amely legalább 14 vármegyében és a fővárosban, összesen legalább 71 egyéni választókerületben indulót ("Bejelentve" vagy újabb státusz) állított.
             </div>
         </div>
     );

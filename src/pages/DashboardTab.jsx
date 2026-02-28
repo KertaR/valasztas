@@ -92,7 +92,7 @@ export default function DashboardTab({ enrichedData, data, setSelectedOevk, setS
                         {/* Legkiélezettebb Körzet Kiemelés */}
                         <ContestedDistrict district={enrichedData.stats.mostContestedOevk} onClick={setSelectedOevk} />
 
-                        <ListProgress organizations={enrichedData.organizations} />
+                        <ListProgress formations={enrichedData.formationsProgress || []} />
                         <RecentChanges recentUpdates={enrichedData.stats.recentUpdates} setSelectedCandidate={setSelectedCandidate} />
                     </div>
                 </div>
