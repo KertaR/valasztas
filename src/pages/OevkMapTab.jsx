@@ -3,6 +3,12 @@ import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapPin } from 'lucide-react';
 
+// Magyarország nagyjábóli határai: DNy (Lat, Lng), ÉK (Lat, Lng)
+const HUNGARY_BOUNDS = [
+    [45.7, 16.1], // Dél-Nyugat sarok
+    [48.6, 22.9]  // Észak-Kelet sarok
+];
+
 // ────────────────────────────────────────────────
 // Fő komponens
 // ────────────────────────────────────────────────
@@ -226,7 +232,15 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                 <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-2 md:p-4 select-none" style={{ position: 'relative' }}>
                     {/* Leaflet MapContainer */}
                     <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-sky-50/40 dark:bg-slate-950/40 z-0 map-wrapper">
-                        <MapContainer center={[47.16, 19.5]} zoom={7} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+                        <MapContainer
+                            center={[47.16, 19.5]}
+                            zoom={7}
+                            minZoom={7}
+                            maxBounds={HUNGARY_BOUNDS}
+                            maxBoundsViscosity={1.0}
+                            scrollWheelZoom={true}
+                            style={{ height: '100%', width: '100%' }}
+                        >
                             <TileLayer
                                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
