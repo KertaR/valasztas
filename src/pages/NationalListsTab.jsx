@@ -53,9 +53,8 @@ export default function NationalListsTab({ enrichedData }) {
 
             const f = formationsMap[key];
             const oevkObj = c.maz + '-' + c.evk;
-            // Átmenetileg a "Nyilvántartásba véve (nem jogerős)" státuszt is elfogadjuk prognózis szintjén pendingként,
-            // jogerőset regisztráltként. De hogy ne legyen túl szigorú a felület, a sima "Nyilvántartásba véve"-t nézzük.
-            const isRegistered = c.statusName === 'Nyilvántartásba véve' || (c.statusName.startsWith('Nyilvántartásba') && c.statusName.includes('jogerős') && !c.statusName.includes('nem jogerős'));
+            // OEVK induláshoz (és így a listaállításhoz) a "nem jogerős" nyilvántartásba vétel is elegendő.
+            const isRegistered = c.statusName.startsWith('Nyilvántartásba véve');
 
             if (isRegistered) {
                 f.registeredOevks.add(oevkObj);
@@ -147,8 +146,8 @@ export default function NationalListsTab({ enrichedData }) {
                 <button
                     onClick={() => setActiveView('progress')}
                     className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-sm font-bold transition-all ${activeView === 'progress'
-                            ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                            : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                        ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
                         }`}
                 >
                     <Target className="w-4 h-4" />
@@ -157,8 +156,8 @@ export default function NationalListsTab({ enrichedData }) {
                 <button
                     onClick={() => setActiveView('official')}
                     className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg text-sm font-bold transition-all ${activeView === 'official'
-                            ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                            : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                        ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                        : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
                         }`}
                 >
                     <List className="w-4 h-4" />
