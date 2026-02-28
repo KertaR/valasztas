@@ -238,7 +238,7 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                             minZoom={7}
                             maxBounds={HUNGARY_BOUNDS}
                             maxBoundsViscosity={1.0}
-                            scrollWheelZoom={true}
+                            scrollWheelZoom={false}
                             style={{ height: '100%', width: '100%' }}
                         >
                             <TileLayer
