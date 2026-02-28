@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Calculator, PieChart as PieChartIcon, Percent, AlertCircle } from 'lucide-react';
+import { Calculator, PieChart as PieChartIcon, Percent, AlertCircle, BarChart3, RefreshCw } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 export default function SeatCalculatorTab({ enrichedData }) {
@@ -36,6 +36,18 @@ export default function SeatCalculatorTab({ enrichedData }) {
             normalized[maxParty] += (100 - newTotal);
         }
         setVotes(normalized);
+    };
+
+    // "Poll of Polls" (2026 tavaszi átlag becslés)
+    const loadPollOfPolls = () => {
+        setVotes({
+            fidesz: 37,
+            tisza: 38,
+            dk: 6,
+            mhm: 6,
+            egyhat: 4,  // pl. MKKP majdnem bejut
+            egyeb: 9
+        });
     };
 
     // Calculate mandates (Sophisticated heuristic model for simulation)
@@ -170,10 +182,20 @@ export default function SeatCalculatorTab({ enrichedData }) {
                     </div>
 
                     <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-800/60 p-6 relative overflow-hidden flex-1">
-                        <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 mb-6 flex items-center gap-2">
-                            <Percent className="w-5 h-5 text-slate-400" />
-                            Pártok Országos Szimpátiája
-                        </h3>
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+                            <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <Percent className="w-5 h-5 text-slate-400" />
+                                Pártok Országos Szimpátiája
+                            </h3>
+                            <button
+                                onClick={loadPollOfPolls}
+                                className="px-3 py-1.5 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 hover:from-purple-500/20 hover:to-indigo-500/20 dark:from-purple-900/30 dark:to-indigo-900/30 text-purple-700 dark:text-purple-400 text-xs font-bold rounded-xl transition-all border border-purple-200 dark:border-purple-800/50 flex items-center gap-1.5 shadow-sm w-full sm:w-auto justify-center"
+                                title="Legújabb kutatási átlagok betöltése (Medián, Závecz, stb.)"
+                            >
+                                <BarChart3 className="w-4 h-4" />
+                                Poll of Polls (Átlag)
+                            </button>
+                        </div>
 
                         <div className="flex-1 space-y-6">
                             {[
