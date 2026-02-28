@@ -13,6 +13,8 @@ export default function SeatCalculatorTab({ enrichedData }) {
         egyeb: 9
     });
 
+    const [fractionalBonus, setFractionalBonus] = useState(15);
+
     // Handle slider change, ensuring total doesn't exceed 100 (or just scale them)
     const handleVoteChange = (party, value) => {
         setVotes(prev => ({
@@ -81,14 +83,18 @@ export default function SeatCalculatorTab({ enrichedData }) {
         }
 
         // 3. Országos Listás Mandátumok (93 darab) - D'Hondt-mátrix szimulálása
-        // Bár a töredékszavazatok pontos kiszámítása OEVK szintű adatok nélkül lehetetlen,
-        // a tiszta D'Hondt adja a legpontosabb "matematikailag arányosított" becslést egy országos tesztnél.
+        // A töredékszavazatok bónusza alapján módosítjuk a D'Hondt mátrix kiinduló szavazatait.
         if (eligibleParties.length > 0) {
             let dHondtDivisors = [];
             // Fiktív 5 millió szavazóval számolunk a nagy számok törvénye miatt a D'Hondt tökéletes osztásáért
             const baseVotes = 5000000;
+            const oevkWinnerId = [...eligibleParties].sort((a, b) => (oevkSeats[b.id] || 0) - (oevkSeats[a.id] || 0))[0]?.id;
+
             eligibleParties.forEach(p => {
-                const rawVotes = (p.vote / 100) * baseVotes;
+                let rawVotes = (p.vote / 100) * baseVotes;
+                if (oevkWinnerId === p.id) {
+                    rawVotes += rawVotes * (fractionalBonus / 100);
+                }
                 for (let i = 1; i <= 93; i++) {
                     dHondtDivisors.push({ id: p.id, value: rawVotes / i });
                 }
@@ -107,7 +113,7 @@ export default function SeatCalculatorTab({ enrichedData }) {
             total: (oevkSeats[p.id] || 0) + (listSeats[p.id] || 0)
         })).filter(p => p.total > 0 || p.vote >= 5);
 
-    }, [votes]);
+    }, [votes, fractionalBonus]);
 
     const parliamentData = useMemo(() => {
         return mandates.map(m => ({
@@ -138,7 +144,7 @@ export default function SeatCalculatorTab({ enrichedData }) {
     const parliamentSeats = useMemo(() => {
         if (!mandates || mandates.length === 0) return [];
         const rows = [28, 34, 40, 45, 52];
-        const radii = [105, 130, 155, 180, 205];
+        const radii = [135, 160, 185, 210, 235];
         const seats = [];
 
         rows.forEach((numSeats, rowIndex) => {
@@ -147,7 +153,7 @@ export default function SeatCalculatorTab({ enrichedData }) {
                 const theta = Math.PI - (i / (numSeats - 1)) * Math.PI;
                 seats.push({
                     x: 250 + r * Math.cos(theta),
-                    y: 220 - r * Math.sin(theta),
+                    y: 250 - r * Math.sin(theta),
                     angle: theta
                 });
             }
@@ -207,8 +213,8 @@ export default function SeatCalculatorTab({ enrichedData }) {
                     </h3>
                 </div>
 
-                <div className="w-full h-[320px] mt-16 relative flex justify-center z-10">
-                    <svg viewBox="0 0 500 240" className="w-full h-full max-w-[550px] drop-shadow-lg pb-4 pt-2">
+                <div className="w-full h-[340px] mt-16 relative flex justify-center z-10">
+                    <svg viewBox="0 0 500 260" className="w-full h-full max-w-[580px] drop-shadow-lg pb-4 pt-2">
                         {parliamentSeats.map((seat, i) => (
                             <motion.circle
                                 key={`seat-${i}`}
@@ -308,6 +314,23 @@ export default function SeatCalculatorTab({ enrichedData }) {
                                     />
                                 </div>
                             ))}
+                        </div>
+
+                        <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800/60">
+                            <div className="flex justify-between items-center mb-4">
+                                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Győzteskompenzációarány (%)</span>
+                                <span className="text-sm font-black px-2 py-0.5 rounded-lg border dark:border-slate-800 text-indigo-500 bg-indigo-500/10 border-indigo-500/20">
+                                    +{fractionalBonus}%
+                                </span>
+                            </div>
+                            <input
+                                type="range"
+                                min="0" max="30"
+                                value={fractionalBonus}
+                                onChange={(e) => setFractionalBonus(parseInt(e.target.value))}
+                                className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500 hover:accent-indigo-400 focus:accent-indigo-400"
+                            />
+                            <p className="text-[10px] text-slate-500 mt-2 leading-tight">Az OEVK győztese megkapja saját töredékszavazatait. Ez a súlyozó a győztes felülreprezentációját/bónuszát adja hozzá a listás D'Hondt számításhoz virtuálisan.</p>
                         </div>
                     </div>
                 </div>
