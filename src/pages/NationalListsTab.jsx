@@ -53,8 +53,8 @@ export default function NationalListsTab({ enrichedData }) {
 
             const f = formationsMap[key];
             const oevkObj = c.maz + '-' + c.evk;
-            // OEVK induláshoz (és így a listaállításhoz) a "nem jogerős" nyilvántartásba vétel is elegendő.
-            const isRegistered = c.statusName.startsWith('Nyilvántartásba véve');
+            // OEVK induláshoz (és így a listaállításhoz) a bejelentett vagy nem jogerős nyilvántartásba vétel is elegendő.
+            const isRegistered = c.statusName.startsWith('Nyilvántartásba véve') || c.statusName === 'Bejelentve' || c.statusName === 'Ismételten bejelentve';
 
             if (isRegistered) {
                 f.registeredOevks.add(oevkObj);
