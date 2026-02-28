@@ -8,7 +8,8 @@ export function useElectionData(showToast, onClearCallback) {
         oevk: null,
         jeloltek: null,
         szervezetek: null,
-        oevkPoligonok: null
+        oevkPoligonok: null,
+        listakEsJeloltek: null
     });
     const [yesterdayData, setYesterdayData] = useState(null);
     const [isLoadingWeb, setIsLoadingWeb] = useState(false);
@@ -63,31 +64,34 @@ export function useElectionData(showToast, onClearCallback) {
             const currentUrls = getNviUrls(currentVer);
             const yesterdayUrls = getNviUrls(NVI_DATE_YESTERDAY);
 
-            const [megyek, telepulesek, oevk, jeloltek, szervezetek, oevkPoligonok] = await Promise.all([
+            const [megyek, telepulesek, oevk, jeloltek, szervezetek, oevkPoligonok, listakEsJeloltek] = await Promise.all([
                 fetchJson(currentUrls.megyek),
                 fetchJson(currentUrls.telepulesek),
                 fetchJson(currentUrls.oevk),
                 fetchJson(currentUrls.jeloltek),
                 fetchJson(currentUrls.szervezetek),
-                fetchJson(currentUrls.oevkPoligonok)
+                fetchJson(currentUrls.oevkPoligonok),
+                fetchJson(currentUrls.listakEsJeloltek).catch(() => ({ list: null })) // Opcionális, megnézzük hátha elbukik (404)
             ]);
 
             // Próbáljuk letölteni a tegnapi adatokat is
-            let yesterdayMegyek, yesterdayTelepulesek, yesterdayOevk, yesterdayJeloltek, yesterdaySzervezetek;
+            let yesterdayMegyek, yesterdayTelepulesek, yesterdayOevk, yesterdayJeloltek, yesterdaySzervezetek, yesterdayListakEsJeloltek;
             try {
-                [yesterdayMegyek, yesterdayTelepulesek, yesterdayOevk, yesterdayJeloltek, yesterdaySzervezetek] = await Promise.all([
+                [yesterdayMegyek, yesterdayTelepulesek, yesterdayOevk, yesterdayJeloltek, yesterdaySzervezetek, yesterdayListakEsJeloltek] = await Promise.all([
                     fetchJson(yesterdayUrls.megyek),
                     fetchJson(yesterdayUrls.telepulesek),
                     fetchJson(yesterdayUrls.oevk),
                     fetchJson(yesterdayUrls.jeloltek),
-                    fetchJson(yesterdayUrls.szervezetek)
+                    fetchJson(yesterdayUrls.szervezetek),
+                    fetchJson(yesterdayUrls.listakEsJeloltek).catch(() => ({ list: null })) // Opcionális, mivel lehet, hogy hiányzik
                 ]);
                 setYesterdayData({
                     megyek: yesterdayMegyek.list || [],
                     telepulesek: yesterdayTelepulesek.list || [],
                     oevk: yesterdayOevk.list || [],
                     jeloltek: yesterdayJeloltek.list || [],
-                    szervezetek: yesterdaySzervezetek.list || []
+                    szervezetek: yesterdaySzervezetek.list || [],
+                    listakEsJeloltek: yesterdayListakEsJeloltek?.list || []
                 });
             } catch (e) {
                 console.warn("Tegnapi adatok nem elérhetőek:", e);
@@ -100,7 +104,8 @@ export function useElectionData(showToast, onClearCallback) {
                 oevk: oevk.list || [],
                 jeloltek: jeloltek.list || [],
                 szervezetek: szervezetek.list || [],
-                oevkPoligonok: oevkPoligonok.list || []
+                oevkPoligonok: oevkPoligonok.list || [],
+                listakEsJeloltek: listakEsJeloltek?.list || []
             });
             showToast('Élő adatok sikeresen betöltve az NVI szerveréről!');
         } catch (err) {
@@ -128,6 +133,7 @@ export function useElectionData(showToast, onClearCallback) {
                         else if (file.name.includes('EgyeniJeloltek')) newData.jeloltek = listData;
                         else if (file.name.includes('Szervezetek')) newData.szervezetek = listData;
                         else if (file.name.includes('OevkPoligonok')) newData.oevkPoligonok = listData;
+                        else if (file.name.includes('ListakEsJeloltek')) newData.listakEsJeloltek = listData;
 
                         const isNowComplete = Object.values(newData).every(val => val !== null);
                         if (isNowComplete && !isAllUploaded) showToast('Minden fájl sikeresen feldolgozva!');
@@ -143,7 +149,7 @@ export function useElectionData(showToast, onClearCallback) {
     };
 
     const clearData = () => {
-        setData({ megyek: null, telepulesek: null, oevk: null, jeloltek: null, szervezetek: null, oevkPoligonok: null });
+        setData({ megyek: null, telepulesek: null, oevk: null, jeloltek: null, szervezetek: null, oevkPoligonok: null, listakEsJeloltek: null });
         setFetchError(null);
         if (onClearCallback) onClearCallback();
     };

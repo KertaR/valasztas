@@ -17,7 +17,8 @@ export const getNviUrls = (verStr) => ({
     oevk: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/OevkAdatok.json`,
     jeloltek: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/EgyeniJeloltek.json`,
     szervezetek: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/Szervezetek.json`,
-    oevkPoligonok: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/OevkPoligonok.json`
+    oevkPoligonok: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/OevkPoligonok.json`,
+    listakEsJeloltek: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/ListakEsJeloltek.json`
 });
 export const PROXIES = [
     '', // Natív

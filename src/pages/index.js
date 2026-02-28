@@ -10,3 +10,4 @@ export { default as ChangelogTab } from './ChangelogTab';
 export { default as TrendTab } from './TrendTab';
 export { default as OevkMapTab } from './OevkMapTab';
 export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as NationalListsTab } from './NationalListsTab';

@@ -3,7 +3,7 @@ import { Moon, Sun, X, Menu, Globe } from 'lucide-react';
 
 import {
     DashboardTab, CandidatesTab, CompareTab,
-    OrganizationsTab, OevkTab, CountiesTab, TransfersTab, SeatCalculatorTab, ChangelogTab, TrendTab, OevkMapTab, ErrorBoundary
+    OrganizationsTab, OevkTab, CountiesTab, TransfersTab, SeatCalculatorTab, ChangelogTab, TrendTab, OevkMapTab, ErrorBoundary, NationalListsTab
 } from './pages';
 
 import {
@@ -198,6 +198,8 @@ export default function App() {
                     {activeTab === 'osszehasonlitas' && <CompareTab enrichedData={enrichedData} />}
 
                     {activeTab === 'szervezetek' && <OrganizationsTab enrichedData={enrichedData} setSelectedOrg={setSelectedOrg} />}
+
+                    {activeTab === 'orszagos_listak' && <NationalListsTab enrichedData={enrichedData} />}
 
                     {activeTab === 'oevk' && <OevkTab enrichedData={enrichedData} setSelectedOevk={setSelectedOevk} />}
 

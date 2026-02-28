@@ -214,6 +214,21 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
                     }))
                     .sort((a, b) => b.count - a.count);
 
+                // Országos lista ellenőrzés
+                let nationalListStatus = null;
+                let nationalListCandidates = [];
+                if (data.listakEsJeloltek) {
+                    const orgListInfo = data.listakEsJeloltek.find(l => l.jelolo_szervezetek && l.jelolo_szervezetek.includes(org.szkod) && l.lista_tip === 'O');
+                    if (orgListInfo) {
+                        nationalListStatus = statusMap[orgListInfo.allapot] || 'Bejelentve';
+                        // Sorrendbe rakjuk a jelölteket egyből
+                        nationalListCandidates = (orgListInfo.jeloltek || []).map(c => ({
+                            ...c,
+                            statusName: statusMap[c.allapot] || 'Bejelentve'
+                        })).sort((a, b) => a.sorsz - b.sorsz);
+                    }
+                }
+
                 return {
                     ...org,
                     candidateCount: orgCandidates.length,
@@ -230,7 +245,9 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
                     registeredFinalCoveragePercent: Math.round((registeredFinalOevks.size / TOTAL_OEVK) * 100),
                     isNew,
                     alliances,
-                    candidateList: orgCandidates
+                    candidateList: orgCandidates,
+                    nationalListStatus,
+                    nationalListCandidates
                 };
             }).sort((a, b) => b.candidateCount - a.candidateCount);
 

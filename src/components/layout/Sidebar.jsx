@@ -1,6 +1,6 @@
 import {
     Globe, LayoutDashboard, Users, Scale, TrendingUp,
-    Building, Map, PieChart, Moon, Sun, Trash2, X, Search, ArrowRightLeft, Calculator, Activity, MapPin
+    Building, Map, PieChart, Moon, Sun, Trash2, X, Search, ArrowRightLeft, Calculator, Activity, MapPin, List
 } from 'lucide-react';
 import NavItem from '../ui/NavItem';
 
@@ -62,6 +62,7 @@ export default function Sidebar({
                     <NavItem icon={<Calculator className="w-5 h-5 text-indigo-500 font-bold" />} label="Mandátumbecslő" active={activeTab === 'kalkulator'} onClick={() => switchTab('kalkulator')} />
                     <NavItem icon={<Scale className="w-5 h-5" />} label="Összehasonlítás" active={activeTab === 'osszehasonlitas'} onClick={() => switchTab('osszehasonlitas')} />
                     <NavItem icon={<Building className="w-5 h-5" />} label="Szervezetek" badge={enrichedData.organizations?.length} active={activeTab === 'szervezetek'} onClick={() => switchTab('szervezetek')} />
+                    <NavItem icon={<List className="w-5 h-5" />} label="Országos Listák" active={activeTab === 'orszagos_listak'} onClick={() => switchTab('orszagos_listak')} />
                     <NavItem icon={<Map className="w-5 h-5" />} label="Választókerületek" badge={enrichedData.districts?.length} active={activeTab === 'oevk'} onClick={() => switchTab('oevk')} />
                     <NavItem icon={<PieChart className="w-5 h-5" />} label="Vármegyék" badge={enrichedData.countiesData?.length} active={activeTab === 'megyek'} onClick={() => switchTab('megyek')} />
                     <NavItem icon={<MapPin className="w-5 h-5 text-blue-500 font-bold" />} label="Térkép (Béta)" active={activeTab === 'terkep'} onClick={() => switchTab('terkep')} />
