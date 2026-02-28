@@ -158,12 +158,22 @@ export default function NationalListsTab({ enrichedData }) {
                                             {f.fullName}
                                         </p>
                                     </div>
-                                    <div className="flex-shrink-0">
+                                    <div className="flex-shrink-0 flex flex-col items-end gap-1.5">
                                         {hasOfficial ? (
-                                            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/50 shadow-sm">
-                                                <ShieldCheck className="w-4 h-4" />
-                                                <span className="text-xs font-bold uppercase tracking-wide">Hivatalos Lista</span>
-                                            </div>
+                                            <>
+                                                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/50 shadow-sm">
+                                                    <ShieldCheck className="w-4 h-4" />
+                                                    <span className="text-xs font-bold uppercase tracking-wide">Hivatalos Lista</span>
+                                                </div>
+                                                {f.officialStatus && (
+                                                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border shadow-sm ${f.officialStatus === 'Nyilvántartásba véve'
+                                                            ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50'
+                                                            : 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800/50'
+                                                        }`}>
+                                                        {f.officialStatus}
+                                                    </span>
+                                                )}
+                                            </>
                                         ) : f.isSure ? (
                                             <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50 shadow-sm">
                                                 <CheckCircle2 className="w-4 h-4" />
