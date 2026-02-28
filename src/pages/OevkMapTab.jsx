@@ -179,8 +179,10 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
     const handlePathMouseLeave = () => setTooltip(t => ({ ...t, visible: false }));
 
     const handlePathMouseMove = (e) => {
-        if (!tooltip.visible) return;
-        setTooltip(t => ({ ...t, x: e.clientX, y: e.clientY - 10 }));
+        setTooltip(t => {
+            if (!t.visible) return t;
+            return { ...t, x: e.clientX, y: e.clientY - 10 };
+        });
     };
 
     // ────────────────────────────────────────────────

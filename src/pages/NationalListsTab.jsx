@@ -256,8 +256,8 @@ export default function NationalListsTab({ enrichedData }) {
 
                                                                 return (
                                                                     <div key={maz} className={`text-[10px] font-bold px-1.5 py-0.5 rounded border flex items-center gap-1 ${isReg
-                                                                            ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
-                                                                            : 'border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
+                                                                        ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
+                                                                        : 'border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
                                                                         }`}>
                                                                         {isReg ? <Check className="w-2.5 h-2.5" /> : <div className="w-1.5 h-1.5 rounded-full bg-blue-500 ml-0.5 mr-0.5 animate-pulse" />}
                                                                         {COUNTY_MAP[maz]}
