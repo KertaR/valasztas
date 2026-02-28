@@ -1,32 +1,13 @@
 import { useState, useMemo, useRef, useCallback } from 'react';
-import { geoMercator, geoPath } from 'd3-geo';
-import { MapPin, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-
-// ────────────────────────────────────────────────
-// Konstansok
-// ────────────────────────────────────────────────
-const WIDTH = 800;
-const HEIGHT = 520;
-
-// Magyarország közepe Mercator vetítéssel
-const BASE_PROJECTION = geoMercator()
-    .center([19.3, 47.15])
-    .scale(4800)
-    .translate([WIDTH / 2, HEIGHT / 2]);
-
-const pathGenerator = geoPath().projection(BASE_PROJECTION);
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { MapPin } from 'lucide-react';
 
 // ────────────────────────────────────────────────
 // Fő komponens
 // ────────────────────────────────────────────────
 export default function OevkMapTab({ districts, candidates, organizations, oevkPoligonok }) {
     const [selectedParty, setSelectedParty] = useState('all');
-
-    // Zoom/Pan állapot
-    const [transform, setTransform] = useState({ k: 1, x: 0, y: 0 });
-    const isPanning = useRef(false);
-    const lastPointer = useRef({ x: 0, y: 0 });
-    const svgRef = useRef(null);
 
     // Tooltip állapot
     const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, html: '' });
@@ -145,87 +126,9 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
     }, [districtData, selectedParty, organizations, getStatusPriority, STATUS_COLOR]);
 
     // ────────────────────────────────────────────────
-    // SVG path generálás – KÖZVETLENÜL d3-geo-val
-    // ────────────────────────────────────────────────
-    const paths = useMemo(() => {
-        if (!oevkPoligonok?.features?.length) return [];
-
-        return oevkPoligonok.features.map(feature => {
-            const d = pathGenerator(feature);
-            if (!d) return null;
-            const { maz, evk } = feature.properties;
-            const name = `${maz}-${evk}`;
-            return { d, name, feature };
-        }).filter(Boolean);
-    }, [oevkPoligonok]);
-
-    // ────────────────────────────────────────────────
-    // Zoom / Pan kezelők
-    // ────────────────────────────────────────────────
-    const clampTransform = (t) => {
-        const maxX = WIDTH * (t.k - 1);
-        const maxY = HEIGHT * (t.k - 1);
-        return {
-            k: t.k,
-            x: Math.max(-maxX, Math.min(0, t.x)),
-            y: Math.max(-maxY, Math.min(0, t.y)),
-        };
-    };
-
-    const handleWheel = (e) => {
-        e.preventDefault();
-        const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
-        setTransform(prev => {
-            const k = Math.max(1, Math.min(8, prev.k * factor));
-            // Zoom a kurzor pozíciójára
-            const rect = svgRef.current.getBoundingClientRect();
-            const mx = ((e.clientX - rect.left) / rect.width) * WIDTH;
-            const my = ((e.clientY - rect.top) / rect.height) * HEIGHT;
-            const x = mx - (mx - prev.x) * (k / prev.k);
-            const y = my - (my - prev.y) * (k / prev.k);
-            return clampTransform({ k, x, y });
-        });
-    };
-
-    const handleMouseDown = (e) => {
-        isPanning.current = true;
-        lastPointer.current = { x: e.clientX, y: e.clientY };
-        e.currentTarget.style.cursor = 'grabbing';
-    };
-
-    const handleMouseMove = (e) => {
-        if (!isPanning.current) return;
-        const dx = e.clientX - lastPointer.current.x;
-        const dy = e.clientY - lastPointer.current.y;
-        lastPointer.current = { x: e.clientX, y: e.clientY };
-        const rect = svgRef.current.getBoundingClientRect();
-        const scaleX = WIDTH / rect.width;
-        const scaleY = HEIGHT / rect.height;
-        setTransform(prev => clampTransform({
-            k: prev.k,
-            x: prev.x + dx * scaleX,
-            y: prev.y + dy * scaleY,
-        }));
-    };
-
-    const handleMouseUp = (e) => {
-        isPanning.current = false;
-        e.currentTarget.style.cursor = 'grab';
-    };
-
-    const zoomIn = () => setTransform(prev => clampTransform({ k: Math.min(8, prev.k * 1.5), x: prev.x, y: prev.y }));
-    const zoomOut = () => setTransform(prev => {
-        const k = Math.max(1, prev.k / 1.5);
-        return clampTransform({ k, x: prev.x * (k / prev.k), y: prev.y * (k / prev.k) });
-    });
-    const resetZoom = () => setTransform({ k: 1, x: 0, y: 0 });
-
-    // ────────────────────────────────────────────────
     // Tooltip kezelők
     // ────────────────────────────────────────────────
     const handlePathMouseEnter = (e, name) => {
-        const rect = svgRef.current?.getBoundingClientRect();
-        if (!rect) return;
         const dInfo = districtData[name];
         let html = `<strong>${dInfo?.districtInfo?.evk_nev || name}</strong><br/>`;
         if (dInfo) {
@@ -240,8 +143,8 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
         }
         setTooltip({
             visible: true,
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top - 10,
+            x: e.clientX,
+            y: e.clientY - 10,
             html,
         });
     };
@@ -249,9 +152,8 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
     const handlePathMouseLeave = () => setTooltip(t => ({ ...t, visible: false }));
 
     const handlePathMouseMove = (e) => {
-        const rect = svgRef.current?.getBoundingClientRect();
-        if (!rect || !tooltip.visible) return;
-        setTooltip(t => ({ ...t, x: e.clientX - rect.left, y: e.clientY - rect.top - 10 }));
+        if (!tooltip.visible) return;
+        setTooltip(t => ({ ...t, x: e.clientX, y: e.clientY - 10 }));
     };
 
     // ────────────────────────────────────────────────
@@ -288,7 +190,7 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                         OEVK Lefedettség Térkép
                     </h2>
                     <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">
-                        Magyarország {paths.length} egyéni választókerületének vizuális állapota
+                        Magyarország 106 egyéni választókerületének vizuális állapota
                     </p>
                 </div>
 
@@ -321,74 +223,62 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                 {/* Térkép */}
-                <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-2 md:p-4 relative select-none">
-                    {/* Zoom gombok */}
-                    <div className="absolute top-4 right-4 z-10 flex flex-col gap-1">
-                        <button onClick={zoomIn} className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors" title="Nagyítás">
-                            <ZoomIn className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-                        </button>
-                        <button onClick={zoomOut} className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors" title="Kicsinyítés">
-                            <ZoomOut className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-                        </button>
-                        <button onClick={resetZoom} className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors" title="Visszaállítás">
-                            <RotateCcw className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-                        </button>
-                    </div>
+                <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-2 md:p-4 select-none" style={{ position: 'relative' }}>
+                    {/* Leaflet MapContainer */}
+                    <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-sky-50/40 dark:bg-slate-950/40 z-0 map-wrapper">
+                        <MapContainer center={[47.16, 19.5]} zoom={7} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+                            <TileLayer
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            {oevkPoligonok?.features && (
+                                <GeoJSON
+                                    key={selectedParty}
+                                    data={oevkPoligonok}
+                                    style={(feature) => {
+                                        const geoName = `${feature.properties.maz}-${feature.properties.evk}`;
+                                        return {
+                                            fillColor: getColor(geoName),
+                                            weight: 1.5,
+                                            opacity: 0.8,
+                                            color: '#334155', // slate-700
+                                            fillOpacity: 0.5 // Átlátszóság hozzáadva!
+                                        };
+                                    }}
+                                    onEachFeature={(feature, layer) => {
+                                        const geoName = `${feature.properties.maz}-${feature.properties.evk}`;
 
-                    {/* SVG Térkép */}
-                    <div className="relative w-full overflow-hidden rounded-2xl bg-sky-50/40 dark:bg-slate-950/40">
-                        <svg
-                            ref={svgRef}
-                            viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-                            className="w-full h-auto cursor-grab"
-                            style={{ display: 'block' }}
-                            onWheel={handleWheel}
-                            onMouseDown={handleMouseDown}
-                            onMouseMove={(e) => { handleMouseMove(e); handlePathMouseMove(e); }}
-                            onMouseUp={handleMouseUp}
-                            onMouseLeave={handleMouseUp}
-                        >
-                            <g transform={`translate(${transform.x},${transform.y}) scale(${transform.k})`}>
-                                {paths.length === 0 ? (
-                                    <text x={WIDTH / 2} y={HEIGHT / 2} textAnchor="middle" fill="#94a3b8" fontSize="18">
-                                        Nincs betöltött poligon adat
-                                    </text>
-                                ) : (
-                                    paths.map(({ d, name }) => (
-                                        <path
-                                            key={name}
-                                            d={d}
-                                            fill={getColor(name)}
-                                            fillRule="evenodd"
-                                            stroke="#475569"
-                                            strokeWidth={0.5 / transform.k}
-                                            strokeLinejoin="round"
-                                            onMouseEnter={(e) => handlePathMouseEnter(e, name)}
-                                            onMouseLeave={handlePathMouseLeave}
-                                            style={{ cursor: 'pointer', transition: 'fill 0.15s ease' }}
-                                            className="hover:brightness-90"
-                                        />
-                                    ))
-                                )}
-                            </g>
-                        </svg>
+                                        layer.on({
+                                            mouseover: (e) => {
+                                                const lay = e.target;
+                                                lay.setStyle({ fillOpacity: 0.8 });
+                                                handlePathMouseEnter(e.originalEvent, geoName);
+                                            },
+                                            mouseout: (e) => {
+                                                const lay = e.target;
+                                                lay.setStyle({ fillOpacity: 0.5 });
+                                                handlePathMouseLeave();
+                                            },
+                                            mousemove: (e) => {
+                                                handlePathMouseMove(e.originalEvent);
+                                            }
+                                        });
+                                    }}
+                                />
+                            )}
+                        </MapContainer>
 
                         {/* Tooltip */}
                         {tooltip.visible && (
                             <div
-                                className="pointer-events-none absolute z-50 bg-slate-900 text-white text-xs font-medium px-3 py-2 rounded-lg shadow-xl max-w-48"
+                                className="pointer-events-none fixed z-[9999] bg-slate-900 text-white text-xs font-medium px-3 py-2 rounded-lg shadow-xl max-w-48"
                                 style={{
-                                    left: Math.min(tooltip.x + 12, (svgRef.current?.clientWidth || 600) - 200),
-                                    top: Math.max(tooltip.y - 60, 8),
+                                    left: tooltip.x + 15,
+                                    top: Math.max(tooltip.y - 15, 8),
                                 }}
                                 dangerouslySetInnerHTML={{ __html: tooltip.html }}
                             />
                         )}
-                    </div>
-
-                    {/* Használati utasítás */}
-                    <div className="absolute bottom-4 left-6 bg-white/80 dark:bg-slate-800/80 backdrop-blur px-3 py-1.5 rounded-lg text-[10px] font-bold text-slate-500 dark:text-slate-400 pointer-events-none">
-                        Görgess a nagyításhoz · Húzd a mozgatáshoz
                     </div>
                 </div>
 
