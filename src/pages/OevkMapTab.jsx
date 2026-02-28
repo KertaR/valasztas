@@ -1,7 +1,7 @@
 import { useState, useMemo, useRef, useCallback } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { MapPin } from 'lucide-react';
+import { MapPin, Users, Crosshair, ShieldAlert, X } from 'lucide-react';
 
 // Magyarország nagyjábóli határai: DNy (Lat, Lng), ÉK (Lat, Lng)
 const HUNGARY_BOUNDS = [
@@ -14,6 +14,7 @@ const HUNGARY_BOUNDS = [
 // ────────────────────────────────────────────────
 export default function OevkMapTab({ districts, candidates, organizations, oevkPoligonok }) {
     const [selectedParty, setSelectedParty] = useState('all');
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
 
     // Tooltip állapot
     const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, html: '' });
@@ -238,7 +239,7 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                             minZoom={7}
                             maxBounds={HUNGARY_BOUNDS}
                             maxBoundsViscosity={1.0}
-                            scrollWheelZoom={false}
+                            scrollWheelZoom={true}
                             style={{ height: '100%', width: '100%' }}
                         >
                             <TileLayer
@@ -247,16 +248,17 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                             />
                             {oevkPoligonok?.features && (
                                 <GeoJSON
-                                    key={selectedParty}
+                                    key={`${selectedParty}-${selectedDistrict}`}
                                     data={oevkPoligonok}
                                     style={(feature) => {
                                         const geoName = `${feature.properties.maz}-${feature.properties.evk}`;
+                                        const isSelected = selectedDistrict === geoName;
                                         return {
                                             fillColor: getColor(geoName),
-                                            weight: 1.5,
-                                            opacity: 0.8,
-                                            color: '#334155', // slate-700
-                                            fillOpacity: 0.5 // Átlátszóság hozzáadva!
+                                            weight: isSelected ? 3 : 1.5,
+                                            opacity: isSelected ? 1 : 0.8,
+                                            color: isSelected ? '#eab308' : '#334155', // yellow-500 if selected
+                                            fillOpacity: isSelected ? 0.7 : 0.5 // Átlátszóság hozzáadva!
                                         };
                                     }}
                                     onEachFeature={(feature, layer) => {
@@ -270,11 +272,15 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                                             },
                                             mouseout: (e) => {
                                                 const lay = e.target;
-                                                lay.setStyle({ fillOpacity: 0.5 });
+                                                // Retain opacity if selected
+                                                lay.setStyle({ fillOpacity: selectedDistrict === geoName ? 0.7 : 0.5 });
                                                 handlePathMouseLeave();
                                             },
                                             mousemove: (e) => {
                                                 handlePathMouseMove(e.originalEvent);
+                                            },
+                                            click: () => {
+                                                setSelectedDistrict(geoName);
                                             }
                                         });
                                     }}
@@ -296,8 +302,77 @@ export default function OevkMapTab({ districts, candidates, organizations, oevkP
                     </div>
                 </div>
 
-                {/* Jelmagyarázat */}
                 <div className="lg:col-span-1 flex flex-col gap-4">
+                    {/* Selected District Info Panel */}
+                    {selectedDistrict && districtData[selectedDistrict] && (
+                        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-md border-2 border-yellow-400 dark:border-yellow-500/50 p-6 relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-full h-1.5 bg-yellow-400 dark:bg-yellow-500"></div>
+                            <button
+                                onClick={() => setSelectedDistrict(null)}
+                                className="absolute top-4 right-4 p-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full text-slate-500 dark:text-slate-400 transition-colors"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+
+                            <h3 className="text-xl font-black text-slate-800 dark:text-white pr-6">
+                                {districtData[selectedDistrict].districtInfo?.evk_nev || selectedDistrict}
+                            </h3>
+
+                            <div className="flex items-center gap-2 mt-2 mb-4">
+                                {districtData[selectedDistrict].battleground ? (
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-800/50">
+                                        <Crosshair className="w-3.5 h-3.5" />
+                                        Kiemelt csatatér
+                                    </span>
+                                ) : (
+                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold border border-slate-200 dark:border-slate-700">
+                                        Átlagos körzet
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
+                                    <Users className="w-5 h-5 text-indigo-500 flex-shrink-0" />
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-500">Összes jelölt a körzetben</p>
+                                        <p className="text-sm font-black text-slate-800 dark:text-slate-200">{districtData[selectedDistrict].allCandidates.length} fő</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
+                                    <ShieldAlert className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-slate-500">Aktív (versenyben lévő) jelöltek</p>
+                                        <p className="text-sm font-black text-slate-800 dark:text-slate-200">{districtData[selectedDistrict].activeCandidates.length} fő</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {selectedParty !== 'all' && (
+                                <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                    <p className="text-[10px] uppercase font-bold text-slate-500 mb-2">A kiválasztott párt jelöltje</p>
+                                    {(() => {
+                                        const orgId = parseInt(selectedParty, 10);
+                                        const cand = districtData[selectedDistrict].allCandidates.find(c =>
+                                            c.jelolo_szervezetek?.includes(orgId) ||
+                                            organizations.find(o => o.szkod === orgId)?.coalitionPartnerIds?.some(pid => c.jelolo_szervezetek?.includes(pid))
+                                        );
+                                        if (cand) {
+                                            return (
+                                                <div>
+                                                    <p className="font-bold text-slate-800 dark:text-white">{cand.neve}</p>
+                                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{cand.statusName}</p>
+                                                </div>
+                                            );
+                                        }
+                                        return <p className="text-sm italic text-slate-400">Nincs saját jelölt indítva.</p>;
+                                    })()}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Jelmagyarázat */}
                     <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
                         <h3 className="text-lg font-black text-slate-800 dark:text-white mb-4">Jelmagyarázat</h3>
 
