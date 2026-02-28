@@ -21,6 +21,22 @@ export default function SeatCalculatorTab({ enrichedData }) {
         }));
     };
 
+    const normalizeVotes = () => {
+        const currentTotal = Object.values(votes).reduce((a, b) => a + b, 0);
+        if (currentTotal === 0) return;
+        const normalized = {};
+        for (const p in votes) {
+            normalized[p] = Math.round((votes[p] / currentTotal) * 100);
+        }
+        // Fix rounding errors
+        const newTotal = Object.values(normalized).reduce((a, b) => a + b, 0);
+        if (newTotal !== 100) {
+            const maxParty = Object.keys(normalized).reduce((a, b) => normalized[a] > normalized[b] ? a : b);
+            normalized[maxParty] += (100 - newTotal);
+        }
+        setVotes(normalized);
+    };
+
     // "Poll of Polls" (2026 tavaszi átlag becslés)
     const loadPollData = (dataset) => {
         if (dataset === 'average') {
