@@ -22,32 +22,19 @@ export default function SeatCalculatorTab({ enrichedData }) {
         }));
     };
 
-    const normalizeVotes = () => {
-        const currentTotal = Object.values(votes).reduce((a, b) => a + b, 0);
-        if (currentTotal === 0) return;
-        const normalized = {};
-        for (const p in votes) {
-            normalized[p] = Math.round((votes[p] / currentTotal) * 100);
-        }
-        // Fix rounding errors
-        const newTotal = Object.values(normalized).reduce((a, b) => a + b, 0);
-        if (newTotal !== 100) {
-            const maxParty = Object.keys(normalized).reduce((a, b) => normalized[a] > normalized[b] ? a : b);
-            normalized[maxParty] += (100 - newTotal);
-        }
-        setVotes(normalized);
-    };
-
     // "Poll of Polls" (2026 tavaszi átlag becslés)
-    const loadPollOfPolls = () => {
-        setVotes({
-            fidesz: 37,
-            tisza: 38,
-            dk: 6,
-            mhm: 6,
-            egyhat: 4,  // pl. MKKP majdnem bejut
-            egyeb: 9
-        });
+    const loadPollData = (dataset) => {
+        if (dataset === 'average') {
+            setVotes({ fidesz: 37, tisza: 38, dk: 6, mhm: 6, egyhat: 4, egyeb: 9 });
+        } else if (dataset === 'median') {
+            setVotes({ fidesz: 36, tisza: 40, dk: 5, mhm: 7, egyhat: 5, egyeb: 7 });
+        } else if (dataset === 'zavecz') {
+            setVotes({ fidesz: 39, tisza: 37, dk: 8, mhm: 6, egyhat: 3, egyeb: 7 });
+        } else if (dataset === 'nezopont') {
+            setVotes({ fidesz: 42, tisza: 35, dk: 5, mhm: 5, egyhat: 4, egyeb: 9 });
+        } else if (dataset === 'idea') {
+            setVotes({ fidesz: 36, tisza: 39, dk: 7, mhm: 6, egyhat: 3, egyeb: 9 });
+        }
     };
 
     // Calculate mandates (Sophisticated heuristic model for simulation)
@@ -187,14 +174,27 @@ export default function SeatCalculatorTab({ enrichedData }) {
                                 <Percent className="w-5 h-5 text-slate-400" />
                                 Pártok Országos Szimpátiája
                             </h3>
-                            <button
-                                onClick={loadPollOfPolls}
-                                className="px-3 py-1.5 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 hover:from-purple-500/20 hover:to-indigo-500/20 dark:from-purple-900/30 dark:to-indigo-900/30 text-purple-700 dark:text-purple-400 text-xs font-bold rounded-xl transition-all border border-purple-200 dark:border-purple-800/50 flex items-center gap-1.5 shadow-sm w-full sm:w-auto justify-center"
-                                title="Legújabb kutatási átlagok betöltése (Medián, Závecz, stb.)"
-                            >
-                                <BarChart3 className="w-4 h-4" />
-                                Poll of Polls (Átlag)
-                            </button>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                                    <BarChart3 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                                </div>
+                                <select
+                                    onChange={(e) => {
+                                        if (e.target.value) {
+                                            loadPollData(e.target.value);
+                                            e.target.value = ""; // Reset miután betöltött, hogy bármikor újra ki lehessen választani
+                                        }
+                                    }}
+                                    className="pl-8 pr-8 py-1.5 appearance-none bg-gradient-to-r from-purple-500/10 to-indigo-500/10 hover:from-purple-500/20 hover:to-indigo-500/20 dark:from-purple-900/30 dark:to-indigo-900/30 text-purple-700 dark:text-purple-400 text-xs font-bold rounded-xl outline-none transition-all border border-purple-200 dark:border-purple-800/50 shadow-sm cursor-pointer"
+                                >
+                                    <option value="" disabled selected hidden>Kutatási Adatok...</option>
+                                    <option value="average">Poll of Polls (Átlag)</option>
+                                    <option value="median">Medián (2026)</option>
+                                    <option value="zavecz">Závecz (2026)</option>
+                                    <option value="nezopont">Nézőpont (2026)</option>
+                                    <option value="idea">IDEA Intézet (2026)</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div className="flex-1 space-y-6">
