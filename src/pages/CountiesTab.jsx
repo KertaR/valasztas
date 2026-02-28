@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 // Counties Components
 import { CountyChart, CountyTable } from '../components';
 
-export default function CountiesTab({ enrichedData, setSelectedCountyDetail }) {
+export default function CountiesTab({ enrichedData, setSelectedCountyDetail, setSelectedOevk }) {
     return (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6 max-w-6xl mx-auto transition-colors">
             <div className="flex items-center justify-between">
@@ -19,7 +19,7 @@ export default function CountiesTab({ enrichedData, setSelectedCountyDetail }) {
             </div>
 
             <CountyChart data={enrichedData.countiesData} onSelect={setSelectedCountyDetail} />
-            <CountyTable data={enrichedData.countiesData} onSelect={setSelectedCountyDetail} />
+            <CountyTable data={enrichedData.countiesData} enrichedData={enrichedData} onSelectOevk={setSelectedOevk} />
         </motion.div>
     );
 }

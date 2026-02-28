@@ -203,7 +203,7 @@ export default function App() {
 
                     {activeTab === 'oevk' && <OevkTab enrichedData={enrichedData} setSelectedOevk={setSelectedOevk} />}
 
-                    {activeTab === 'megyek' && <CountiesTab enrichedData={enrichedData} setSelectedCountyDetail={setSelectedCountyDetail} />}
+                    {activeTab === 'megyek' && <CountiesTab enrichedData={enrichedData} setSelectedCountyDetail={setSelectedCountyDetail} setSelectedOevk={setSelectedOevk} />}
 
                     {activeTab === 'atjelentkezes' && <TransfersTab enrichedData={enrichedData} setSelectedOevk={setSelectedOevk} />}
 
