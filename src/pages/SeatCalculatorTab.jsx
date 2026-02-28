@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, PieChart as PieChartIcon, Percent, AlertCircle, BarChart3, RefreshCw } from 'lucide-react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 export default function SeatCalculatorTab({ enrichedData }) {
     // Országos listás szavazatarányok (%)
@@ -133,6 +132,48 @@ export default function SeatCalculatorTab({ enrichedData }) {
         }
     }
 
+    const parliamentSeats = useMemo(() => {
+        if (!mandates || mandates.length === 0) return [];
+        const rows = [28, 34, 40, 45, 52];
+        const radii = [105, 130, 155, 180, 205];
+        const seats = [];
+
+        rows.forEach((numSeats, rowIndex) => {
+            const r = radii[rowIndex];
+            for (let i = 0; i < numSeats; i++) {
+                const theta = Math.PI - (i / (numSeats - 1)) * Math.PI;
+                seats.push({
+                    x: 250 + r * Math.cos(theta),
+                    y: 220 - r * Math.sin(theta),
+                    angle: theta
+                });
+            }
+        });
+
+        seats.sort((a, b) => b.angle - a.angle); // Balról jobbra
+
+        const ideologyOrder = ['egyhat', 'dk', 'tisza', 'egyeb', 'fidesz', 'mhm'];
+        const orderedMandates = [];
+        ideologyOrder.forEach(id => {
+            const p = mandates.find(m => m.id === id);
+            if (p && p.total > 0) orderedMandates.push(p);
+        });
+        mandates.forEach(p => {
+            if (!orderedMandates.some(o => o.id === p.id) && p.total > 0) orderedMandates.push(p);
+        });
+
+        let seatIdx = 0;
+        orderedMandates.forEach(party => {
+            for (let i = 0; i < party.total && seatIdx < seats.length; i++) {
+                seats[seatIdx].color = party.color;
+                seats[seatIdx].party = party.name;
+                seatIdx++;
+            }
+        });
+
+        return seats;
+    }, [mandates]);
+
     return (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6 max-w-7xl mx-auto pb-10">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -245,44 +286,36 @@ export default function SeatCalculatorTab({ enrichedData }) {
                             Parlamenti Patkó (199 Mandátum)
                         </h3>
 
-                        <div className="w-full h-[250px] mt-10">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={parliamentData}
-                                        cx="50%"
-                                        cy="100%"
-                                        startAngle={180}
-                                        endAngle={0}
-                                        innerRadius={120}
-                                        outerRadius={180}
-                                        paddingAngle={2}
-                                        dataKey="value"
-                                        stroke="none"
-                                        cornerRadius={4}
+                        <div className="w-full h-[280px] mt-8 relative flex justify-center">
+                            <svg viewBox="0 0 500 240" className="w-full h-full max-w-[500px] drop-shadow-md pb-4 pt-2">
+                                {parliamentSeats.map((seat, i) => (
+                                    <circle
+                                        key={i}
+                                        cx={seat.x}
+                                        cy={seat.y}
+                                        r={6.5}
+                                        fill={seat.color || '#e2e8f0'}
+                                        className="transition-all duration-700 hover:opacity-80 stroke-white dark:stroke-slate-900 stroke-[1.5px] cursor-pointer"
                                     >
-                                        {parliamentData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.color} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip
-                                        contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderRadius: '12px', border: 'none', color: '#fff', fontWeight: 'bold' }}
-                                        itemStyle={{ color: '#fff' }}
-                                    />
-                                </PieChart>
-                            </ResponsiveContainer>
+                                        <title>{seat.party || 'Üres'}</title>
+                                    </circle>
+                                ))}
+                            </svg>
+                            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center pointer-events-none w-full">
+                                {leadingParty && (
+                                    <div className="flex flex-col items-center -mt-8">
+                                        <span className="text-[2.5rem] leading-none font-black drop-shadow-sm" style={{ color: leadingParty.color }}>
+                                            {leadingParty.value}
+                                        </span>
+                                        <span className={`text-[10px] font-black uppercase tracking-[0.15em] mt-2 mb-2 px-3 py-1 bg-white/50 dark:bg-slate-900/50 rounded-full backdrop-blur-sm shadow-sm ${leadingColor}`}>
+                                            {leadingStatus}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-4 flex flex-col items-center justify-center w-full pointer-events-none">
-                            {leadingParty && (
-                                <div className="flex flex-col items-center">
-                                    <span className="text-3xl font-black" style={{ color: leadingParty.color }}>{leadingParty.value}</span>
-                                    <span className={`text-xs font-black uppercase tracking-wider mt-1 ${leadingColor}`}>{leadingStatus}</span>
-                                </div>
-                            )}
-                        </div>
-
-                        <div className="absolute bottom-6 flex gap-8 items-end">
+                        <div className="absolute bottom-6 flex gap-8 items-end w-full justify-center opacity-80">
                             <div className="flex flex-col items-center">
                                 <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Többséghez</span>
                                 <div className="flex items-baseline gap-1">
