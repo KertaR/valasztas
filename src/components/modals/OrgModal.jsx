@@ -1,13 +1,23 @@
-import { useRef, useState } from 'react';
-import { X, Target, Users, UserCircle2, Building2, Download, Loader2 } from 'lucide-react';
+import { useRef, useState, useMemo } from 'react';
+import { X, Target, Users, Building2, Download, Loader2, Search, Filter } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StatusBadge } from '../ui';
 import { toPng } from 'html-to-image';
 import { getInitials, getImageUrl } from '../../utils/helpers';
 
+const STATUS_GROUPS = [
+    { key: 'all', label: 'Összes' },
+    { key: 'registered', label: 'Nyilvántartva', match: s => s.startsWith('Nyilvántartásba véve') },
+    { key: 'pending', label: 'Folyamatban', match: s => !s.startsWith('Nyilvántartásba') && !s.toLowerCase().includes('törölve') && !s.toLowerCase().includes('elutasítva') && !s.toLowerCase().includes('kiesett') && !s.toLowerCase().includes('visszalépett') && !s.toLowerCase().includes('nem kíván') && !s.toLowerCase().includes('visszautasítva') },
+    { key: 'rejected', label: 'Elutasítva/Törölve', match: s => s.toLowerCase().includes('törölve') || s.toLowerCase().includes('elutasítva') || s.toLowerCase().includes('kiesett') || s.toLowerCase().includes('visszalépett') || s.toLowerCase().includes('visszautasítva') || s.toLowerCase().includes('nem kíván') },
+];
+
 export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
     const cardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortBy, setSortBy] = useState('name'); // 'name' | 'county' | 'status'
 
     if (!selectedOrg) return null;
 
@@ -32,6 +42,53 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
         }
     };
 
+    const allOrgCandidates = useMemo(() => {
+        return enrichedData.candidates
+            .filter(c => {
+                if (selectedOrg.szkod === 0) return !c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0;
+                const targetIds = [selectedOrg.szkod, ...(selectedOrg.coalitionPartnerIds || [])];
+                return c.jelolo_szervezetek && c.jelolo_szervezetek.some(id => targetIds.includes(id));
+            });
+    }, [enrichedData.candidates, selectedOrg]);
+
+    // Include excluded (all statuses)
+    const allIncludingExcluded = useMemo(() => {
+        return enrichedData.candidates
+            .concat(
+                (enrichedData.allCandidates || []).filter(c => c.isExcluded &&
+                    (selectedOrg.szkod === 0
+                        ? (!c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0)
+                        : (c.jelolo_szervezetek && c.jelolo_szervezetek.some(id => [selectedOrg.szkod, ...(selectedOrg.coalitionPartnerIds || [])].includes(id))))
+                )
+            );
+    }, [enrichedData, selectedOrg]);
+
+    const statusGroupCounts = useMemo(() => {
+        const counts = { all: allOrgCandidates.length };
+        STATUS_GROUPS.slice(1).forEach(g => {
+            counts[g.key] = allOrgCandidates.filter(c => g.match(c.statusName)).length;
+        });
+        return counts;
+    }, [allOrgCandidates]);
+
+    const filteredCandidates = useMemo(() => {
+        let list = [...allOrgCandidates];
+        const group = STATUS_GROUPS.find(g => g.key === statusFilter);
+        if (group && group.match) {
+            list = list.filter(c => group.match(c.statusName));
+        }
+        if (searchTerm) {
+            const q = searchTerm.toLowerCase();
+            list = list.filter(c => c.neve.toLowerCase().includes(q) || c.districtName.toLowerCase().includes(q) || c.countyName.toLowerCase().includes(q));
+        }
+        list.sort((a, b) => {
+            if (sortBy === 'county') return (a.countyName + a.districtName).localeCompare(b.countyName + b.districtName, 'hu');
+            if (sortBy === 'status') return a.statusName.localeCompare(b.statusName, 'hu');
+            return a.neve.localeCompare(b.neve, 'hu');
+        });
+        return list;
+    }, [allOrgCandidates, statusFilter, searchTerm, sortBy]);
+
     return (
         <AnimatePresence>
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm" onClick={onClose}>
@@ -43,12 +100,12 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
                     className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col transition-colors"
                     onClick={e => e.stopPropagation()}
                 >
-                    {/* Záró Gomb (Kívül az export zónán) */}
+                    {/* Záró Gomb */}
                     <button onClick={onClose} className="absolute top-4 right-4 z-50 p-2 bg-slate-900/10 dark:bg-slate-100/10 hover:bg-slate-900/20 dark:hover:bg-slate-100/20 backdrop-blur-md rounded-full text-slate-700 dark:text-slate-100 hover:text-slate-900 dark:hover:text-white transition-all">
                         <X className="w-5 h-5" />
                     </button>
 
-                    {/* Exportálható Fejléc Zóna */}
+                    {/* Exportálható Fejléc */}
                     <div ref={cardRef} className="px-5 py-6 sm:px-8 border-b border-slate-100 dark:border-slate-800 flex flex-col flex-shrink-0 bg-gradient-to-br from-indigo-50 dark:from-indigo-900/60 to-blue-50 dark:to-blue-900/60 relative overflow-hidden transition-colors">
                         <Building2 className="absolute -right-4 -top-4 w-32 h-32 text-indigo-200 dark:text-indigo-400 opacity-60 dark:opacity-20 transition-colors" />
 
@@ -74,82 +131,120 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
                             </div>
                         </div>
 
-                        <div className="relative z-10 mt-2 flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur w-fit p-3 rounded-xl border border-white/50 dark:border-slate-700/50 shadow-sm transition-colors">
-                            <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                            <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 transition-colors">Országos lefedettség: </span>
-                            <span className="text-sm font-black text-indigo-700 dark:text-indigo-400 transition-colors">{selectedOrg.oevkCoverage} / 106 OEVK ({selectedOrg.coveragePercent}%)</span>
+                        <div className="relative z-10 mt-2 flex flex-wrap gap-3">
+                            <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur w-fit p-3 rounded-xl border border-white/50 dark:border-slate-700/50 shadow-sm transition-colors">
+                                <Target className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 transition-colors">Lefedettség: </span>
+                                <span className="text-sm font-black text-indigo-700 dark:text-indigo-400 transition-colors">{selectedOrg.oevkCoverage} / 106 OEVK ({selectedOrg.coveragePercent}%)</span>
+                            </div>
+                            <div className="flex items-center gap-2 bg-white/60 dark:bg-slate-800/60 backdrop-blur w-fit p-3 rounded-xl border border-white/50 dark:border-slate-700/50 shadow-sm transition-colors">
+                                <Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                <span className="text-sm font-black text-indigo-700 dark:text-indigo-400">{selectedOrg.candidateCount} jelölt</span>
+                                {statusGroupCounts.registered > 0 && (
+                                    <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800/50">
+                                        {statusGroupCounts.registered} nyilvántartva
+                                    </span>
+                                )}
+                            </div>
                         </div>
                     </div>
 
-                    <div className="p-0 sm:p-6 overflow-y-auto flex-1 bg-white sm:bg-slate-50/50 dark:bg-slate-900 sm:dark:bg-slate-900/50 transition-colors">
-                        <div className="p-4 sm:p-0 flex flex-col sm:flex-row items-center justify-between mb-0 sm:mb-4 border-b sm:border-b-0 border-slate-100 dark:border-slate-800 gap-4 transition-colors">
-                            <h3 className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-lg transition-colors"><Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" /> Szervezet jelöltjei ({selectedOrg.candidateCount} fő)</h3>
-                            <button
-                                onClick={exportImage}
-                                disabled={isExporting}
-                                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/50 px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-all disabled:opacity-75 disabled:cursor-wait"
-                            >
-                                {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                                {isExporting ? 'Kép készítése...' : 'Kép Mentése a Fejlécről'}
-                            </button>
+                    {/* Szűrő és Keresés sáv */}
+                    <div className="px-4 sm:px-6 pt-4 pb-2 border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col gap-3 flex-shrink-0">
+                        {/* Státusz szűrő gombok */}
+                        <div className="flex flex-wrap gap-2">
+                            {STATUS_GROUPS.map(g => (
+                                <button
+                                    key={g.key}
+                                    onClick={() => setStatusFilter(g.key)}
+                                    className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition-all ${statusFilter === g.key
+                                        ? 'bg-indigo-600 text-white shadow-sm'
+                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                        }`}
+                                >
+                                    {g.label}
+                                    <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-black ${statusFilter === g.key ? 'bg-white/30' : 'bg-white dark:bg-slate-700 text-slate-500'}`}>
+                                        {statusGroupCounts[g.key] ?? allOrgCandidates.length}
+                                    </span>
+                                </button>
+                            ))}
+                            <div className="ml-auto flex items-center gap-2">
+                                <select
+                                    value={sortBy}
+                                    onChange={e => setSortBy(e.target.value)}
+                                    className="text-xs font-bold bg-slate-100 dark:bg-slate-800 border-0 rounded-lg px-2 py-1.5 text-slate-600 dark:text-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none"
+                                >
+                                    <option value="name">Rendezés: Név</option>
+                                    <option value="county">Rendezés: Megye</option>
+                                    <option value="status">Rendezés: Státusz</option>
+                                </select>
+                                <button onClick={exportImage} disabled={isExporting}
+                                    className="flex items-center gap-1.5 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/50 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all disabled:opacity-75 disabled:cursor-wait"
+                                >
+                                    {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                                    <span>Fejléc kép</span>
+                                </button>
+                            </div>
                         </div>
+                        {/* Keresőmező */}
+                        <div className="relative">
+                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                            <input
+                                type="text"
+                                placeholder="Jelölt neve, kerület vagy megye..."
+                                value={searchTerm}
+                                onChange={e => setSearchTerm(e.target.value)}
+                                className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all dark:text-white placeholder-slate-400"
+                            />
+                        </div>
+                    </div>
 
-                        <div className="bg-white dark:bg-slate-900 sm:border border-slate-200 dark:border-slate-800 sm:rounded-xl overflow-hidden shadow-none sm:shadow-sm transition-colors">
+                    {/* Jelöltek listája */}
+                    <div className="overflow-y-auto flex-1 bg-slate-50/50 dark:bg-slate-900/50 transition-colors">
+                        {filteredCandidates.length === 0 ? (
+                            <div className="p-12 text-center text-slate-500 dark:text-slate-400">
+                                <Filter className="w-8 h-8 mx-auto mb-3 opacity-30" />
+                                <p className="font-semibold">Nincs a feltételeknek megfelelő jelölt.</p>
+                            </div>
+                        ) : (
                             <table className="w-full text-left border-collapse transition-colors">
-                                <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-slate-700 text-xs sm:text-sm transition-colors">
+                                <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-slate-700 text-xs sm:text-sm transition-colors sticky top-0">
                                     <tr>
                                         <th className="p-3 sm:p-4 font-semibold">Jelölt neve</th>
                                         <th className="p-3 sm:p-4 font-semibold hidden md:table-cell">Választókerület</th>
                                         <th className="p-3 sm:p-4 font-semibold">Státusz</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 transition-colors">
-                                    {enrichedData.candidates
-                                        .filter(c => {
-                                            if (selectedOrg.szkod === 0) return !c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0;
-
-                                            const targetIds = [selectedOrg.szkod, ...(selectedOrg.coalitionPartnerIds || [])];
-                                            return c.jelolo_szervezetek && c.jelolo_szervezetek.some(id => targetIds.includes(id));
-                                        })
-                                        .sort((a, b) => a.neve.localeCompare(b.neve))
-                                        .map((jelolt, idx) => (
-                                            <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors">
-                                                <td className="p-3 sm:p-4">
-                                                    <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 transition-colors">
-                                                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-[10px] sm:text-xs shadow-sm border border-blue-200 dark:border-blue-800 flex-shrink-0 transition-colors relative">
-                                                            {jelolt.fenykep ? (
-                                                                <img
-                                                                    src={getImageUrl(jelolt.fenykep)}
-                                                                    alt={jelolt.neve}
-                                                                    crossOrigin="anonymous"
-                                                                    className="w-full h-full object-cover"
-                                                                    onError={(e) => {
-                                                                        e.target.style.display = 'none';
-                                                                        e.target.nextElementSibling.style.display = 'flex';
-                                                                    }}
-                                                                />
-                                                            ) : null}
-                                                            <div className={`w-full h-full flex items-center justify-center ${jelolt.fenykep ? 'hidden' : ''}`}>
-                                                                {getInitials(jelolt.neve)}
-                                                            </div>
-                                                        </div>
-                                                        {jelolt.neve}
+                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 transition-colors bg-white dark:bg-slate-900">
+                                    {filteredCandidates.map((jelolt, idx) => (
+                                        <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors">
+                                            <td className="p-3 sm:p-4">
+                                                <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 transition-colors">
+                                                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-[10px] sm:text-xs shadow-sm border border-blue-200 dark:border-blue-800 flex-shrink-0 transition-colors relative">
+                                                        {jelolt.fenykep ? (
+                                                            <img src={getImageUrl(jelolt.fenykep)} alt={jelolt.neve} crossOrigin="anonymous" className="w-full h-full object-cover"
+                                                                onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />
+                                                        ) : null}
+                                                        <div className={`w-full h-full flex items-center justify-center ${jelolt.fenykep ? 'hidden' : ''}`}>{getInitials(jelolt.neve)}</div>
                                                     </div>
-                                                    <div className="md:hidden mt-1 text-xs text-slate-500 dark:text-slate-400 leading-tight transition-colors">{jelolt.countyName} <br /> {jelolt.districtName}</div>
-                                                </td>
-                                                <td className="p-3 sm:p-4 text-sm hidden md:table-cell">
-                                                    <div className="font-medium text-slate-700 dark:text-slate-300 transition-colors">{jelolt.countyName}</div>
-                                                    <div className="text-xs text-slate-500 dark:text-slate-400 transition-colors">{jelolt.districtName}</div>
-                                                </td>
-                                                <td className="p-3 sm:p-4"><StatusBadge status={jelolt.statusName} /></td>
-                                            </tr>
-                                        ))}
-                                    {selectedOrg.candidateCount === 0 && (
-                                        <tr><td colSpan="3" className="p-8 text-center text-slate-500 dark:text-slate-400">Nincs rögzített jelölt ennél a szervezetnél.</td></tr>
-                                    )}
+                                                    {jelolt.neve}
+                                                </div>
+                                                <div className="md:hidden mt-1 text-xs text-slate-500 dark:text-slate-400 leading-tight transition-colors">{jelolt.countyName} <br /> {jelolt.districtName}</div>
+                                            </td>
+                                            <td className="p-3 sm:p-4 text-sm hidden md:table-cell">
+                                                <div className="font-medium text-slate-700 dark:text-slate-300 transition-colors">{jelolt.countyName}</div>
+                                                <div className="text-xs text-slate-500 dark:text-slate-400 transition-colors">{jelolt.districtName}</div>
+                                            </td>
+                                            <td className="p-3 sm:p-4"><StatusBadge status={jelolt.statusName} /></td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
-                        </div>
+                        )}
+                    </div>
+                    {/* Footer */}
+                    <div className="px-4 py-2 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-400 dark:text-slate-600 font-semibold text-right">
+                        {filteredCandidates.length} jelölt megjelenítve
                     </div>
                 </motion.div>
             </div>

@@ -25,7 +25,7 @@ export default function RecentChanges({ recentUpdates, setSelectedCandidate }) {
             <div className="flex flex-col gap-2 overflow-y-auto pr-1 flex-1 max-h-[340px] custom-scrollbar">
                 {recentUpdates.map((update, idx) => {
                     const { dot, bg } = statusColor(update.statusName);
-                    const prevStatus = update.previousStatus;
+                    const prevStatus = update.oldStatusName;
                     const hasChange = prevStatus && prevStatus !== update.statusName;
                     return (
                         <div

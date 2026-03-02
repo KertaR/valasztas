@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Network, Plus, Trash2, Map, AlertTriangle, CheckCircle2, Search } from 'lucide-react';
+import { Network, Plus, Trash2, Map, AlertTriangle, CheckCircle2, Search, Download, Loader2 } from 'lucide-react';
+import { toPng } from 'html-to-image';
 
 // Segédfüggvény a megyei kódok / nevek feloldására (ha nincs meg azonnal)
 const calculateListProgress = (uniqueOevksSet, registeredOevksSet, candidatesList) => {
@@ -33,6 +34,29 @@ const calculateListProgress = (uniqueOevksSet, registeredOevksSet, candidatesLis
 export default function CoalitionBuilderTab({ enrichedData }) {
     const [selectedPartyIds, setSelectedPartyIds] = useState([]);
     const [partySearch, setPartySearch] = useState('');
+    const simResultRef = useRef(null);
+    const [isExporting, setIsExporting] = useState(false);
+
+    const exportSimulation = async () => {
+        if (!simResultRef.current) return;
+        setIsExporting(true);
+        try {
+            const { toPng: tp } = await import('html-to-image');
+            const dataUrl = await tp(simResultRef.current, {
+                cacheBust: true,
+                backgroundColor: document.documentElement.classList.contains('dark') ? '#020617' : '#f8fafc',
+                pixelRatio: 2
+            });
+            const link = document.createElement('a');
+            link.download = `koalicio_szimulacio_${new Date().toISOString().slice(0, 10)}.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error('Export failed:', err);
+        } finally {
+            setIsExporting(false);
+        }
+    };
 
     const availableParties = useMemo(() => {
         return enrichedData.organizations
@@ -119,6 +143,16 @@ export default function CoalitionBuilderTab({ enrichedData }) {
                     </h1>
                     <p className="text-slate-500 dark:text-slate-400 mt-1">Szimuláld különböző pártok szövetségét és nézd meg az együttes listaállítási esélyeiket.</p>
                 </div>
+                {simulation && (
+                    <button
+                        onClick={exportSimulation}
+                        disabled={isExporting}
+                        className="flex items-center gap-2 px-4 py-2 bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl font-bold shadow-sm transition-all hover:bg-slate-700 dark:hover:bg-white disabled:opacity-70 text-sm"
+                    >
+                        {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                        Export képként
+                    </button>
+                )}
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -189,7 +223,7 @@ export default function CoalitionBuilderTab({ enrichedData }) {
                 {/* Jobb Oldal: Szimulációs Eredmények */}
                 <div className="xl:col-span-2 space-y-6">
                     {simulation ? (
-                        <div className="space-y-6">
+                        <div className="space-y-6" ref={simResultRef}>
 
                             {/* Fő KPI Kártyák */}
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -199,8 +233,14 @@ export default function CoalitionBuilderTab({ enrichedData }) {
                                         <span className="text-4xl font-black text-slate-800 dark:text-white">{simulation.progress.totalCoverage}</span>
                                         <span className="text-lg font-bold text-slate-400 dark:text-slate-500 mb-1">/ 106</span>
                                     </div>
-                                    <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
-                                        <div className="bg-indigo-500 h-full transition-all" style={{ width: `${(simulation.progress.totalCoverage / 106) * 100}%` }}></div>
+                                    {/* Dupla progress bár: kék=összes, zöld=regisztrált */}
+                                    <div className="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full mt-3 overflow-hidden relative">
+                                        <div className="bg-indigo-200 dark:bg-indigo-900 h-full transition-all absolute inset-0 rounded-full" style={{ width: `${(simulation.progress.totalCoverage / 106) * 100}%` }} />
+                                        <div className="bg-emerald-500 h-full transition-all absolute inset-0 rounded-full" style={{ width: `${(simulation.progress.registeredCoverage / 106) * 100}%` }} />
+                                    </div>
+                                    <div className="flex justify-between text-xs font-semibold mt-1.5">
+                                        <span className="text-indigo-500">{simulation.progress.totalCoverage} összes jelölt</span>
+                                        <span className="text-emerald-500">{simulation.progress.registeredCoverage} nyilvántartva</span>
                                     </div>
                                 </div>
                                 <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
