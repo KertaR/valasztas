@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getNviUrls, NVI_DATE, NVI_DATE_YESTERDAY, PROXIES, CONFIG_URL } from '../utils/constants';
 
 export function useElectionData(showToast, onClearCallback) {
@@ -14,6 +14,12 @@ export function useElectionData(showToast, onClearCallback) {
     const [yesterdayData, setYesterdayData] = useState(null);
     const [isLoadingWeb, setIsLoadingWeb] = useState(false);
     const [fetchError, setFetchError] = useState(null);
+    const [lastFetchTime, setLastFetchTime] = useState(null);
+    const [autoRefresh, setAutoRefresh] = useState(() => {
+        return localStorage.getItem('valasztas_auto_refresh') === 'true';
+    });
+    const autoRefreshRef = useRef(autoRefresh);
+    autoRefreshRef.current = autoRefresh;
 
     const isAllUploaded = Object.values(data).every(val => val !== null);
 
@@ -148,9 +154,28 @@ export function useElectionData(showToast, onClearCallback) {
         });
     };
 
+
+    // Auto-refresh logika: 10 percenként frissíti az adatokat, ha engedélyezve van
+
+    useEffect(() => {
+        localStorage.setItem('valasztas_auto_refresh', autoRefresh);
+        if (!autoRefresh) return;
+
+        const AUTO_REFRESH_MS = 10 * 60 * 1000; // 10 perc
+        const interval = setInterval(() => {
+            if (autoRefreshRef.current) {
+                fetchDataFromWeb();
+            }
+        }, AUTO_REFRESH_MS);
+
+        return () => clearInterval(interval);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [autoRefresh]);
+
     const clearData = () => {
         setData({ megyek: null, telepulesek: null, oevk: null, jeloltek: null, szervezetek: null, oevkPoligonok: null, listakEsJeloltek: null });
         setFetchError(null);
+        setLastFetchTime(null);
         if (onClearCallback) onClearCallback();
     };
 
@@ -162,6 +187,9 @@ export function useElectionData(showToast, onClearCallback) {
         isAllUploaded,
         fetchDataFromWeb,
         handleFileUpload,
-        clearData
+        clearData,
+        lastFetchTime,
+        autoRefresh,
+        setAutoRefresh
     };
 }

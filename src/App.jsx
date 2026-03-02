@@ -38,7 +38,8 @@ export default function App() {
 
     const {
         data, yesterdayData, isLoadingWeb, fetchError, isAllUploaded,
-        fetchDataFromWeb, handleFileUpload, clearData
+        fetchDataFromWeb, handleFileUpload, clearData,
+        lastFetchTime, autoRefresh, setAutoRefresh
     } = useElectionData(showToast, handleClearApp);
 
     const enrichedData = useEnrichedData(data, yesterdayData, isAllUploaded);
@@ -170,7 +171,7 @@ export default function App() {
             {/* --- FŐ TARTALOM --- */}
             <main className="flex-1 p-4 md:p-6 lg:p-10 overflow-auto w-full">
                 <div className="max-w-7xl mx-auto">
-                    {activeTab === 'dashboard' && <DashboardTab enrichedData={enrichedData} data={data} setSelectedOevk={setSelectedOevk} setSelectedCandidate={setSelectedCandidate} onStatusClick={handleStatusClick} onCandidatesDiffClick={() => setIsCandidatesDiffOpen(true)} />}
+                    {activeTab === 'dashboard' && <DashboardTab enrichedData={enrichedData} data={data} setSelectedOevk={setSelectedOevk} setSelectedCandidate={setSelectedCandidate} onStatusClick={handleStatusClick} onCandidatesDiffClick={() => setIsCandidatesDiffOpen(true)} lastFetchTime={lastFetchTime} autoRefresh={autoRefresh} setAutoRefresh={setAutoRefresh} onRefresh={fetchDataFromWeb} isLoadingWeb={isLoadingWeb} />}
 
                     {activeTab === 'jeloltek' && <CandidatesTab
                         processedCandidates={processedCandidates}

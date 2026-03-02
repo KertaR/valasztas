@@ -1,9 +1,10 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, UserPlus, FileEdit, Building2, CheckCircle2, ChevronRight, Filter, ArrowRightLeft } from 'lucide-react';
+import { Activity, UserPlus, FileEdit, Building2, CheckCircle2, ChevronRight, Filter, ArrowRightLeft, ChevronDown } from 'lucide-react';
 
 export default function ChangelogTab({ enrichedData, setSelectedCandidate, setSelectedOrg }) {
     const [filterBy, setFilterBy] = useState('all'); // 'all', 'status', 'new_cand', 'new_org'
+    const [visibleCount, setVisibleCount] = useState(50);
 
     // Szűrések a mai napi eltérések alapján - a "allCandidates"-ből dolgozunk, hogy a kiesettek/töröltek változásai is benne legyenek
     const newCandidates = enrichedData.allCandidates ? enrichedData.allCandidates.filter(c => c.isNew) : enrichedData.candidates.filter(c => c.isNew);
@@ -19,7 +20,6 @@ export default function ChangelogTab({ enrichedData, setSelectedCandidate, setSe
             ...newOrgs.map(o => ({ type: 'new_org', data: o, sortName: o.nev }))
         ];
 
-        // Egyelőre név szerinti ABC-be rendezzük a Feed-et
         feed.sort((a, b) => a.sortName.localeCompare(b.sortName, 'hu'));
 
         if (filterBy !== 'all') {
@@ -28,6 +28,9 @@ export default function ChangelogTab({ enrichedData, setSelectedCandidate, setSe
 
         return feed;
     }, [newCandidates, changedCandidates, newOrgs, filterBy]);
+
+    // Szűrő váltásakor visszaállítjuk a látható elemek számát
+    const handleFilterChange = (f) => { setFilterBy(f); setVisibleCount(50); };
 
     const renderFeedItem = (item, idx) => {
         if (item.type === 'status') {
@@ -169,16 +172,16 @@ export default function ChangelogTab({ enrichedData, setSelectedCandidate, setSe
                         <div className="p-2 text-slate-400 border-r border-slate-200 dark:border-slate-700 hidden sm:block">
                             <Filter className="w-4 h-4" />
                         </div>
-                        <button onClick={() => setFilterBy('all')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filterBy === 'all' ? 'bg-slate-800 text-white dark:bg-white dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
+                        <button onClick={() => handleFilterChange('all')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filterBy === 'all' ? 'bg-slate-800 text-white dark:bg-white dark:text-slate-900' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
                             Minden esemény
                         </button>
-                        <button onClick={() => setFilterBy('status')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filterBy === 'status' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-amber-50 dark:hover:bg-amber-900/20'}`}>
+                        <button onClick={() => handleFilterChange('status')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filterBy === 'status' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-amber-50 dark:hover:bg-amber-900/20'}`}>
                             Státuszváltozások ({changedCandidates.length})
                         </button>
-                        <button onClick={() => setFilterBy('new_cand')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filterBy === 'new_cand' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'}`}>
+                        <button onClick={() => handleFilterChange('new_cand')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filterBy === 'new_cand' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20'}`}>
                             Új jelöltek ({newCandidates.length})
                         </button>
-                        <button onClick={() => setFilterBy('new_org')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filterBy === 'new_org' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-300 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20'}`}>
+                        <button onClick={() => handleFilterChange('new_org')} className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${filterBy === 'new_org' ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-300 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20'}`}>
                             Új szervezetek ({newOrgs.length})
                         </button>
                     </div>
@@ -187,15 +190,19 @@ export default function ChangelogTab({ enrichedData, setSelectedCandidate, setSe
                     <div className="flex flex-col gap-3">
                         <AnimatePresence>
                             {mergedFeed.length > 0 ? (
-                                mergedFeed.slice(0, 200).map((item, idx) => renderFeedItem(item, idx))
+                                mergedFeed.slice(0, visibleCount).map((item, idx) => renderFeedItem(item, idx))
                             ) : (
                                 <div className="text-center py-10 text-slate-500">Ebben a kategóriában jelenleg nincs friss változás.</div>
                             )}
                         </AnimatePresence>
-                        {mergedFeed.length > 200 && (
-                            <div className="text-center p-4 text-slate-400 text-sm font-bold bg-slate-50 dark:bg-slate-900/50 rounded-xl">
-                                További {mergedFeed.length - 200} esemény elrejtve a gyors megjelenítés érdekében...
-                            </div>
+                        {mergedFeed.length > visibleCount && (
+                            <button
+                                onClick={() => setVisibleCount(prev => prev + 50)}
+                                className="w-full flex items-center justify-center gap-2 py-3 text-sm font-bold text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900/50 hover:bg-slate-50 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl transition-all hover:text-slate-700 dark:hover:text-slate-300 group"
+                            >
+                                <ChevronDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
+                                További {Math.min(50, mergedFeed.length - visibleCount)} esemény betöltése ({visibleCount} / {mergedFeed.length})
+                            </button>
                         )}
                     </div>
                 </div>

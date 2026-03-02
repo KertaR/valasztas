@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Users, Building2, Map, UsersRound, Loader2, Printer } from 'lucide-react';
+import { Users, Building2, Map, UsersRound, Loader2, Printer, RefreshCw, Clock } from 'lucide-react';
 import {
     StatCard, CandidateStatusChart,
     TopPartiesChart, ListProgress, RecentChanges,
@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 
-export default function DashboardTab({ enrichedData, data, setSelectedOevk, setSelectedCandidate, onStatusClick, onCandidatesDiffClick }) {
+export default function DashboardTab({ enrichedData, data, setSelectedOevk, setSelectedCandidate, onStatusClick, onCandidatesDiffClick, lastFetchTime, autoRefresh, setAutoRefresh, onRefresh, isLoadingWeb }) {
     const dashboardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
 
@@ -51,14 +51,48 @@ export default function DashboardTab({ enrichedData, data, setSelectedOevk, setS
                     <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">Áttekintés</h1>
                     <ElectionCountdown />
                 </div>
-                <button
-                    onClick={handleExportPDF}
-                    disabled={isExporting}
-                    className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                >
-                    {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Printer className="w-4 h-4" />}
-                    {isExporting ? 'Generálás...' : 'Elmentés PDF-ként'}
-                </button>
+                <div className="flex items-center gap-2 flex-wrap">
+                    {/* Utólsó frissítés ideje */}
+                    {lastFetchTime && (
+                        <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800/60 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                            <Clock className="w-3.5 h-3.5" />
+                            <span>Frissítés: {lastFetchTime.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                    )}
+                    {/* Auto-refresh kapcsoló */}
+                    {setAutoRefresh && (
+                        <button
+                            onClick={() => setAutoRefresh(prev => !prev)}
+                            title={autoRefresh ? 'Auto-frissítés kikapcsolása (10 perc)' : 'Auto-frissítés bekapcsolása (10 perc)'}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${autoRefresh
+                                    ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50 hover:bg-emerald-100'
+                                    : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                                }`}
+                        >
+                            <RefreshCw className={`w-3.5 h-3.5 ${autoRefresh ? 'animate-spin [animation-duration:3s]' : ''}`} />
+                            {autoRefresh ? 'Auto (10p)' : 'Auto-off'}
+                        </button>
+                    )}
+                    {/* Kézi azonnali frissítés */}
+                    {onRefresh && (
+                        <button
+                            onClick={onRefresh}
+                            disabled={isLoadingWeb}
+                            title="Azonnali frissítés"
+                            className="p-1.5 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-all disabled:opacity-50"
+                        >
+                            {isLoadingWeb ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
+                        </button>
+                    )}
+                    <button
+                        onClick={handleExportPDF}
+                        disabled={isExporting}
+                        className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 px-4 py-2.5 rounded-xl font-bold text-sm transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                    >
+                        {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Printer className="w-4 h-4" />}
+                        {isExporting ? 'Generálás...' : 'Elmentés PDF-ként'}
+                    </button>
+                </div>
             </div>
 
             <div ref={dashboardRef} className="space-y-6 bg-slate-100 dark:bg-slate-950 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 transition-colors">
