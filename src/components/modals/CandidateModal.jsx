@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { X, MapPin, Building2, Download, Loader2, UserCircle2, Stamp } from 'lucide-react';
+import { X, MapPin, Building2, Download, Loader2, UserCircle2, Stamp, Share2, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StatusBadge } from '../ui';
 import { toPng } from 'html-to-image';
@@ -8,6 +8,7 @@ import { getInitials, getImageUrl } from '../../utils/helpers';
 export default function CandidateModal({ candidate, onClose }) {
     const cardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
 
     if (!candidate) return null;
 
@@ -29,6 +30,31 @@ export default function CandidateModal({ candidate, onClose }) {
             alert('Hiba történt a kép generálása közben.');
         } finally {
             setIsExporting(false);
+        }
+    };
+
+    const handleShare = async () => {
+        const shareData = {
+            title: `${candidate.neve} - Vál. '26`,
+            text: `Nézd meg ${candidate.neve} (${candidate.partyNames}) adatlapját a ${candidate.countyName} ${candidate.districtName} választókerületben!`,
+            url: window.location.href, // Esetleg ha van paraméteres routing: window.location.origin + '?jelolt=' + candidate.szemely_azonosito
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                console.log('Megosztás megszakítva', err);
+            }
+        } else {
+            // Fallback vágólapra másolás
+            try {
+                await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 2000);
+            } catch (err) {
+                alert('Sikertelen másolás a vágólapra.');
+            }
         }
     };
 
@@ -140,15 +166,23 @@ export default function CandidateModal({ candidate, onClose }) {
                         </div>
                     </div>
 
-                    {/* Akció Gomb (Kijön a rögzített területről) */}
-                    <div className="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 transition-colors">
+                    {/* Akció Gombok (Kijön a rögzített területről) */}
+                    <div className="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 transition-colors flex flex-col sm:flex-row gap-3">
                         <button
                             onClick={exportImage}
                             disabled={isExporting}
-                            className="w-full flex items-center justify-center gap-2 bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl font-bold shadow-md transition-all disabled:opacity-75 disabled:cursor-wait"
+                            className="flex-1 flex items-center justify-center gap-2 bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl font-bold shadow-md transition-all disabled:opacity-75 disabled:cursor-wait text-sm sm:text-base"
                         >
                             {isExporting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
-                            {isExporting ? 'Kép készítése...' : 'Adatlap mentése Képként (PNG)'}
+                            <span className="truncate">{isExporting ? 'Kép készítése...' : 'Mentés képként'}</span>
+                        </button>
+
+                        <button
+                            onClick={handleShare}
+                            className="flex-1 sm:flex-none sm:w-auto flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/50 px-6 py-3.5 rounded-xl font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-sm sm:text-base"
+                        >
+                            {isCopied ? <Check className="w-5 h-5 text-emerald-500" /> : <Share2 className="w-5 h-5" />}
+                            <span className="truncate">{isCopied ? 'Másolva!' : 'Megosztás'}</span>
                         </button>
                     </div>
 

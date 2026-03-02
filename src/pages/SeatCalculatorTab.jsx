@@ -1,6 +1,7 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Calculator, PieChart as PieChartIcon, Percent, AlertCircle, Zap } from 'lucide-react';
+import { Calculator, PieChart as PieChartIcon, Percent, AlertCircle, Zap, Download, Loader2 } from 'lucide-react';
+import { toPng } from 'html-to-image';
 
 const PRESETS = [
     { label: 'Medián (jan.)', votes: { fidesz: 45, tisza: 33, dk: 6, mhm: 7, egyhat: 0, egyeb: 9 } },
@@ -11,6 +12,9 @@ const PRESETS = [
 ];
 
 export default function SeatCalculatorTab({ enrichedData }) {
+    const calcRef = useRef(null);
+    const [isExporting, setIsExporting] = useState(false);
+
     // Országos listás szavazatarányok (%)
     const [votes, setVotes] = useState({
         fidesz: 42,
@@ -48,6 +52,27 @@ export default function SeatCalculatorTab({ enrichedData }) {
     };
 
 
+
+    const exportImage = async () => {
+        if (!calcRef.current) return;
+        setIsExporting(true);
+        try {
+            const dataUrl = await toPng(calcRef.current, {
+                cacheBust: true,
+                backgroundColor: document.documentElement.classList.contains('dark') ? '#020617' : '#f8fafc',
+                pixelRatio: 2
+            });
+            const link = document.createElement('a');
+            link.download = `mandatumbecslo_${new Date().toISOString().slice(0, 10)}.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error('Image export failed:', err);
+            alert('Hiba történt a kép generálása közben.');
+        } finally {
+            setIsExporting(false);
+        }
+    };
 
     // Calculate mandates (Sophisticated heuristic model for simulation)
     const mandates = useMemo(() => {
@@ -202,6 +227,14 @@ export default function SeatCalculatorTab({ enrichedData }) {
                     <p className="text-slate-500 dark:text-slate-400 mt-1">"Mi lenne, ha holnap lenne a választás?" Szimuláld az eredményeket országos listás arányok alapján.</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
+                    <button
+                        onClick={exportImage}
+                        disabled={isExporting}
+                        className="px-4 py-2 bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 font-bold rounded-xl shadow-sm transition-all text-sm flex items-center gap-2 disabled:opacity-50"
+                    >
+                        {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                        <span className="hidden sm:inline">{isExporting ? 'Mentés...' : 'Exportálás'}</span>
+                    </button>
                     {/* Preset gyorsbeállítások */}
                     <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/60 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
                         <div className="px-2 flex items-center text-slate-400"><Zap className="w-3.5 h-3.5" /></div>
@@ -223,204 +256,206 @@ export default function SeatCalculatorTab({ enrichedData }) {
                 </div>
             </div>
 
-            {/* Parliament Horseshoe Dashboard Header */}
-            <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] shadow-md border border-slate-200/60 dark:border-slate-800/60 p-8 flex flex-col items-center justify-center relative min-h-[420px] overflow-hidden">
-                {/* Background glow effects */}
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
+            <div ref={calcRef} className="space-y-6 pt-2 pb-4 px-2 -mx-2 sm:mx-0 sm:px-0 rounded-3xl sm:bg-transparent">
+                {/* Parliament Horseshoe Dashboard Header */}
+                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] shadow-md border border-slate-200/60 dark:border-slate-800/60 p-8 flex flex-col items-center justify-center relative min-h-[420px] overflow-hidden">
+                    {/* Background glow effects */}
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
+                    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl pointer-events-none translate-y-1/3 -translate-x-1/3"></div>
 
-                <div className="absolute top-8 left-8 flex items-center gap-3 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md px-5 py-2.5 rounded-2xl shadow-sm border border-slate-200/50 dark:border-slate-700/50">
-                    <PieChartIcon className="w-6 h-6 text-indigo-500 dark:text-indigo-400" />
-                    <h3 className="text-xl font-black text-slate-800 dark:text-slate-100">
-                        Parlamenti Út a 199 Mandátumhoz
-                    </h3>
-                </div>
-
-                <div className="w-full h-[340px] mt-16 relative flex justify-center z-10">
-                    <svg viewBox="0 0 500 260" className="w-full h-full max-w-[580px] drop-shadow-lg pb-4 pt-2">
-                        {parliamentSeats.map((seat, i) => (
-                            <motion.circle
-                                key={`seat-${i}`}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ delay: i * 0.002, duration: 0.3 }}
-                                cx={seat.x}
-                                cy={seat.y}
-                                r={6.5}
-                                fill={seat.color || '#e2e8f0'}
-                                className="transition-colors duration-500 hover:opacity-75 stroke-white dark:stroke-slate-900 stroke-[1.5px] cursor-pointer"
-                            >
-                                <title>{seat.party || 'Üres'} Seat</title>
-                            </motion.circle>
-                        ))}
-                    </svg>
-                    <div className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pointer-events-none w-full px-2">
-                        {leadingParty ? (
-                            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center">
-                                <span className="text-[4rem] md:text-[5rem] leading-none font-black drop-shadow-sm" style={{ color: leadingParty.color }}>
-                                    {leadingParty.value}
-                                </span>
-                                <span className={`text-[10px] md:text-xs font-black uppercase tracking-widest mt-2 md:mt-3 mb-2 px-3 py-1.5 bg-white/90 dark:bg-slate-900/90 rounded-xl backdrop-blur-md shadow-sm border border-slate-100 dark:border-slate-800 ${leadingColor} text-center leading-snug max-w-[90%] md:max-w-full`}>
-                                    {leadingStatus}
-                                </span>
-                            </motion.div>
-                        ) : null}
+                    <div className="absolute top-8 left-8 flex items-center gap-3 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md px-5 py-2.5 rounded-2xl shadow-sm border border-slate-200/50 dark:border-slate-700/50">
+                        <PieChartIcon className="w-6 h-6 text-indigo-500 dark:text-indigo-400" />
+                        <h3 className="text-xl font-black text-slate-800 dark:text-slate-100">
+                            Parlamenti Út a 199 Mandátumhoz
+                        </h3>
                     </div>
-                </div>
 
-                <div className="w-full flex gap-4 md:gap-12 items-end justify-center opacity-90 z-10 relative mt-4">
-                    <div className="flex flex-col items-center">
-                        <span className="text-[9px] md:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 md:mb-1.5 text-center">Kormánytöbbség</span>
-                        <div className="flex items-baseline gap-1 bg-slate-100 dark:bg-slate-800 px-3 md:px-4 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
-                            <span className="text-lg md:text-xl font-black text-slate-700 dark:text-slate-300">100</span>
-                            <span className="text-[9px] md:text-xs text-slate-500 font-bold">mand.</span>
-                        </div>
-                    </div>
-                    <div className="w-px h-10 md:h-12 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent flex-shrink-0"></div>
-                    <div className="flex flex-col items-center">
-                        <span className="text-[9px] md:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 md:mb-1.5 text-center">Alkotmányozó 2/3</span>
-                        <div className="flex items-baseline gap-1 bg-slate-100 dark:bg-slate-800 px-3 md:px-4 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
-                            <span className="text-lg md:text-xl font-black text-slate-700 dark:text-slate-300">133</span>
-                            <span className="text-[9px] md:text-xs text-slate-500 font-bold">mand.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Config & Results Grid */}
-            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-
-                {/* Left Side: Sliders (8 columns on XL) */}
-                <div className="col-span-1 xl:col-span-8 flex flex-col gap-6">
-                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-[2.5rem] shadow-sm border border-slate-200/60 dark:border-slate-800/60 p-8 flex-1">
-                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-3 border-b border-slate-100 dark:border-slate-800/60 pb-5">
-                            <h3 className="text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-3">
-                                <Percent className="w-6 h-6 text-indigo-500 dark:text-indigo-400" />
-                                Országos Listás Szavazatarányok
-                            </h3>
-                            <div className="flex items-center gap-3 font-bold text-sm bg-slate-50 dark:bg-slate-800/50 px-5 py-2.5 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
-                                Összesített:
-                                <span className={`text-lg font-black ${totalVotePercent === 100 ? 'text-emerald-500' : 'text-red-500 flex items-center gap-1.5'}`}>
-                                    {totalVotePercent !== 100 && <AlertCircle className="w-5 h-5" />}
-                                    {totalVotePercent}%
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                            {[
-                                { id: 'fidesz', label: 'FIDESZ-KDNP', color: 'orange-500', baseColor: '#f97316' },
-                                { id: 'tisza', label: 'TISZA', color: 'cyan-500', baseColor: '#06b6d4' },
-                                { id: 'dk', label: 'Demokratikus Koalíció', color: 'blue-500', baseColor: '#3b82f6' },
-                                { id: 'mhm', label: 'Mi Hazánk', color: 'emerald-500', baseColor: '#10b981' },
-                                { id: 'egyhat', label: 'Egyéb párt (5% felett)', color: 'purple-500', baseColor: '#a855f7' },
-                                { id: 'egyeb', label: 'Egyéb pártok (elvesző)', color: 'slate-500', baseColor: '#64748b' }
-                            ].map((party) => (
-                                <div key={party.id} className="group relative p-5 rounded-[1.5rem] bg-slate-50/50 dark:bg-slate-800/30 border border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 shadow-sm hover:shadow-md transition-all duration-300">
-                                    <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 blur-2xl pointer-events-none transition-opacity duration-300 group-hover:opacity-20" style={{ backgroundColor: party.baseColor }}></div>
-                                    <div className="flex justify-between items-center mb-5 relative z-10">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-4 h-4 rounded-full shadow-sm border border-white/20" style={{ backgroundColor: party.baseColor }}></div>
-                                            <span className="text-base font-black text-slate-700 dark:text-slate-200">{party.label}</span>
-                                        </div>
-                                        <span className={`text-xl font-black px-3 py-1 rounded-xl text-${party.color} bg-${party.color}/10 border border-${party.color}/20 min-w-[3.5rem] text-center`}>
-                                            {votes[party.id]}%
-                                        </span>
-                                    </div>
-                                    <input
-                                        type="range"
-                                        min="0" max="100"
-                                        value={votes[party.id]}
-                                        onChange={(e) => handleVoteChange(party.id, e.target.value)}
-                                        className="w-full h-3 bg-slate-200 dark:bg-slate-900 rounded-full appearance-none cursor-pointer relative z-10 shadow-inner"
-                                        style={{ accentColor: party.baseColor }}
-                                    />
-                                </div>
+                    <div className="w-full h-[340px] mt-16 relative flex justify-center z-10">
+                        <svg viewBox="0 0 500 260" className="w-full h-full max-w-[580px] drop-shadow-lg pb-4 pt-2">
+                            {parliamentSeats.map((seat, i) => (
+                                <motion.circle
+                                    key={`seat-${i}`}
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    transition={{ delay: i * 0.002, duration: 0.3 }}
+                                    cx={seat.x}
+                                    cy={seat.y}
+                                    r={6.5}
+                                    fill={seat.color || '#e2e8f0'}
+                                    className="transition-colors duration-500 hover:opacity-75 stroke-white dark:stroke-slate-900 stroke-[1.5px] cursor-pointer"
+                                >
+                                    <title>{seat.party || 'Üres'} Seat</title>
+                                </motion.circle>
                             ))}
+                        </svg>
+                        <div className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center pointer-events-none w-full px-2">
+                            {leadingParty ? (
+                                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center">
+                                    <span className="text-[4rem] md:text-[5rem] leading-none font-black drop-shadow-sm" style={{ color: leadingParty.color }}>
+                                        {leadingParty.value}
+                                    </span>
+                                    <span className={`text-[10px] md:text-xs font-black uppercase tracking-widest mt-2 md:mt-3 mb-2 px-3 py-1.5 bg-white/90 dark:bg-slate-900/90 rounded-xl backdrop-blur-md shadow-sm border border-slate-100 dark:border-slate-800 ${leadingColor} text-center leading-snug max-w-[90%] md:max-w-full`}>
+                                        {leadingStatus}
+                                    </span>
+                                </motion.div>
+                            ) : null}
                         </div>
+                    </div>
 
-                        <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800/60">
-                            <div className="flex justify-between items-center mb-4">
-                                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Győzteskompenzációarány (%)</span>
-                                <span className="text-sm font-black px-2 py-0.5 rounded-lg border dark:border-slate-800 text-indigo-500 bg-indigo-500/10 border-indigo-500/20">
-                                    +{fractionalBonus}%
-                                </span>
+                    <div className="w-full flex gap-4 md:gap-12 items-end justify-center opacity-90 z-10 relative mt-4">
+                        <div className="flex flex-col items-center">
+                            <span className="text-[9px] md:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 md:mb-1.5 text-center">Kormánytöbbség</span>
+                            <div className="flex items-baseline gap-1 bg-slate-100 dark:bg-slate-800 px-3 md:px-4 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+                                <span className="text-lg md:text-xl font-black text-slate-700 dark:text-slate-300">100</span>
+                                <span className="text-[9px] md:text-xs text-slate-500 font-bold">mand.</span>
                             </div>
-                            <input
-                                type="range"
-                                min="0" max="30"
-                                value={fractionalBonus}
-                                onChange={(e) => setFractionalBonus(parseInt(e.target.value))}
-                                className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500 hover:accent-indigo-400 focus:accent-indigo-400"
-                            />
-                            <p className="text-[10px] text-slate-500 mt-2 leading-tight">Az OEVK győztese megkapja saját töredékszavazatait. Ez a súlyozó a győztes felülreprezentációját/bónuszát adja hozzá a listás D'Hondt számításhoz virtuálisan.</p>
+                        </div>
+                        <div className="w-px h-10 md:h-12 bg-gradient-to-b from-transparent via-slate-300 dark:via-slate-600 to-transparent flex-shrink-0"></div>
+                        <div className="flex flex-col items-center">
+                            <span className="text-[9px] md:text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1 md:mb-1.5 text-center">Alkotmányozó 2/3</span>
+                            <div className="flex items-baseline gap-1 bg-slate-100 dark:bg-slate-800 px-3 md:px-4 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 shadow-sm">
+                                <span className="text-lg md:text-xl font-black text-slate-700 dark:text-slate-300">133</span>
+                                <span className="text-[9px] md:text-xs text-slate-500 font-bold">mand.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Right Side: Table & Info (4 columns on XL) */}
-                <div className="col-span-1 xl:col-span-4 flex flex-col gap-6">
+                {/* Config & Results Grid */}
+                <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
 
-                    {/* Results Table */}
-                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-[2.5rem] shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden flex-1">
-                        <div className="p-6 border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-800/30">
-                            <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                                <Calculator className="w-5 h-5 text-indigo-500" />
-                                Mandátum Kiosztás
-                            </h3>
+                    {/* Left Side: Sliders (8 columns on XL) */}
+                    <div className="col-span-1 xl:col-span-8 flex flex-col gap-6">
+                        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-[2.5rem] shadow-sm border border-slate-200/60 dark:border-slate-800/60 p-8 flex-1">
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-3 border-b border-slate-100 dark:border-slate-800/60 pb-5">
+                                <h3 className="text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-3">
+                                    <Percent className="w-6 h-6 text-indigo-500 dark:text-indigo-400" />
+                                    Országos Listás Szavazatarányok
+                                </h3>
+                                <div className="flex items-center gap-3 font-bold text-sm bg-slate-50 dark:bg-slate-800/50 px-5 py-2.5 rounded-2xl border border-slate-200/50 dark:border-slate-700/50">
+                                    Összesített:
+                                    <span className={`text-lg font-black ${totalVotePercent === 100 ? 'text-emerald-500' : 'text-red-500 flex items-center gap-1.5'}`}>
+                                        {totalVotePercent !== 100 && <AlertCircle className="w-5 h-5" />}
+                                        {totalVotePercent}%
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                                {[
+                                    { id: 'fidesz', label: 'FIDESZ-KDNP', color: 'orange-500', baseColor: '#f97316' },
+                                    { id: 'tisza', label: 'TISZA', color: 'cyan-500', baseColor: '#06b6d4' },
+                                    { id: 'dk', label: 'Demokratikus Koalíció', color: 'blue-500', baseColor: '#3b82f6' },
+                                    { id: 'mhm', label: 'Mi Hazánk', color: 'emerald-500', baseColor: '#10b981' },
+                                    { id: 'egyhat', label: 'Egyéb párt (5% felett)', color: 'purple-500', baseColor: '#a855f7' },
+                                    { id: 'egyeb', label: 'Egyéb pártok (elvesző)', color: 'slate-500', baseColor: '#64748b' }
+                                ].map((party) => (
+                                    <div key={party.id} className="group relative p-5 rounded-[1.5rem] bg-slate-50/50 dark:bg-slate-800/30 border border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 shadow-sm hover:shadow-md transition-all duration-300">
+                                        <div className="absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 blur-2xl pointer-events-none transition-opacity duration-300 group-hover:opacity-20" style={{ backgroundColor: party.baseColor }}></div>
+                                        <div className="flex justify-between items-center mb-5 relative z-10">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-4 h-4 rounded-full shadow-sm border border-white/20" style={{ backgroundColor: party.baseColor }}></div>
+                                                <span className="text-base font-black text-slate-700 dark:text-slate-200">{party.label}</span>
+                                            </div>
+                                            <span className={`text-xl font-black px-3 py-1 rounded-xl text-${party.color} bg-${party.color}/10 border border-${party.color}/20 min-w-[3.5rem] text-center`}>
+                                                {votes[party.id]}%
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="range"
+                                            min="0" max="100"
+                                            value={votes[party.id]}
+                                            onChange={(e) => handleVoteChange(party.id, e.target.value)}
+                                            className="w-full h-3 bg-slate-200 dark:bg-slate-900 rounded-full appearance-none cursor-pointer relative z-10 shadow-inner"
+                                            style={{ accentColor: party.baseColor }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800/60">
+                                <div className="flex justify-between items-center mb-4">
+                                    <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Győzteskompenzációarány (%)</span>
+                                    <span className="text-sm font-black px-2 py-0.5 rounded-lg border dark:border-slate-800 text-indigo-500 bg-indigo-500/10 border-indigo-500/20">
+                                        +{fractionalBonus}%
+                                    </span>
+                                </div>
+                                <input
+                                    type="range"
+                                    min="0" max="30"
+                                    value={fractionalBonus}
+                                    onChange={(e) => setFractionalBonus(parseInt(e.target.value))}
+                                    className="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500 hover:accent-indigo-400 focus:accent-indigo-400"
+                                />
+                                <p className="text-[10px] text-slate-500 mt-2 leading-tight">Az OEVK győztese megkapja saját töredékszavazatait. Ez a súlyozó a győztes felülreprezentációját/bónuszát adja hozzá a listás D'Hondt számításhoz virtuálisan.</p>
+                            </div>
                         </div>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left">
-                                <thead className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-black border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/10">
-                                    <tr>
-                                        <th className="p-4">Párt / Pártszöv.</th>
-                                        <th className="p-4 text-center">OEVK</th>
-                                        <th className="p-4 text-center">Listás</th>
-                                        <th className="p-4 text-center text-slate-700 dark:text-slate-300 bg-slate-100/50 dark:bg-slate-800/50">Össz</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-slate-50 dark:divide-slate-800/50">
-                                    {mandates.sort((a, b) => b.total - a.total).map((party) => (
-                                        <tr key={party.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
-                                            <td className="p-4">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: party.color }}></div>
-                                                    <span className="font-bold text-sm text-slate-700 dark:text-slate-200 truncate max-w-[100px] sm:max-w-none" title={party.name}>{party.name}</span>
-                                                    {party.vote < 5 && party.name !== "Egyéb pártok (elvesző)" && (
-                                                        <span className="text-[9px] font-black uppercase text-red-500 border border-red-500/30 bg-red-500/10 px-1 py-0.5 rounded-md hidden sm:inline-block">5% alatt</span>
-                                                    )}
-                                                </div>
-                                            </td>
-                                            <td className="p-4 text-center font-bold text-slate-500 dark:text-slate-400 text-sm">
-                                                {party.vote < 5 ? '-' : party.oevk}
-                                            </td>
-                                            <td className="p-4 text-center font-bold text-slate-500 dark:text-slate-400 text-sm">
-                                                {party.vote < 5 ? '-' : party.list}
-                                            </td>
-                                            <td className="p-4 text-center font-black text-base text-slate-800 dark:text-white bg-slate-50/50 dark:bg-slate-800/30">
-                                                {party.vote < 5 ? '0' : party.total}
-                                            </td>
+                    </div>
+
+                    {/* Right Side: Table & Info (4 columns on XL) */}
+                    <div className="col-span-1 xl:col-span-4 flex flex-col gap-6">
+
+                        {/* Results Table */}
+                        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-[2.5rem] shadow-sm border border-slate-200/60 dark:border-slate-800/60 overflow-hidden flex-1">
+                            <div className="p-6 border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-800/30">
+                                <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                    <Calculator className="w-5 h-5 text-indigo-500" />
+                                    Mandátum Kiosztás
+                                </h3>
+                            </div>
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left">
+                                    <thead className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-black border-b border-slate-100 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-800/10">
+                                        <tr>
+                                            <th className="p-4">Párt / Pártszöv.</th>
+                                            <th className="p-4 text-center">OEVK</th>
+                                            <th className="p-4 text-center">Listás</th>
+                                            <th className="p-4 text-center text-slate-700 dark:text-slate-300 bg-slate-100/50 dark:bg-slate-800/50">Össz</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody className="divide-y divide-slate-50 dark:divide-slate-800/50">
+                                        {mandates.sort((a, b) => b.total - a.total).map((party) => (
+                                            <tr key={party.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                                                <td className="p-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: party.color }}></div>
+                                                        <span className="font-bold text-sm text-slate-700 dark:text-slate-200 truncate max-w-[100px] sm:max-w-none" title={party.name}>{party.name}</span>
+                                                        {party.vote < 5 && party.name !== "Egyéb pártok (elvesző)" && (
+                                                            <span className="text-[9px] font-black uppercase text-red-500 border border-red-500/30 bg-red-500/10 px-1 py-0.5 rounded-md hidden sm:inline-block">5% alatt</span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="p-4 text-center font-bold text-slate-500 dark:text-slate-400 text-sm">
+                                                    {party.vote < 5 ? '-' : party.oevk}
+                                                </td>
+                                                <td className="p-4 text-center font-bold text-slate-500 dark:text-slate-400 text-sm">
+                                                    {party.vote < 5 ? '-' : party.list}
+                                                </td>
+                                                <td className="p-4 text-center font-black text-base text-slate-800 dark:text-white bg-slate-50/50 dark:bg-slate-800/30">
+                                                    {party.vote < 5 ? '0' : party.total}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Methodology Info Box */}
-                    <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/10 dark:to-blue-900/10 border border-indigo-100/50 dark:border-indigo-800/30 p-6 rounded-[2rem] shadow-sm">
-                        <h4 className="font-black text-indigo-800 dark:text-indigo-300 mb-3 flex items-center gap-2 text-sm uppercase tracking-wide">
-                            <AlertCircle className="w-4 h-4" />
-                            Modell Módszertana
-                        </h4>
-                        <div className="text-indigo-900/70 dark:text-indigo-200/70 text-xs font-semibold space-y-2.5 leading-relaxed">
-                            <p><strong>1. Parlament:</strong> A magyar országgyűlés 199 fős (106 OEVK + 93 lista).</p>
-                            <p><strong>2. Küszöb:</strong> Az 5%-ot nem elérő pártok elveszítik a listás és az OEVK esélyeiket is.</p>
-                            <p><strong>3. Végletesedő OEVK:</strong> Az egyéni körzeteket egy brit stílusú (First Past The Post) szimulátor osztja ki.</p>
-                            <p><strong>4. Kompenzáció:</strong> A listás helyek D'Hondt-mátrixszal és törttöredék-szavazat kompenzációval készülnek.</p>
+                        {/* Methodology Info Box */}
+                        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/10 dark:to-blue-900/10 border border-indigo-100/50 dark:border-indigo-800/30 p-6 rounded-[2rem] shadow-sm">
+                            <h4 className="font-black text-indigo-800 dark:text-indigo-300 mb-3 flex items-center gap-2 text-sm uppercase tracking-wide">
+                                <AlertCircle className="w-4 h-4" />
+                                Modell Módszertana
+                            </h4>
+                            <div className="text-indigo-900/70 dark:text-indigo-200/70 text-xs font-semibold space-y-2.5 leading-relaxed">
+                                <p><strong>1. Parlament:</strong> A magyar országgyűlés 199 fős (106 OEVK + 93 lista).</p>
+                                <p><strong>2. Küszöb:</strong> Az 5%-ot nem elérő pártok elveszítik a listás és az OEVK esélyeiket is.</p>
+                                <p><strong>3. Végletesedő OEVK:</strong> Az egyéni körzeteket egy brit stílusú (First Past The Post) szimulátor osztja ki.</p>
+                                <p><strong>4. Kompenzáció:</strong> A listás helyek D'Hondt-mátrixszal és törttöredék-szavazat kompenzációval készülnek.</p>
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
         </motion.div>
