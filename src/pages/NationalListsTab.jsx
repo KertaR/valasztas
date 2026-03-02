@@ -30,6 +30,7 @@ export default function NationalListsTab({ enrichedData }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedFormation, setSelectedFormation] = useState(null); // Modal state
     const [expandedCounties, setExpandedCounties] = useState({});
+    const [statusFilter, setStatusFilter] = useState('all'); // all | sure | possible | official | none
 
     const toggleCounties = (key) => setExpandedCounties(prev => ({ ...prev, [key]: !prev[key] }));
 
@@ -69,10 +70,25 @@ export default function NationalListsTab({ enrichedData }) {
         });
     }, [enrichedData]);
 
-    const filteredData = listsData.filter(f =>
-        f.abbr.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        f.fullName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredData = listsData.filter(f => {
+        const matchesSearch = f.abbr.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            f.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+        if (!matchesSearch) return false;
+
+        if (statusFilter === 'official') return !!f.officialCandidates;
+        if (statusFilter === 'sure') return f.isSure && !f.officialCandidates;
+        if (statusFilter === 'possible') return f.isPossible && !f.isSure && !f.officialCandidates;
+        if (statusFilter === 'none') return !f.isSure && !f.isPossible && !f.officialCandidates;
+        return true;
+    });
+
+    const counts = {
+        all: listsData.length,
+        official: listsData.filter(f => !!f.officialCandidates).length,
+        sure: listsData.filter(f => f.isSure && !f.officialCandidates).length,
+        possible: listsData.filter(f => f.isPossible && !f.isSure && !f.officialCandidates).length,
+        none: listsData.filter(f => !f.isSure && !f.isPossible && !f.officialCandidates).length,
+    };
 
     // Prevent background scroll when modal is open
     useEffect(() => {
@@ -114,7 +130,27 @@ export default function NationalListsTab({ enrichedData }) {
                 </div>
             </div>
 
-            {/* Szabályzat Infó */}
+            {/* Szűrő sáv */}
+            <div className="flex flex-wrap gap-2 bg-white dark:bg-slate-900 p-2 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+                {[
+                    { key: 'all', label: 'Összes', count: counts.all, cls: 'bg-slate-800 text-white dark:bg-white dark:text-slate-900', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' },
+                    { key: 'official', label: 'Hivatalos Lista', count: counts.official, cls: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-300', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20' },
+                    { key: 'sure', label: 'Jogosult', count: counts.sure, cls: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20' },
+                    { key: 'possible', label: 'Küzd', count: counts.possible, cls: 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-amber-50 dark:hover:bg-amber-900/20' },
+                    { key: 'none', label: 'Nincs esély', count: counts.none, cls: 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' },
+                ].map(({ key, label, count, cls, inactive }) => (
+                    <button
+                        key={key}
+                        onClick={() => setStatusFilter(key)}
+                        className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${statusFilter === key ? cls + ' shadow-sm' : inactive
+                            }`}
+                    >
+                        {label}
+                        <span className={`text-xs px-1.5 py-0.5 rounded-full font-black ${statusFilter === key ? 'bg-white/30 dark:bg-black/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'
+                            }`}>{count}</span>
+                    </button>
+                ))}
+            </div>
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50 p-4 rounded-xl flex items-start flex-col sm:flex-row gap-4 shadow-sm">
                 <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5 hidden sm:block" />
                 <div className="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
@@ -167,8 +203,8 @@ export default function NationalListsTab({ enrichedData }) {
                                                 </div>
                                                 {f.officialStatus && (
                                                     <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border shadow-sm ${f.officialStatus === 'Nyilvántartásba véve'
-                                                            ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50'
-                                                            : 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800/50'
+                                                        ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50'
+                                                        : 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800/50'
                                                         }`}>
                                                         {f.officialStatus}
                                                     </span>
