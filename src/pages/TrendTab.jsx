@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
-import { TrendingUp, Users, FileCheck2, CalendarClock, Loader2 } from 'lucide-react';
+import { TrendingUp, Users, FileCheck2, CalendarClock, Loader2, Download } from 'lucide-react';
+import { toPng } from 'html-to-image';
 import { PROXIES } from '../utils/constants';
 
 const fetchJson = async (baseUrl) => {
@@ -46,6 +47,8 @@ const generateHistoryDates = () => {
 };
 
 export default function TrendTab({ enrichedData }) {
+    const trendRef = useRef(null);
+    const [isExporting, setIsExporting] = useState(false);
     const [trendData, setTrendData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [loadProgress, setLoadProgress] = useState({ loaded: 0, total: 0 });
@@ -131,6 +134,27 @@ export default function TrendTab({ enrichedData }) {
         return () => { isMounted = false; };
     }, []);
 
+    const exportImage = async () => {
+        if (!trendRef.current) return;
+        setIsExporting(true);
+        try {
+            const dataUrl = await toPng(trendRef.current, {
+                cacheBust: true,
+                backgroundColor: document.documentElement.classList.contains('dark') ? '#020617' : '#f8fafc',
+                pixelRatio: 2
+            });
+            const link = document.createElement('a');
+            link.download = `trend_elemzes_${new Date().toISOString().slice(0, 10)}.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error('Image export failed:', err);
+            alert('Hiba történt a kép generálása közben.');
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
     const currentStats = trendData.length > 0 ? trendData[trendData.length - 1] : null;
 
     if (isLoading) {
@@ -190,119 +214,131 @@ export default function TrendTab({ enrichedData }) {
                     </h1>
                     <p className="text-slate-500 dark:text-slate-400 mt-1">Az adatszolgáltatások (9:00, 13:00, 17:00) visszamenőleges elemzése</p>
                 </div>
-                <div className="flex bg-white dark:bg-slate-800 p-1 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
-                    <button onClick={() => setViewMode('overall')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'overall' ? 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>Összesített Trendek</button>
-                    <button onClick={() => setViewMode('parties')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'parties' ? 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>Pártok Versenye</button>
+                <div className="flex flex-wrap items-center gap-2">
+                    <button
+                        onClick={exportImage}
+                        disabled={isExporting}
+                        className="flex items-center gap-2 bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 border border-slate-700 dark:border-slate-300 hover:bg-slate-700 dark:hover:bg-slate-200 px-4 py-2 rounded-xl font-bold text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-500 disabled:opacity-50"
+                    >
+                        {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                        <span className="hidden sm:inline">{isExporting ? 'Mentés...' : 'Exportálás'}</span>
+                    </button>
+                    <div className="flex bg-white dark:bg-slate-800 p-1 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
+                        <button onClick={() => setViewMode('overall')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'overall' ? 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>Összesített Trendek</button>
+                        <button onClick={() => setViewMode('parties')} className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'parties' ? 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}>Pártok Versenye</button>
+                    </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm relative overflow-hidden group hover:border-blue-300 transition-colors">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-all duration-500">
-                        <Users className="w-24 h-24 text-blue-600" />
+            <div ref={trendRef} className="space-y-6 pt-2 pb-4 px-2 -mx-2 sm:mx-0 sm:px-0 rounded-3xl sm:bg-transparent">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm relative overflow-hidden group hover:border-blue-300 transition-colors">
+                        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-all duration-500">
+                            <Users className="w-24 h-24 text-blue-600" />
+                        </div>
+                        <div className="flex items-center gap-3 mb-2 relative z-10">
+                            <div className="p-2 bg-blue-100 dark:bg-blue-900/40 text-blue-600 rounded-lg"><Users className="w-5 h-5" /></div>
+                            <h3 className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Összes Bejelentett</h3>
+                        </div>
+                        <p className="text-4xl font-black text-slate-800 dark:text-white relative z-10">
+                            {currentStats.total.toLocaleString('hu-HU')}
+                        </p>
+                        <p className="text-sm text-slate-500 mt-1 relative z-10">Minden, az NVI rendszerébe került jelölt</p>
                     </div>
-                    <div className="flex items-center gap-3 mb-2 relative z-10">
-                        <div className="p-2 bg-blue-100 dark:bg-blue-900/40 text-blue-600 rounded-lg"><Users className="w-5 h-5" /></div>
-                        <h3 className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Összes Bejelentett</h3>
+
+                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm relative overflow-hidden group hover:border-emerald-300 transition-colors">
+                        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-all duration-500">
+                            <FileCheck2 className="w-24 h-24 text-emerald-600" />
+                        </div>
+                        <div className="flex items-center gap-3 mb-2 relative z-10">
+                            <div className="p-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 rounded-lg"><FileCheck2 className="w-5 h-5" /></div>
+                            <h3 className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Nyilvántartásba Véve</h3>
+                        </div>
+                        <p className="text-4xl font-black text-slate-800 dark:text-white relative z-10">
+                            {currentStats.registered.toLocaleString('hu-HU')}
+                        </p>
+                        <p className="text-sm text-slate-500 mt-1 relative z-10">Jogerős (indult) listát állító jelöltek</p>
                     </div>
-                    <p className="text-4xl font-black text-slate-800 dark:text-white relative z-10">
-                        {currentStats.total.toLocaleString('hu-HU')}
-                    </p>
-                    <p className="text-sm text-slate-500 mt-1 relative z-10">Minden, az NVI rendszerébe került jelölt</p>
+
+                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm relative overflow-hidden group hover:border-amber-300 transition-colors">
+                        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-all duration-500">
+                            <CalendarClock className="w-24 h-24 text-amber-600" />
+                        </div>
+                        <div className="flex items-center gap-3 mb-2 relative z-10">
+                            <div className="p-2 bg-amber-100 dark:bg-amber-900/40 text-amber-600 rounded-lg"><CalendarClock className="w-5 h-5" /></div>
+                            <h3 className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Időpontok Száma</h3>
+                        </div>
+                        <p className="text-4xl font-black text-slate-800 dark:text-white relative z-10 flex items-baseline gap-2">
+                            {trendData.length} <span className="text-lg text-slate-400 font-semibold uppercase">mérés</span>
+                        </p>
+                        <p className="text-sm text-slate-500 mt-1 relative z-10">Napi 3 fázisból az elmúlt napokban</p>
+                    </div>
                 </div>
 
-                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm relative overflow-hidden group hover:border-emerald-300 transition-colors">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-all duration-500">
-                        <FileCheck2 className="w-24 h-24 text-emerald-600" />
-                    </div>
-                    <div className="flex items-center gap-3 mb-2 relative z-10">
-                        <div className="p-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 rounded-lg"><FileCheck2 className="w-5 h-5" /></div>
-                        <h3 className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Nyilvántartásba Véve</h3>
-                    </div>
-                    <p className="text-4xl font-black text-slate-800 dark:text-white relative z-10">
-                        {currentStats.registered.toLocaleString('hu-HU')}
-                    </p>
-                    <p className="text-sm text-slate-500 mt-1 relative z-10">Jogerős (indult) listát állító jelöltek</p>
-                </div>
-
-                <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm relative overflow-hidden group hover:border-amber-300 transition-colors">
-                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-all duration-500">
-                        <CalendarClock className="w-24 h-24 text-amber-600" />
-                    </div>
-                    <div className="flex items-center gap-3 mb-2 relative z-10">
-                        <div className="p-2 bg-amber-100 dark:bg-amber-900/40 text-amber-600 rounded-lg"><CalendarClock className="w-5 h-5" /></div>
-                        <h3 className="text-sm font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">Időpontok Száma</h3>
-                    </div>
-                    <p className="text-4xl font-black text-slate-800 dark:text-white relative z-10 flex items-baseline gap-2">
-                        {trendData.length} <span className="text-lg text-slate-400 font-semibold uppercase">mérés</span>
-                    </p>
-                    <p className="text-sm text-slate-500 mt-1 relative z-10">Napi 3 fázisból az elmúlt napokban</p>
-                </div>
-            </div>
-
-            {viewMode === 'overall' && (
-                <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-                    <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6">Általános Jelölti Trendek (Feldolgozottság)</h3>
-                    <div className="h-[400px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
-                                <defs>
-                                    <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                                    </linearGradient>
-                                    <linearGradient id="colorRegistered" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.15} />
-                                <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor="end" />
-                                <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
-                                <Area type="monotone" dataKey="total" name="Összes Bejelentett" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" activeDot={{ r: 6, strokeWidth: 0, fill: '#3b82f6' }} />
-                                <Area type="monotone" dataKey="registered" name="Nyilvántartásba Vettek" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorRegistered)" activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }} />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </div>
-            )}
-
-            {viewMode === 'parties' && (
-                <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-                        <h3 className="text-lg font-bold text-slate-800 dark:text-white">Pártok Bejelentkezési Versenye</h3>
-                        <div className="flex flex-wrap gap-2">
-                            <select
-                                value={partyStatusFilter}
-                                onChange={(e) => setPartyStatusFilter(e.target.value)}
-                                className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg px-3 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                            >
-                                <option value="all">Minden bejelentett jelölt</option>
-                                <option value="requested">Csak: Ajánlóívet igényelt/átvett</option>
-                                <option value="submitted">Csak: Ajánlóívet leadta/Bejelentve</option>
-                                <option value="registered">Csak: Nyilvántartásba véve (Jogerős is)</option>
-                            </select>
+                {viewMode === 'overall' && (
+                    <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
+                        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6">Általános Jelölti Trendek (Feldolgozottság)</h3>
+                        <div className="h-[400px] w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
+                                    <defs>
+                                        <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                        </linearGradient>
+                                        <linearGradient id="colorRegistered" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.15} />
+                                    <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor="end" />
+                                    <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
+                                    <Area type="monotone" dataKey="total" name="Összes Bejelentett" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" activeDot={{ r: 6, strokeWidth: 0, fill: '#3b82f6' }} />
+                                    <Area type="monotone" dataKey="registered" name="Nyilvántartásba Vettek" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorRegistered)" activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }} />
+                                </AreaChart>
+                            </ResponsiveContainer>
                         </div>
                     </div>
-                    <div className="h-[400px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.15} />
-                                <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor="end" />
-                                <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
-                                <Line type="monotone" dataKey={`fidesz_${partyStatusFilter}`} name="FIDESZ-KDNP" stroke="#f97316" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
-                                <Line type="monotone" dataKey={`tisza_${partyStatusFilter}`} name="TISZA" stroke="#06b6d4" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
-                                <Line type="monotone" dataKey={`dk_${partyStatusFilter}`} name="Demokratikus Koalíció" stroke="#3b82f6" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
-                                <Line type="monotone" dataKey={`mhm_${partyStatusFilter}`} name="Mi Hazánk" stroke="#10b981" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
-                            </LineChart>
-                        </ResponsiveContainer>
+                )}
+
+                {viewMode === 'parties' && (
+                    <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-white">Pártok Bejelentkezési Versenye</h3>
+                            <div className="flex flex-wrap gap-2">
+                                <select
+                                    value={partyStatusFilter}
+                                    onChange={(e) => setPartyStatusFilter(e.target.value)}
+                                    className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg px-3 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                                >
+                                    <option value="all">Minden bejelentett jelölt</option>
+                                    <option value="requested">Csak: Ajánlóívet igényelt/átvett</option>
+                                    <option value="submitted">Csak: Ajánlóívet leadta/Bejelentve</option>
+                                    <option value="registered">Csak: Nyilvántartásba véve (Jogerős is)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="h-[400px] w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.15} />
+                                    <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor="end" />
+                                    <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
+                                    <Line type="monotone" dataKey={`fidesz_${partyStatusFilter}`} name="FIDESZ-KDNP" stroke="#f97316" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
+                                    <Line type="monotone" dataKey={`tisza_${partyStatusFilter}`} name="TISZA" stroke="#06b6d4" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
+                                    <Line type="monotone" dataKey={`dk_${partyStatusFilter}`} name="Demokratikus Koalíció" stroke="#3b82f6" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
+                                    <Line type="monotone" dataKey={`mhm_${partyStatusFilter}`} name="Mi Hazánk" stroke="#10b981" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </motion.div>
     );
 }

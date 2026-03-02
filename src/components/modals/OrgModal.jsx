@@ -1,5 +1,5 @@
 import { useRef, useState, useMemo } from 'react';
-import { X, Target, Users, Building2, Download, Loader2, Search, Filter } from 'lucide-react';
+import { X, Target, Users, Building2, Download, Loader2, Search, Filter, Share2, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StatusBadge } from '../ui';
 import { toPng } from 'html-to-image';
@@ -15,6 +15,7 @@ const STATUS_GROUPS = [
 export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
     const cardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
     const [statusFilter, setStatusFilter] = useState('all');
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('name'); // 'name' | 'county' | 'status'
@@ -76,6 +77,33 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
             alert('Hiba történt a kép generálása közben.');
         } finally {
             setIsExporting(false);
+        }
+    };
+
+    const handleShare = async () => {
+        const shareData = {
+            title: `Választás '26 - ${selectedOrg.coalitionAbbr || selectedOrg.r_nev || selectedOrg.nev}`,
+            text: `🏛️ ${selectedOrg.coalitionFullName || selectedOrg.nev}\nLefedettség: ${selectedOrg.oevkCoverage}/106 OEVK (${selectedOrg.coveragePercent}%)\nÖsszes jelölt: ${selectedOrg.candidateCount} fő\n\nNézd meg a részleteket a Választás '26 appban:`,
+            url: window.location.href, // Or a specific deep link
+        };
+
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error('Error sharing:', err);
+                }
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            try {
+                await navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 2000);
+            } catch (err) {
+                console.error('Failed to copy fallback:', err);
+            }
         }
     };
 
@@ -158,7 +186,7 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
                                     </span>
                                 </button>
                             ))}
-                            <div className="ml-auto flex items-center gap-2">
+                            <div className="ml-auto flex flex-wrap items-center gap-2 mt-2 md:mt-0">
                                 <select
                                     value={sortBy}
                                     onChange={e => setSortBy(e.target.value)}
@@ -168,12 +196,22 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
                                     <option value="county">Rendezés: Megye</option>
                                     <option value="status">Rendezés: Státusz</option>
                                 </select>
-                                <button onClick={exportImage} disabled={isExporting}
-                                    className="flex items-center gap-1.5 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/50 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all disabled:opacity-75 disabled:cursor-wait"
-                                >
-                                    {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-                                    <span>Fejléc kép</span>
-                                </button>
+                                <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl shadow-sm">
+                                    <button
+                                        onClick={handleShare}
+                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none"
+                                        title="Megosztás"
+                                    >
+                                        {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Share2 className="w-3.5 h-3.5" />}
+                                        <span className="hidden sm:inline">{isCopied ? 'Másolva' : 'Megosztás'}</span>
+                                    </button>
+                                    <button onClick={exportImage} disabled={isExporting}
+                                        className="flex items-center gap-1.5 bg-white dark:bg-slate-700 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all disabled:opacity-75 disabled:cursor-wait"
+                                    >
+                                        {isExporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                                        <span className="hidden sm:inline">Képként mentés</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         {/* Keresőmező */}

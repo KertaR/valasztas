@@ -1,5 +1,5 @@
-import { useRef, useState, useMemo } from 'react';
-import { X, Users, Map, Download, Loader2, TrendingUp, Shield } from 'lucide-react';
+import { useRef, useState, useMemo, useEffect } from 'react';
+import { X, Users, Map, Download, Loader2, TrendingUp, Shield, Share2, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StatusBadge } from '../ui';
 import { toPng } from 'html-to-image';
@@ -34,6 +34,7 @@ const getPartyColor = (partyName) => {
 export default function OevkModal({ selectedOevk, enrichedData, onClose }) {
     const cardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
+    const [isCopied, setIsCopied] = useState(false);
 
     // *** Minden hook UNCONDITIONALLY, early return ELŐTT ***
     const districtCandidates = useMemo(() => {
@@ -68,6 +69,33 @@ export default function OevkModal({ selectedOevk, enrichedData, onClose }) {
             alert('Hiba történt a kép generálása közben.');
         } finally {
             setIsExporting(false);
+        }
+    };
+
+    const handleShare = async () => {
+        const shareData = {
+            title: `Választás '26 - ${selectedOevk.evk_nev}`,
+            text: `📍 ${selectedOevk.evk_nev}\nSzékhely: ${selectedOevk.szekhely}\nVálasztópolgárok: ${selectedOevk.letszam?.indulo?.toLocaleString('hu-HU')} fő\nInduló jelöltek: ${districtCandidates.length} fő.\n\nNézd meg a részleteket a Választás '26 appban:`,
+            url: window.location.href, // Or a specific deep link if routing is configured
+        };
+
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+            try {
+                await navigator.share(shareData);
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error('Error sharing:', err);
+                }
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            try {
+                await navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 2000);
+            } catch (err) {
+                console.error('Failed to copy fallback:', err);
+            }
         }
     };
 
@@ -161,14 +189,24 @@ export default function OevkModal({ selectedOevk, enrichedData, onClose }) {
                                 </span>
                             )}
                         </h3>
-                        <button
-                            onClick={exportImage}
-                            disabled={isExporting}
-                            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50 px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-all disabled:opacity-75 disabled:cursor-wait"
-                        >
-                            {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                            {isExporting ? 'Kép készítése...' : 'Kép Mentése a Fejlécről'}
-                        </button>
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+                            <button
+                                onClick={handleShare}
+                                className="flex items-center justify-center gap-2 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-500"
+                                title="Megosztás"
+                            >
+                                {isCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
+                                <span>{isCopied ? 'Másolva!' : 'Megosztás'}</span>
+                            </button>
+                            <button
+                                onClick={exportImage}
+                                disabled={isExporting}
+                                className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50 px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-all disabled:opacity-75 disabled:cursor-wait focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                                {isExporting ? 'Készül...' : 'Képként mentés az adatokról'}
+                            </button>
+                        </div>
                     </div>
 
                     {/* Jelöltek táblázat */}
