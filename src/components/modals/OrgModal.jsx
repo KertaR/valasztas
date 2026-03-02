@@ -19,30 +19,9 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('name'); // 'name' | 'county' | 'status'
 
-    if (!selectedOrg) return null;
-
-    const exportImage = async () => {
-        if (!cardRef.current) return;
-        setIsExporting(true);
-        try {
-            const dataUrl = await toPng(cardRef.current, {
-                cacheBust: true,
-                backgroundColor: '#ffffff',
-                pixelRatio: 3
-            });
-            const link = document.createElement('a');
-            link.download = `szervezet_adatlap_${selectedOrg.r_nev || selectedOrg.nev.substring(0, 10)}.png`;
-            link.href = dataUrl;
-            link.click();
-        } catch (err) {
-            console.error('Image export failed:', err);
-            alert('Hiba történt a kép generálása közben.');
-        } finally {
-            setIsExporting(false);
-        }
-    };
-
+    // *** Minden hook UNCONDITIONALLY, early return ELŐTT ***
     const allOrgCandidates = useMemo(() => {
+        if (!selectedOrg) return [];
         return enrichedData.candidates
             .filter(c => {
                 if (selectedOrg.szkod === 0) return !c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0;
@@ -50,18 +29,6 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
                 return c.jelolo_szervezetek && c.jelolo_szervezetek.some(id => targetIds.includes(id));
             });
     }, [enrichedData.candidates, selectedOrg]);
-
-    // Include excluded (all statuses)
-    const allIncludingExcluded = useMemo(() => {
-        return enrichedData.candidates
-            .concat(
-                (enrichedData.allCandidates || []).filter(c => c.isExcluded &&
-                    (selectedOrg.szkod === 0
-                        ? (!c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0)
-                        : (c.jelolo_szervezetek && c.jelolo_szervezetek.some(id => [selectedOrg.szkod, ...(selectedOrg.coalitionPartnerIds || [])].includes(id))))
-                )
-            );
-    }, [enrichedData, selectedOrg]);
 
     const statusGroupCounts = useMemo(() => {
         const counts = { all: allOrgCandidates.length };
@@ -88,6 +55,29 @@ export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
         });
         return list;
     }, [allOrgCandidates, statusFilter, searchTerm, sortBy]);
+
+    if (!selectedOrg) return null;
+
+    const exportImage = async () => {
+        if (!cardRef.current) return;
+        setIsExporting(true);
+        try {
+            const dataUrl = await toPng(cardRef.current, {
+                cacheBust: true,
+                backgroundColor: '#ffffff',
+                pixelRatio: 3
+            });
+            const link = document.createElement('a');
+            link.download = `szervezet_adatlap_${selectedOrg.r_nev || selectedOrg.nev.substring(0, 10)}.png`;
+            link.href = dataUrl;
+            link.click();
+        } catch (err) {
+            console.error('Image export failed:', err);
+            alert('Hiba történt a kép generálása közben.');
+        } finally {
+            setIsExporting(false);
+        }
+    };
 
     return (
         <AnimatePresence>

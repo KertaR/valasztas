@@ -35,6 +35,19 @@ export default function OevkModal({ selectedOevk, enrichedData, onClose }) {
     const cardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
 
+    // *** Minden hook UNCONDITIONALLY, early return ELŐTT ***
+    const districtCandidates = useMemo(() => {
+        if (!selectedOevk) return [];
+        return enrichedData.candidates
+            .filter(c => c.maz === selectedOevk.maz && c.evk === selectedOevk.evk)
+            .sort((a, b) => {
+                const aReg = a.statusName.startsWith('Nyilvántartásba') ? 0 : 1;
+                const bReg = b.statusName.startsWith('Nyilvántartásba') ? 0 : 1;
+                if (aReg !== bReg) return aReg - bReg;
+                return a.neve.localeCompare(b.neve, 'hu');
+            });
+    }, [enrichedData.candidates, selectedOevk]);
+
     if (!selectedOevk) return null;
 
     const exportImage = async () => {
@@ -57,18 +70,6 @@ export default function OevkModal({ selectedOevk, enrichedData, onClose }) {
             setIsExporting(false);
         }
     };
-
-    const districtCandidates = useMemo(() => {
-        return enrichedData.candidates
-            .filter(c => c.maz === selectedOevk.maz && c.evk === selectedOevk.evk)
-            .sort((a, b) => {
-                // Nyilvántartottak előre, aztán abc
-                const aReg = a.statusName.startsWith('Nyilvántartásba') ? 0 : 1;
-                const bReg = b.statusName.startsWith('Nyilvántartásba') ? 0 : 1;
-                if (aReg !== bReg) return aReg - bReg;
-                return a.neve.localeCompare(b.neve, 'hu');
-            });
-    }, [enrichedData.candidates, selectedOevk]);
 
     const registeredCount = districtCandidates.filter(c => c.statusName.startsWith('Nyilvántartásba')).length;
     const totalCount = districtCandidates.length;
