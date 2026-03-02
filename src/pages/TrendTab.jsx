@@ -48,6 +48,7 @@ const generateHistoryDates = () => {
 export default function TrendTab({ enrichedData }) {
     const [trendData, setTrendData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [loadProgress, setLoadProgress] = useState({ loaded: 0, total: 0 });
     const [viewMode, setViewMode] = useState('overall'); // 'overall', 'parties'
     const [partyStatusFilter, setPartyStatusFilter] = useState('all'); // 'all', 'registered', 'requested', 'submitted'
 
@@ -56,74 +57,69 @@ export default function TrendTab({ enrichedData }) {
         const loadTrends = async () => {
             setIsLoading(true);
             const dateInfos = generateHistoryDates();
-            const dataPromises = dateInfos.map(async (info) => {
-                const cacheKey = `nvi_trend_v3_${info.verStr}`;
-                const cached = localStorage.getItem(cacheKey);
-                if (cached) {
-                    try {
-                        return JSON.parse(cached);
-                    } catch (e) {
-                        // ignore error and fetch again
+
+            if (isMounted) setLoadProgress({ loaded: 0, total: dateInfos.length });
+
+            // Batch-es párhuzamos letöltés (20 kérés egyszerre max)
+            const BATCH_SIZE = 20;
+            const allResults = [];
+            let loadedCount = 0;
+
+            for (let i = 0; i < dateInfos.length; i += BATCH_SIZE) {
+                if (!isMounted) break;
+                const batch = dateInfos.slice(i, i + BATCH_SIZE);
+
+                const batchPromises = batch.map(async (info) => {
+                    const cacheKey = `nvi_trend_v3_${info.verStr}`;
+                    const cached = localStorage.getItem(cacheKey);
+                    if (cached) {
+                        try { return JSON.parse(cached); } catch (e) { /* ignore */ }
                     }
-                }
 
-                const data = await fetchJson(`https://vtr.valasztas.hu/ogy2026/data/${info.verStr}/ver/EgyeniJeloltek.json`);
-                if (!data || !data.list) return null;
+                    const data = await fetchJson(`https://vtr.valasztas.hu/ogy2026/data/${info.verStr}/ver/EgyeniJeloltek.json`);
+                    if (!data || !data.list) return null;
 
-                const candidates = data.list;
-                const total = candidates.length;
-                const registered = candidates.filter(c => c.allapot === "1" || c.allapot === "5").length;
-                const getPartyStats = (orgId) => {
-                    const cands = candidates.filter(c => c.jelolo_szervezetek?.includes(orgId));
-                    return {
-                        all: cands.length,
-                        requested: cands.filter(c => ["16", "12", "14", "0", "23", "1", "5", "2", "4"].includes(c.allapot)).length,
-                        submitted: cands.filter(c => ["14", "0", "23", "1", "5", "2", "4"].includes(c.allapot)).length,
-                        registered: cands.filter(c => ["1", "5"].includes(c.allapot)).length,
+                    const candidates = data.list;
+                    const total = candidates.length;
+                    const registered = candidates.filter(c => c.allapot === "1" || c.allapot === "5").length;
+                    const getPartyStats = (orgId) => {
+                        const cands = candidates.filter(c => c.jelolo_szervezetek?.includes(orgId));
+                        return {
+                            all: cands.length,
+                            requested: cands.filter(c => ["16", "12", "14", "0", "23", "1", "5", "2", "4"].includes(c.allapot)).length,
+                            submitted: cands.filter(c => ["14", "0", "23", "1", "5", "2", "4"].includes(c.allapot)).length,
+                            registered: cands.filter(c => ["1", "5"].includes(c.allapot)).length,
+                        };
                     };
-                };
 
-                const fidesz = getPartyStats(1004);
-                const tisza = getPartyStats(1010);
-                const dk = getPartyStats(1001);
-                const mhm = getPartyStats(1002);
+                    const fidesz = getPartyStats(1004);
+                    const tisza = getPartyStats(1010);
+                    const dk = getPartyStats(1001);
+                    const mhm = getPartyStats(1002);
 
-                const result = {
-                    name: info.label,
-                    total,
-                    registered,
-                    fidesz_all: fidesz.all,
-                    fidesz_requested: fidesz.requested,
-                    fidesz_submitted: fidesz.submitted,
-                    fidesz_registered: fidesz.registered,
+                    const result = {
+                        name: info.label,
+                        total,
+                        registered,
+                        fidesz_all: fidesz.all, fidesz_requested: fidesz.requested, fidesz_submitted: fidesz.submitted, fidesz_registered: fidesz.registered,
+                        tisza_all: tisza.all, tisza_requested: tisza.requested, tisza_submitted: tisza.submitted, tisza_registered: tisza.registered,
+                        dk_all: dk.all, dk_requested: dk.requested, dk_submitted: dk.submitted, dk_registered: dk.registered,
+                        mhm_all: mhm.all, mhm_requested: mhm.requested, mhm_submitted: mhm.submitted, mhm_registered: mhm.registered,
+                    };
 
-                    tisza_all: tisza.all,
-                    tisza_requested: tisza.requested,
-                    tisza_submitted: tisza.submitted,
-                    tisza_registered: tisza.registered,
+                    try { localStorage.setItem(cacheKey, JSON.stringify(result)); } catch (e) { }
+                    return result;
+                });
 
-                    dk_all: dk.all,
-                    dk_requested: dk.requested,
-                    dk_submitted: dk.submitted,
-                    dk_registered: dk.registered,
+                const batchResults = await Promise.all(batchPromises);
+                allResults.push(...batchResults);
 
-                    mhm_all: mhm.all,
-                    mhm_requested: mhm.requested,
-                    mhm_submitted: mhm.submitted,
-                    mhm_registered: mhm.registered,
-                };
+                loadedCount += batch.length;
+                if (isMounted) setLoadProgress({ loaded: loadedCount, total: dateInfos.length });
+            }
 
-                try {
-                    localStorage.setItem(cacheKey, JSON.stringify(result));
-                } catch (e) { }
-
-                return result;
-            });
-
-            const results = await Promise.all(dataPromises);
             if (isMounted) {
-                // Csak a sikeresen letöltött adatokat tartjuk meg, és időrendbe is vannak sorolva a Promise.all miatt (ami megtartja az eredeti tömb sorrendjét)
-                setTrendData(results.filter(r => r !== null));
+                setTrendData(allResults.filter(r => r !== null));
                 setIsLoading(false);
             }
         };
@@ -138,12 +134,27 @@ export default function TrendTab({ enrichedData }) {
     const currentStats = trendData.length > 0 ? trendData[trendData.length - 1] : null;
 
     if (isLoading) {
+        const progressPercent = loadProgress.total > 0 ? Math.round((loadProgress.loaded / loadProgress.total) * 100) : 0;
         return (
             <div className="flex flex-col items-center justify-center p-32 gap-6 max-w-7xl mx-auto h-[60vh]">
                 <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
-                <div className="text-center">
+                <div className="text-center w-full max-w-sm">
                     <h2 className="text-xl font-black text-slate-800 dark:text-white mb-2">Trendhistorikus Adatok Letöltése</h2>
-                    <p className="text-slate-500 font-bold max-w-md">Az elmúlt 5 nap időpont-alapú adatszolgáltatásainak lekérdezése folyamatban van az NVI szerveréről...</p>
+                    <p className="text-slate-500 font-bold max-w-md mb-4">Az időpont-alapú adatszolgáltatások letöltése folyamatban...</p>
+                    {loadProgress.total > 0 && (
+                        <div className="w-full">
+                            <div className="flex justify-between text-xs font-bold text-slate-500 mb-1.5">
+                                <span>Feldolgozva: {loadProgress.loaded} / {loadProgress.total}</span>
+                                <span>{progressPercent}%</span>
+                            </div>
+                            <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-300"
+                                    style={{ width: `${progressPercent}%` }}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         );

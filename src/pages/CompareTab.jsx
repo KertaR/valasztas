@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { UserCircle2, Scale, Building2, Download, Loader2, Info, Users, PieChart, Activity } from 'lucide-react';
+import { UserCircle2, Scale, Building2, Download, Loader2, Info, Users, PieChart, Activity, MapPin } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { motion } from 'framer-motion';
 

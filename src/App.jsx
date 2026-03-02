@@ -3,7 +3,7 @@ import { Moon, Sun, X, Menu, Globe } from 'lucide-react';
 
 import {
     DashboardTab, CandidatesTab, CompareTab,
-    OrganizationsTab, OevkTab, CountiesTab, TransfersTab, SeatCalculatorTab, ChangelogTab, TrendTab, OevkMapTab, ErrorBoundary, NationalListsTab
+    OrganizationsTab, OevkTab, CountiesTab, TransfersTab, SeatCalculatorTab, ChangelogTab, TrendTab, OevkMapTab, ErrorBoundary, NationalListsTab, CoalitionBuilderTab
 } from './pages';
 
 import {
@@ -214,6 +214,8 @@ export default function App() {
                     {activeTab === 'valtozasok' && <ChangelogTab enrichedData={enrichedData} setSelectedCandidate={setSelectedCandidate} setSelectedOrg={setSelectedOrg} />}
 
                     {activeTab === 'trendek' && <TrendTab enrichedData={enrichedData} />}
+
+                    {activeTab === 'osszefoglas' && <CoalitionBuilderTab enrichedData={enrichedData} />}
 
                     {activeTab === 'terkep' && (
                         <ErrorBoundary>

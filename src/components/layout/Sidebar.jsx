@@ -1,6 +1,6 @@
 import {
     Globe, LayoutDashboard, Users, Scale, TrendingUp,
-    Building, Map, PieChart, Moon, Sun, Trash2, X, Search, ArrowRightLeft, Calculator, Activity, MapPin, List
+    Building, Map, PieChart, Moon, Sun, Trash2, X, Search, ArrowRightLeft, Calculator, Activity, MapPin, List, Network
 } from 'lucide-react';
 import NavItem from '../ui/NavItem';
 
@@ -61,6 +61,7 @@ export default function Sidebar({
                     <NavItem icon={<ArrowRightLeft className="w-5 h-5" />} label="Átjelentkezettek" active={activeTab === 'atjelentkezes'} onClick={() => switchTab('atjelentkezes')} />
                     <NavItem icon={<Calculator className="w-5 h-5 text-indigo-500 font-bold" />} label="Mandátumbecslő" active={activeTab === 'kalkulator'} onClick={() => switchTab('kalkulator')} />
                     <NavItem icon={<Scale className="w-5 h-5" />} label="Összehasonlítás" active={activeTab === 'osszehasonlitas'} onClick={() => switchTab('osszehasonlitas')} />
+                    <NavItem icon={<Network className="w-5 h-5 text-indigo-500" />} label="Összefogás Tervező" active={activeTab === 'osszefoglas'} onClick={() => switchTab('osszefoglas')} />
                     <NavItem icon={<Building className="w-5 h-5" />} label="Szervezetek" badge={enrichedData.organizations?.length} active={activeTab === 'szervezetek'} onClick={() => switchTab('szervezetek')} />
                     <NavItem icon={<List className="w-5 h-5" />} label="Országos Listák" active={activeTab === 'orszagos_listak'} onClick={() => switchTab('orszagos_listak')} />
                     <NavItem icon={<Map className="w-5 h-5" />} label="Választókerületek" badge={enrichedData.districts?.length} active={activeTab === 'oevk'} onClick={() => switchTab('oevk')} />
