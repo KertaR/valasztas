@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 
-export default function DashboardTab({ enrichedData, data, setSelectedOevk, setSelectedCandidate, onStatusClick }) {
+export default function DashboardTab({ enrichedData, data, setSelectedOevk, setSelectedCandidate, onStatusClick, onCandidatesDiffClick }) {
     const dashboardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
 
@@ -63,7 +63,7 @@ export default function DashboardTab({ enrichedData, data, setSelectedOevk, setS
 
             <div ref={dashboardRef} className="space-y-6 bg-slate-100 dark:bg-slate-950 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 transition-colors">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                    <StatCard icon={<Users className="w-7 h-7 text-blue-600" />} title="Induló Jelöltek" value={enrichedData.candidates.length} color="bg-blue-100" diff={enrichedData.stats.diffs?.candidates} />
+                    <StatCard icon={<Users className="w-7 h-7 text-blue-600" />} title="Induló Jelöltek" value={enrichedData.candidates.length} color="bg-blue-100" diff={enrichedData.stats.diffs?.candidates} onClick={onCandidatesDiffClick} />
                     <StatCard icon={<Building2 className="w-7 h-7 text-purple-600" />} title="Jelölő Szervezetek" value={data.szervezetek.length} color="bg-purple-100" diff={enrichedData.stats.diffs?.organizations} />
                     <StatCard icon={<Map className="w-7 h-7 text-emerald-600" />} title="Választókerületek" value={enrichedData.districts.length} color="bg-emerald-100" diff={enrichedData.stats.diffs?.districts} />
                     <StatCard icon={<UsersRound className="w-7 h-7 text-amber-600" />} title="Szavazásra Jogosultak" value={enrichedData.stats.totalEligibleVoters} color="bg-amber-100" diff={enrichedData.stats.diffs?.voters} />

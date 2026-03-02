@@ -8,7 +8,7 @@ import {
 
 import {
     Sidebar, GlobalSearchModal, ToastContainer,
-    CandidateModal, OevkModal, OrgModal, CountyModal,
+    CandidateModal, OevkModal, OrgModal, CountyModal, CandidatesDiffModal,
     UploadScreen
 } from './components';
 
@@ -26,6 +26,7 @@ export default function App() {
     const [selectedCountyDetail, setSelectedCountyDetail] = useState(null);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [isCandidatesDiffOpen, setIsCandidatesDiffOpen] = useState(false);
 
     const handleClearApp = () => {
         setActiveTab('dashboard');
@@ -151,6 +152,7 @@ export default function App() {
             <OevkModal selectedOevk={selectedOevk} enrichedData={enrichedData} onClose={() => setSelectedOevk(null)} />
             <OrgModal selectedOrg={selectedOrg} enrichedData={enrichedData} onClose={() => setSelectedOrg(null)} />
             <CountyModal selectedCounty={selectedCountyDetail} enrichedData={enrichedData} onClose={() => setSelectedCountyDetail(null)} onSelectOevk={setSelectedOevk} />
+            <CandidatesDiffModal isOpen={isCandidatesDiffOpen} onClose={() => setIsCandidatesDiffOpen(false)} enrichedData={enrichedData} />
 
             {/* --- SIDEBAR COMPONENT --- */}
             <Sidebar
@@ -168,7 +170,7 @@ export default function App() {
             {/* --- FŐ TARTALOM --- */}
             <main className="flex-1 p-4 md:p-6 lg:p-10 overflow-auto w-full">
                 <div className="max-w-7xl mx-auto">
-                    {activeTab === 'dashboard' && <DashboardTab enrichedData={enrichedData} data={data} setSelectedOevk={setSelectedOevk} setSelectedCandidate={setSelectedCandidate} onStatusClick={handleStatusClick} />}
+                    {activeTab === 'dashboard' && <DashboardTab enrichedData={enrichedData} data={data} setSelectedOevk={setSelectedOevk} setSelectedCandidate={setSelectedCandidate} onStatusClick={handleStatusClick} onCandidatesDiffClick={() => setIsCandidatesDiffOpen(true)} />}
 
                     {activeTab === 'jeloltek' && <CandidatesTab
                         processedCandidates={processedCandidates}

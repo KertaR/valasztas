@@ -366,9 +366,28 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             .sort((a, b) => new Date(b.allapot_valt).getTime() - new Date(a.allapot_valt).getTime())
             .slice(0, 8);
 
+        // Helper: meghatározza, hogy egy státusz "kizárt"-e (nem aktív jelölt)
+        const isExcludedStatus = (statusName) => {
+            if (!statusName) return false;
+            const lower = statusName.toLowerCase();
+            return lower.includes('törölve') ||
+                lower.includes('elutasítva') ||
+                lower.includes('visszautasítva') ||
+                lower.includes('kiesett') ||
+                lower.includes('visszalépett') ||
+                lower.includes('visszavon') ||
+                lower.includes('nem kíván') ||
+                lower.includes('megszűnt');
+        };
+
         const diffs = { candidates: 0, organizations: 0, districts: 0, voters: 0 };
         if (yesterdayData) {
-            diffs.candidates = candidates.length - (yesterdayData.jeloltek?.length || 0);
+            // Tegnapi aktív (nem kizárt) jelöltek száma a pontos összehasonlításhoz
+            const yesterdayActiveCandCount = (yesterdayData.jeloltek || []).filter(c => {
+                const statusName = statusMap[c.allapot] || '';
+                return !isExcludedStatus(statusName);
+            }).length;
+            diffs.candidates = candidates.length - yesterdayActiveCandCount;
             diffs.organizations = organizations.length - (yesterdayData.szervezetek?.length || 0);
             diffs.districts = districts.length - (yesterdayData.oevk?.length || 0);
 
@@ -377,8 +396,39 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             diffs.voters = totalEligibleVoters - yesterdayTotalVoters;
         }
 
+        // 6. Removed candidates:
+        //    a) Teljesen eltűnt az adatbázisból (ID sincs ma)
+        //    b) Tegnap aktív volt, ma kizárt státuszú (ez csökkenti az "Induló Jelöltek" számát)
+        const todayCandIdSet = new Set(allCandidates.map(c => String(c.ej_id || c.szj)));
+
+        // a) Teljesen eltűnt jelöltek
+        const goneCandidates = yesterdayData ? (yesterdayData.jeloltek || []).filter(c => {
+            const id = String(c.ej_id || c.szj);
+            return !todayCandIdSet.has(id);
+        }).map(c => ({
+            ...c,
+            statusName: yesterdayJeloltStatusMap[String(c.ej_id || c.szj)] || 'Ismeretlen',
+            removalReason: 'Eltűnt az adatbázisból',
+            isRemoved: true
+        })) : [];
+
+        // b) Tegnap aktív, ma kizárt (státuszuk megváltozott kizáróra a snapshot összehasonlítás szerint)
+        const newlyExcludedCandidates = allCandidates.filter(c => {
+            if (!c.isExcluded) return false;       // csak a ma kizártak
+            if (!c.hasStatusChanged) return false;  // csak ha változott a státusz
+            const oldStatus = c.oldStatusName;
+            if (!oldStatus) return false;           // csak ha volt tegnapi adat
+            return !isExcludedStatus(oldStatus);   // és tegnap aktív volt
+        }).map(c => ({
+            ...c,
+            removalReason: `Státusz: ${c.oldStatusName} → ${c.statusName}`,
+            isRemoved: true
+        }));
+
+        const removedCandidates = [...goneCandidates, ...newlyExcludedCandidates];
+
         return {
-            allCandidates, candidates, districts, organizations, countiesData, formationsProgress,
+            allCandidates, candidates, districts, organizations, countiesData, formationsProgress, removedCandidates,
             settlements: data.telepulesek || [],
             oevkPoligonok: {
                 type: 'FeatureCollection',
