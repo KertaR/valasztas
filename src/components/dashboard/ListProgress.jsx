@@ -1,16 +1,27 @@
 import { Target } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function ListProgress({ formations = [] }) {
+    const listVariant = {
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    };
+
+    const itemVariant = {
+        hidden: { opacity: 0, y: 10 },
+        show: { opacity: 1, y: 0 }
+    };
+
     return (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 md:p-6 transition-colors">
+        <div className="glass-card rounded-xl p-5 md:p-6 transition-colors">
             <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
                 <Target className="w-5 h-5 text-indigo-500" />
                 Listaállítási Haladás
             </h3>
-            <div className="space-y-8">
+            <motion.div variants={listVariant} initial="hidden" animate="show" className="space-y-8">
                 {formations
                     .filter(f => f.totalOevkCount > 0)
-                    .slice(0, 4)
+                    .slice(0, formations.filter(f => f.isSure).length + 1)
                     .map(f => {
                         const oevkProgress = Math.min(100, (f.regOevkCount / 71) * 100);
                         const oevkTotProgress = Math.min(100, (f.totalOevkCount / 71) * 100);
@@ -18,7 +29,7 @@ export default function ListProgress({ formations = [] }) {
                         const countyTotProgress = Math.min(100, (f.totalCountyCount / 15) * 100);
 
                         return (
-                            <div key={f.key} className="space-y-2">
+                            <motion.div variants={itemVariant} key={f.key} className="space-y-2 p-3 -mx-3 rounded-xl hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
                                 <div className="flex justify-between items-end">
                                     <div className="flex items-center gap-2">
                                         <span className="font-bold text-slate-800 dark:text-white text-sm truncate max-w-[150px]">{f.fullName}</span>
@@ -62,11 +73,11 @@ export default function ListProgress({ formations = [] }) {
                                         ></div>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         );
                     })
                 }
-            </div>
+            </motion.div>
             <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-[10px] text-slate-400 dark:text-slate-500 italic leading-tight">
                 * A választási törvény szerint országos listát az a párt (vagy pártszövetség) állíthat, amely legalább 14 vármegyében és a fővárosban, összesen legalább 71 egyéni választókerületben indulót ("Bejelentve" vagy újabb státusz) állított.
             </div>

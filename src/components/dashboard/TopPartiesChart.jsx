@@ -14,7 +14,7 @@ export default function TopPartiesChart({ organizations }) {
         }));
 
     return (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 md:p-6 transition-colors">
+        <div className="glass-card rounded-xl p-5 md:p-6 transition-colors">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
                 <h3 className="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
                     <BarChart className="w-5 h-5 text-slate-500 dark:text-slate-400" />

@@ -6,7 +6,7 @@ export default function ContestedDistrict({ district, onClick }) {
     return (
         <div
             onClick={() => onClick(district)}
-            className="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-xl shadow-md border border-indigo-800 p-5 md:p-6 text-white relative overflow-hidden cursor-pointer hover:shadow-lg transition-all group"
+            className="bg-gradient-to-br from-indigo-600 to-indigo-800 dark:from-indigo-800 dark:to-indigo-950 rounded-xl shadow-lg border border-indigo-500/30 p-5 md:p-6 text-white relative overflow-hidden cursor-pointer hover:shadow-xl hover:border-indigo-400/50 hover:-translate-y-1 transition-all duration-300 group"
         >
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
                 <Activity className="w-24 h-24" />

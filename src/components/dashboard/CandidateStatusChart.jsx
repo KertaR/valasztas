@@ -35,7 +35,7 @@ export default function CandidateStatusChart({ statusCategories, statusBreakdown
     };
 
     return (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 md:p-6 transition-colors">
+        <div className="glass-card rounded-xl p-5 md:p-6 transition-colors">
             <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-slate-500 dark:text-slate-400" />
                 Feldolgozottság Állapota
@@ -86,12 +86,12 @@ export default function CandidateStatusChart({ statusCategories, statusBreakdown
                         <div className="bg-[#fca5a5] h-full transition-all duration-1000" style={{ width: `${(statusCategories.visszautasitva_pre / Math.max(1, totalCount)) * 100}%` }}></div>
                         <div className="bg-[#991b1b] h-full transition-all duration-1000" style={{ width: `${(statusCategories.visszautasitva_final / Math.max(1, totalCount)) * 100}%` }}></div>
                     </div>
-                    <div className="flex flex-col gap-1.5 text-sm bg-slate-50 dark:bg-slate-800/50 p-3 lg:p-4 rounded-xl border border-slate-100 dark:border-slate-800 transition-colors">
+                    <div className="flex flex-col gap-1.5 text-sm bg-white/50 dark:bg-slate-800/50 p-3 lg:p-4 rounded-xl border border-slate-200/50 dark:border-slate-800 transition-colors">
                         {statusBreakdown.filter(s => s.count > 0).map((status, idx) => (
                             <div
                                 key={idx}
                                 onClick={() => onStatusClick && onStatusClick(status.name)}
-                                className={`flex items-center justify-between group p-2 rounded-lg transition-all ${onStatusClick ? 'cursor-pointer hover:bg-white dark:hover:bg-slate-800 shadow-sm hover:shadow active:scale-[0.98]' : ''}`}
+                                className={`flex items-center justify-between group p-2 rounded-lg transition-all ${onStatusClick ? 'cursor-pointer hover:bg-white dark:hover:bg-slate-800 hover:shadow-md active:scale-[0.98]' : ''}`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="w-2.5 h-2.5 rounded-full shadow-sm flex-shrink-0" style={{ backgroundColor: colors[status.type] || '#cbd5e1' }}></div>

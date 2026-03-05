@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@layer components {
+    .glass-card {
+        @apply bg-white dark:bg-slate-900 rounded-xl shadow-md border border-slate-200 dark:border-slate-800;
+    }
+}
+
 html.dark {
     color-scheme: dark;
 }

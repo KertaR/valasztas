@@ -1,4 +1,5 @@
 import { Clock, Calendar, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const statusColor = (statusName = '') => {
     const s = statusName.toLowerCase();
@@ -11,8 +12,18 @@ const statusColor = (statusName = '') => {
 };
 
 export default function RecentChanges({ recentUpdates, setSelectedCandidate }) {
+    const listVariant = {
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    };
+
+    const itemVariant = {
+        hidden: { opacity: 0, x: -10 },
+        show: { opacity: 1, x: 0 }
+    };
+
     return (
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 md:p-6 flex-1 flex flex-col transition-colors">
+        <div className="glass-card rounded-xl p-5 md:p-6 flex-1 flex flex-col transition-colors">
             <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
                 <Clock className="w-5 h-5 text-blue-500 dark:text-blue-400" />
                 Legutóbbi Változások
@@ -22,15 +33,17 @@ export default function RecentChanges({ recentUpdates, setSelectedCandidate }) {
                     </span>
                 )}
             </h3>
-            <div className="flex flex-col gap-2 overflow-y-auto pr-1 flex-1 max-h-[340px] custom-scrollbar">
+            <motion.div variants={listVariant} initial="hidden" animate="show" className="flex flex-col gap-2 overflow-y-auto pr-1 flex-1 max-h-[340px] custom-scrollbar">
                 {recentUpdates.map((update, idx) => {
                     const { dot, bg } = statusColor(update.statusName);
                     const prevStatus = update.oldStatusName;
                     const hasChange = prevStatus && prevStatus !== update.statusName;
                     return (
-                        <div
+                        <motion.div
+                            variants={itemVariant}
                             key={idx}
-                            className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 hover:bg-blue-50/70 dark:hover:bg-blue-900/20 cursor-pointer group transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-800/50"
+                            whileHover={{ scale: 1.01 }}
+                            className="flex items-start gap-3 p-3 rounded-xl bg-slate-50/50 dark:bg-slate-800/40 hover:bg-white dark:hover:bg-slate-800/80 cursor-pointer group transition-colors border border-transparent hover:border-blue-200 dark:hover:border-blue-800/50 shadow-sm"
                             onClick={() => setSelectedCandidate(update)}
                         >
                             {/* Avatar / státusz dot */}
@@ -65,13 +78,13 @@ export default function RecentChanges({ recentUpdates, setSelectedCandidate }) {
                                     {update.allapot_valt ? new Date(update.allapot_valt).toLocaleString('hu-HU', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Ismeretlen'}
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     );
                 })}
                 {recentUpdates.length === 0 && (
                     <p className="text-sm text-slate-500 text-center py-8">Nincsenek friss változások a mai napra.</p>
                 )}
-            </div>
+            </motion.div>
         </div>
     );
 }
