@@ -64,7 +64,7 @@ export const processOrganizations = ({
             let nationalListStatus = null;
             let nationalListCandidates = [];
             if (data.listakEsJeloltek) {
-                const orgListInfo = data.listakEsJeloltek.find(l => l.jelolo_szervezetek && l.jelolo_szervezetek.includes(org.szkod) && l.lista_tip === 'O');
+                const orgListInfo = data.listakEsJeloltek.find(l => l.jelolo_szervezetek && l.jelolo_szervezetek.includes(org.szkod) && (l.lista_tip === 'O' || l.lista_tip === 'K'));
                 if (orgListInfo) {
                     nationalListStatus = statusMap[orgListInfo.allapot] || 'Bejelentve';
                     // Sorrendbe rakjuk a jelölteket egyből
