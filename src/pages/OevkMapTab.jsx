@@ -1,28 +1,11 @@
-import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
-import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
-import { geoContains } from 'd3-geo';
-import 'leaflet/dist/leaflet.css';
-import { MapPin, Users, Crosshair, ShieldAlert, X, Search, Loader2 } from 'lucide-react';
+import { useState, useMemo, useCallback } from 'react';
+import { MapPin } from 'lucide-react';
 import { useDataContext } from '../contexts';
 
-// Magyarország nagyjábóli határai: DNy (Lat, Lng), ÉK (Lat, Lng)
-const HUNGARY_BOUNDS = [
-    [45.7, 16.1], // Dél-Nyugat sarok
-    [48.6, 22.9]  // Észak-Kelet sarok
-];
-
-// ────────────────────────────────────────────────
-// Térkép Mozgató / Zoomoló Komponens
-// ────────────────────────────────────────────────
-function MapController({ centerPos }) {
-    const map = useMap();
-    useEffect(() => {
-        if (centerPos) {
-            map.flyTo(centerPos, 11, { animate: true, duration: 1.5 });
-        }
-    }, [centerPos, map]);
-    return null;
-}
+import MapSearchBar from '../components/map/MapSearchBar';
+import MapDisplay from '../components/map/MapDisplay';
+import MapSidebarInfo from '../components/map/MapSidebarInfo';
+import MapLegend from '../components/map/MapLegend';
 
 // ────────────────────────────────────────────────
 // Fő komponens
@@ -159,7 +142,7 @@ export default function OevkMapTab() {
     // ────────────────────────────────────────────────
     // Tooltip kezelők
     // ────────────────────────────────────────────────
-    const handlePathMouseEnter = (e, name) => {
+    const handlePathMouseEnter = useCallback((e, name) => {
         const dInfo = districtData[name];
         let html = `<strong>${dInfo?.districtInfo?.evk_nev || name}</strong><br/>`;
         if (dInfo) {
@@ -178,16 +161,16 @@ export default function OevkMapTab() {
             y: e.clientY - 10,
             html,
         });
-    };
+    }, [districtData, selectedParty]);
 
-    const handlePathMouseLeave = () => setTooltip(t => ({ ...t, visible: false }));
+    const handlePathMouseLeave = useCallback(() => setTooltip(t => ({ ...t, visible: false })), []);
 
-    const handlePathMouseMove = (e) => {
+    const handlePathMouseMove = useCallback((e) => {
         setTooltip(t => {
             if (!t.visible) return t;
             return { ...t, x: e.clientX, y: e.clientY - 10 };
         });
-    };
+    }, []);
 
     // ────────────────────────────────────────────────
     // Pártok szűrőhöz
@@ -211,50 +194,6 @@ export default function OevkMapTab() {
         .sort((a, b) => b.candidateCount - a.candidateCount);
 
     // ────────────────────────────────────────────────
-    // Cím keresés logika (Nominatim + D3 geoContains)
-    // ────────────────────────────────────────────────
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        if (!searchQuery.trim() || !oevkPoligonok?.features) return;
-
-        setIsSearching(true);
-        setSearchError(null);
-
-        try {
-            // Cím geokódolása Nominatim segítségével
-            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&countrycodes=hu`;
-            const response = await fetch(url);
-            const data = await response.json();
-
-            if (data && data.length > 0) {
-                const lon = parseFloat(data[0].lon);
-                const lat = parseFloat(data[0].lat);
-
-                // D3 geoContains-szal megnézzük melyik GeoJSON poligonba esik a pont
-                const point = [lon, lat];
-                const matchingFeature = oevkPoligonok.features.find(feature =>
-                    geoContains(feature, point)
-                );
-
-                if (matchingFeature) {
-                    const geoName = `${matchingFeature.properties.maz}-${matchingFeature.properties.evk}`;
-                    setSelectedDistrict(geoName);
-                    setMapCenter([lat, lon]); // Térkép fókuszálása
-                } else {
-                    setSearchError("A cím nem esik egyetlen magyarországi választókerületbe sem.");
-                }
-            } else {
-                setSearchError("Nem található a cím. Kérjük, pontosítsa a keresést (Pl.: Budapest, Kossuth Lajos tér 1-3)!");
-            }
-        } catch (err) {
-            console.error("Geocoding hiba:", err);
-            setSearchError("Hiba a címkeresés során. Próbálja újra.");
-        } finally {
-            setIsSearching(false);
-        }
-    };
-
-    // ────────────────────────────────────────────────
     // Render
     // ────────────────────────────────────────────────
     return (
@@ -272,31 +211,17 @@ export default function OevkMapTab() {
                 </div>
 
                 <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
-                    {/* Címkereső Input */}
-                    <form onSubmit={handleSearch} className="relative flex flex-col items-start w-full md:w-80 gap-1.5">
-                        <div className="relative flex items-center w-full">
-                            <input
-                                type="text"
-                                placeholder="Lakcím keresése (utca, hsz, város)"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl pl-10 pr-4 py-2 text-sm shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder-slate-400 dark:placeholder-slate-500"
-                            />
-                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                                {isSearching ? <Loader2 className="w-4 h-4 animate-spin text-indigo-500" /> : <Search className="w-4 h-4" />}
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={isSearching || !searchQuery.trim()}
-                                className="absolute right-1.5 top-1/2 -translate-y-1/2 px-2.5 py-1 bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                            >
-                                Keresés
-                            </button>
-                        </div>
-                        {searchError && (
-                            <span className="text-xs font-semibold text-red-500 dark:text-red-400 px-1.5 leading-tight">{searchError}</span>
-                        )}
-                    </form>
+                    <MapSearchBar
+                        searchQuery={searchQuery}
+                        setSearchQuery={setSearchQuery}
+                        isSearching={isSearching}
+                        setIsSearching={setIsSearching}
+                        searchError={searchError}
+                        setSearchError={setSearchError}
+                        oevkPoligonok={oevkPoligonok}
+                        setSelectedDistrict={setSelectedDistrict}
+                        setMapCenter={setMapCenter}
+                    />
 
                     {/* Szűrő */}
                     <select
@@ -328,216 +253,30 @@ export default function OevkMapTab() {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                 {/* Térkép */}
                 <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-2 md:p-4 select-none" style={{ position: 'relative' }}>
-                    {/* Leaflet MapContainer */}
-                    <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-sky-50/40 dark:bg-slate-950/40 z-0 map-wrapper">
-                        <MapContainer
-                            center={[47.16, 19.5]}
-                            zoom={7}
-                            minZoom={7}
-                            maxBounds={HUNGARY_BOUNDS}
-                            maxBoundsViscosity={1.0}
-                            scrollWheelZoom={true}
-                            style={{ height: '100%', width: '100%' }}
-                        >
-                            <MapController centerPos={mapCenter} />
-                            <TileLayer
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            />
-                            {oevkPoligonok?.features && (
-                                <GeoJSON
-                                    key={`${selectedParty}-${selectedDistrict}`}
-                                    data={oevkPoligonok}
-                                    style={(feature) => {
-                                        const geoName = `${feature.properties.maz}-${feature.properties.evk}`;
-                                        const isSelected = selectedDistrict === geoName;
-                                        return {
-                                            fillColor: getColor(geoName),
-                                            weight: isSelected ? 3 : 1.5,
-                                            opacity: isSelected ? 1 : 0.8,
-                                            color: isSelected ? '#eab308' : '#334155', // yellow-500 if selected
-                                            fillOpacity: isSelected ? 0.7 : 0.5 // Átlátszóság hozzáadva!
-                                        };
-                                    }}
-                                    onEachFeature={(feature, layer) => {
-                                        const geoName = `${feature.properties.maz}-${feature.properties.evk}`;
-
-                                        layer.on({
-                                            mouseover: (e) => {
-                                                const lay = e.target;
-                                                lay.setStyle({ fillOpacity: 0.8 });
-                                                handlePathMouseEnter(e.originalEvent, geoName);
-                                            },
-                                            mouseout: (e) => {
-                                                const lay = e.target;
-                                                // Retain opacity if selected
-                                                lay.setStyle({ fillOpacity: selectedDistrict === geoName ? 0.7 : 0.5 });
-                                                handlePathMouseLeave();
-                                            },
-                                            mousemove: (e) => {
-                                                handlePathMouseMove(e.originalEvent);
-                                            },
-                                            click: () => {
-                                                setSelectedDistrict(geoName);
-                                            }
-                                        });
-                                    }}
-                                />
-                            )}
-                        </MapContainer>
-
-                        {/* Tooltip */}
-                        {tooltip.visible && (
-                            <div
-                                className="pointer-events-none fixed z-[9999] bg-slate-900 text-white text-xs font-medium px-3 py-2 rounded-lg shadow-xl max-w-48"
-                                style={{
-                                    left: tooltip.x + 15,
-                                    top: Math.max(tooltip.y - 15, 8),
-                                }}
-                                dangerouslySetInnerHTML={{ __html: tooltip.html }}
-                            />
-                        )}
-                    </div>
+                    <MapDisplay
+                        oevkPoligonok={oevkPoligonok}
+                        selectedParty={selectedParty}
+                        selectedDistrict={selectedDistrict}
+                        mapCenter={mapCenter}
+                        getColor={getColor}
+                        handlePathMouseEnter={handlePathMouseEnter}
+                        handlePathMouseLeave={handlePathMouseLeave}
+                        handlePathMouseMove={handlePathMouseMove}
+                        setSelectedDistrict={setSelectedDistrict}
+                        tooltip={tooltip}
+                    />
                 </div>
 
                 <div className="lg:col-span-1 flex flex-col gap-4">
-                    {/* Selected District Info Panel */}
-                    {selectedDistrict && districtData[selectedDistrict] && (
-                        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-md border-2 border-yellow-400 dark:border-yellow-500/50 p-6 relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-full h-1.5 bg-yellow-400 dark:bg-yellow-500"></div>
-                            <button
-                                onClick={() => setSelectedDistrict(null)}
-                                className="absolute top-4 right-4 p-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full text-slate-500 dark:text-slate-400 transition-colors"
-                            >
-                                <X className="w-4 h-4" />
-                            </button>
+                    <MapSidebarInfo
+                        selectedDistrict={selectedDistrict}
+                        districtData={districtData}
+                        selectedParty={selectedParty}
+                        organizations={organizations}
+                        onClose={() => setSelectedDistrict(null)}
+                    />
 
-                            <h3 className="text-xl font-black text-slate-800 dark:text-white pr-6">
-                                {districtData[selectedDistrict].districtInfo?.evk_nev || selectedDistrict}
-                            </h3>
-
-                            <div className="flex items-center gap-2 mt-2 mb-4">
-                                {districtData[selectedDistrict].battleground ? (
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-800/50">
-                                        <Crosshair className="w-3.5 h-3.5" />
-                                        Kiemelt csatatér
-                                    </span>
-                                ) : (
-                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-bold border border-slate-200 dark:border-slate-700">
-                                        Átlagos körzet
-                                    </span>
-                                )}
-                            </div>
-
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
-                                    <Users className="w-5 h-5 text-indigo-500 flex-shrink-0" />
-                                    <div>
-                                        <p className="text-[10px] uppercase font-bold text-slate-500">Összes jelölt a körzetben</p>
-                                        <p className="text-sm font-black text-slate-800 dark:text-slate-200">{districtData[selectedDistrict].allCandidates.length} fő</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
-                                    <ShieldAlert className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-                                    <div>
-                                        <p className="text-[10px] uppercase font-bold text-slate-500">Aktív (versenyben lévő) jelöltek</p>
-                                        <p className="text-sm font-black text-slate-800 dark:text-slate-200">{districtData[selectedDistrict].activeCandidates.length} fő</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {selectedParty !== 'all' && (
-                                <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
-                                    <p className="text-[10px] uppercase font-bold text-slate-500 mb-2">A kiválasztott párt jelöltje</p>
-                                    {(() => {
-                                        const orgId = parseInt(selectedParty, 10);
-                                        const cand = districtData[selectedDistrict].allCandidates.find(c =>
-                                            c.jelolo_szervezetek?.includes(orgId) ||
-                                            organizations.find(o => o.szkod === orgId)?.coalitionPartnerIds?.some(pid => c.jelolo_szervezetek?.includes(pid))
-                                        );
-                                        if (cand) {
-                                            return (
-                                                <div>
-                                                    <p className="font-bold text-slate-800 dark:text-white">{cand.neve}</p>
-                                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{cand.statusName}</p>
-                                                </div>
-                                            );
-                                        }
-                                        return <p className="text-sm italic text-slate-400">Nincs saját jelölt indítva.</p>;
-                                    })()}
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Jelmagyarázat */}
-                    <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-                        <h3 className="text-lg font-black text-slate-800 dark:text-white mb-4">Jelmagyarázat</h3>
-
-                        {selectedParty === 'all' ? (
-                            <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-5 h-5 rounded bg-[#991b1b] border border-red-900 shrink-0" />
-                                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Extrém csatatér (12+)</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-5 h-5 rounded bg-[#ef4444] border border-red-500 shrink-0" />
-                                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Erős csatatér (10-11)</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-5 h-5 rounded bg-[#fca5a5] border border-red-400 shrink-0" />
-                                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Kezdődő csatatér (8-9)</span>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-                                    <div className="w-5 h-5 rounded bg-blue-200 border border-blue-300 shrink-0" />
-                                    <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Átlagos körzet</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded bg-slate-200 border border-slate-300 shrink-0" />
-                                    <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Nincs adat</span>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="space-y-2">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded bg-[#14532d] border border-green-950 shrink-0" />
-                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Jogerős jelölt</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded bg-[#86efac] border border-green-300 shrink-0" />
-                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Nyilv. véve (nem jogerős)</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded bg-[#60a5fa] border border-blue-400 shrink-0" />
-                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Folyamatban / Bejelentve</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded bg-[#fca5a5] border border-red-300 shrink-0" />
-                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Visszautasítva (nem jogerős)</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded bg-[#991b1b] border border-red-900 shrink-0" />
-                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Visszautasítva (jogerős)</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded bg-[#ef4444] border border-red-500 shrink-0" />
-                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Törölve / Kiesett</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-5 h-5 rounded bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 shrink-0" />
-                                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Nincs jelölt (fehér folt)</span>
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800">
-                            <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl text-xs text-blue-800 dark:text-blue-300 font-medium leading-relaxed">
-                                A térkép a pártok területi lefedettségét mutatja. A fehér foltok komoly stratégiai hátrányt jelenthetnek!
-                            </div>
-                        </div>
-                    </div>
+                    <MapLegend selectedParty={selectedParty} />
                 </div>
             </div>
         </div>

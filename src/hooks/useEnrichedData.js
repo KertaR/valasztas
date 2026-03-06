@@ -1,12 +1,10 @@
 import { useMemo } from 'react';
-import { geoArea } from 'd3-geo';
-import {
-    processCoalitions,
-    calculateStrategicMetrics,
-    calculateTrivia,
-    calculateStatusBreakdown
-} from '../utils/dataHelpers';
 import { STATUS_MAP } from '../utils/constants';
+
+import { processCandidates, isExcludedStatus } from '../utils/transformers/candidateTransformer';
+import { processOrganizations } from '../utils/transformers/organizationTransformer';
+import { processOevkPolygons } from '../utils/transformers/mapTransformer';
+import { calculateFormationsProgress, generateStats } from '../utils/transformers/statsTransformer';
 
 export function useEnrichedData(data, yesterdayData, isAllUploaded) {
     return useMemo(() => {
@@ -71,8 +69,6 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             visszautasitva_final: 0 // Sötétpiros
         };
 
-        const processedCandIds = new Set();
-
         // 0. Update status counts for ALL entries before filtering
         (data.jeloltek || []).forEach(candidate => {
             const statusName = statusMap[candidate.allapot] || `Ismeretlen kód: ${candidate.allapot}`;
@@ -98,160 +94,16 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             }
         });
 
-        // 1. Candidates processing (Active list for tables/grids)
-        const allCandidates = (data.jeloltek || []).map(candidate => {
-            const candId = String(candidate.ej_id || candidate.szj || `${candidate.maz}-${candidate.evk}-${candidate.neve}`);
+        // 1. Processing via transformer modules
+        const { allCandidates, candidates, removedCandidates } = processCandidates({
+            data, yesterdayData, statusMap, distMap, countyMap, orgMap,
+            yesterdayJeloltSet, yesterdayJeloltStatusMap, partyCounts,
+            countyCounts, oevkCandidateCounts, countyStatsObj
+        });
 
-            // Duplikáció szűrés
-            if (processedCandIds.has(candId)) return null;
-            processedCandIds.add(candId);
-
-            const statusName = statusMap[candidate.allapot] || `Ismeretlen kód: ${candidate.allapot}`;
-            const lowerStatus = statusName.toLowerCase();
-
-            // Jelölés, ha a jelentkező kiesett / törölték
-            const isExcluded = lowerStatus.includes('törölve') ||
-                lowerStatus.includes('elutasítva') ||
-                lowerStatus.includes('visszautasítva') ||
-                lowerStatus.includes('kiesett') ||
-                lowerStatus.includes('visszalépett') ||
-                lowerStatus.includes('visszavon') ||
-                lowerStatus.includes('nem kíván') ||
-                lowerStatus.includes('megszűnt');
-
-            const districtKey = `${candidate.maz}-${candidate.evk}`;
-            const district = distMap[districtKey];
-            const countyName = countyMap[candidate.maz] || `Ismeretlen megye (${candidate.maz})`;
-
-            let partyNames = 'Független';
-            if (candidate.jelolo_szervezetek && candidate.jelolo_szervezetek.length > 0) {
-                const names = candidate.jelolo_szervezetek
-                    .map(id => orgMap[id]?.r_nev || orgMap[id]?.nev)
-                    .filter(Boolean);
-                if (names.length > 0) {
-                    partyNames = names.join('-');
-                }
-            } else if (candidate.jlcs_nev && candidate.jlcs_nev.trim()) {
-                partyNames = candidate.jlcs_nev;
-            }
-
-            if (!isExcluded) {
-                partyCounts[partyNames] = (partyCounts[partyNames] || 0) + 1;
-                countyCounts[countyName] = (countyCounts[countyName] || 0) + 1;
-                oevkCandidateCounts[districtKey] = (oevkCandidateCounts[districtKey] || 0) + 1;
-                if (countyStatsObj[candidate.maz]) countyStatsObj[candidate.maz].candidateCount++;
-            }
-
-            const isNew = !!(yesterdayData && candId && !yesterdayJeloltSet.has(candId));
-            const oldStatusName = yesterdayData && candId && yesterdayJeloltStatusMap[candId] ? yesterdayJeloltStatusMap[candId] : null;
-            const hasStatusChanged = !!(oldStatusName && oldStatusName !== statusName);
-
-            return {
-                ...candidate,
-                statusName,
-                districtName: district ? district.evk_nev : `Ismeretlen OEVK (${districtKey})`,
-                countyName,
-                partyNames,
-                isNew,
-                oldStatusName,
-                hasStatusChanged,
-                isExcluded
-            };
-        }).filter(Boolean);
-
-        const candidates = allCandidates.filter(c => !c.isExcluded);
-
-        // 2. Organizations processing
-        const TOTAL_OEVK = 106;
-        let organizations = (data.szervezetek || [])
-            .sort((a, b) => (a.nev || '').localeCompare(b.nev || '', 'hu')) // Stabil sorrend a koalícióknál
-            .map(org => {
-                const orgCandidates = org.szkod === 0
-                    ? candidates.filter(c => !c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0)
-                    : candidates.filter(c => c.jelolo_szervezetek && c.jelolo_szervezetek.includes(org.szkod));
-
-                // Belevesszük a jogerős és a nem jogerős nyilvántartásba vételt is
-                const registeredCandidates = orgCandidates.filter(c =>
-                    c.statusName.startsWith('Nyilvántartásba véve')
-                );
-
-                const registeredFinalCandidates = orgCandidates.filter(c =>
-                    c.statusName === 'Nyilvántartásba véve' ||
-                    (c.statusName.startsWith('Nyilvántartásba') && c.statusName.includes('jogerős') && !c.statusName.includes('nem jogerős'))
-                );
-
-                const registeredFinalCount = registeredFinalCandidates.length;
-
-                const registeredPreCount = orgCandidates.filter(c =>
-                    c.statusName.startsWith('Nyilvántartásba') && c.statusName.includes('nem jogerős')
-                ).length;
-
-                const uniqueOevks = new Set(orgCandidates.map(c => `${c.maz}-${c.evk}`));
-                const registeredOevks = new Set(registeredCandidates.map(c => `${c.maz}-${c.evk}`));
-                const registeredCounties = new Set(registeredCandidates.map(c => c.maz));
-
-                const registeredFinalOevks = new Set(registeredFinalCandidates.map(c => `${c.maz}-${c.evk}`));
-                const registeredFinalCounties = new Set(registeredFinalCandidates.map(c => c.maz));
-
-                const orgId = String(org.szkod);
-                const isNew = !!(yesterdayData && orgId && !yesterdayOrgSet.has(orgId));
-
-                const partnerCounts = {};
-                orgCandidates.forEach(c => {
-                    if (c.jelolo_szervezetek) {
-                        c.jelolo_szervezetek.forEach(id => {
-                            if (id !== org.szkod) partnerCounts[id] = (partnerCounts[id] || 0) + 1;
-                        });
-                    }
-                });
-
-                const alliances = Object.entries(partnerCounts)
-                    .map(([id, count]) => ({
-                        szkod: parseInt(id),
-                        count,
-                        name: orgMap[id]?.nev || 'Ismeretlen',
-                        abbr: orgMap[id]?.r_nev || orgMap[id]?.nev || '?'
-                    }))
-                    .sort((a, b) => b.count - a.count);
-
-                // Országos lista ellenőrzés
-                let nationalListStatus = null;
-                let nationalListCandidates = [];
-                if (data.listakEsJeloltek) {
-                    const orgListInfo = data.listakEsJeloltek.find(l => l.jelolo_szervezetek && l.jelolo_szervezetek.includes(org.szkod) && l.lista_tip === 'O');
-                    if (orgListInfo) {
-                        nationalListStatus = statusMap[orgListInfo.allapot] || 'Bejelentve';
-                        // Sorrendbe rakjuk a jelölteket egyből
-                        nationalListCandidates = (orgListInfo.jeloltek || []).map(c => ({
-                            ...c,
-                            statusName: statusMap[c.allapot] || 'Bejelentve'
-                        })).sort((a, b) => a.sorsz - b.sorsz);
-                    }
-                }
-
-                return {
-                    ...org,
-                    candidateCount: orgCandidates.length,
-                    registeredCandidateCount: registeredCandidates.length,
-                    registeredFinalCount,
-                    registeredPreCount,
-                    oevkCoverage: uniqueOevks.size,
-                    registeredOevkCoverage: registeredOevks.size,
-                    registeredCountiesCount: registeredCounties.size,
-                    registeredFinalOevkCoverage: registeredFinalOevks.size,
-                    registeredFinalCountiesCount: registeredFinalCounties.size,
-                    coveragePercent: Math.round((uniqueOevks.size / TOTAL_OEVK) * 100),
-                    registeredCoveragePercent: Math.round((registeredOevks.size / TOTAL_OEVK) * 100),
-                    registeredFinalCoveragePercent: Math.round((registeredFinalOevks.size / TOTAL_OEVK) * 100),
-                    isNew,
-                    alliances,
-                    candidateList: orgCandidates,
-                    nationalListStatus,
-                    nationalListCandidates
-                };
-            }).sort((a, b) => b.candidateCount - a.candidateCount);
-
-        organizations = processCoalitions(organizations);
+        const organizations = processOrganizations({
+            data, yesterdayData, candidates, orgMap, statusMap, yesterdayOrgSet
+        });
 
         // 3. Districts processing
         const yesterdayDistMap = {};
@@ -295,204 +147,23 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             };
         }).sort((a, b) => b.candidateCount - a.candidateCount);
 
-        // 4. Formations Progress (Listaállítási kalkuláció)
-        const formationsMap = {};
-        candidates.forEach(c => {
-            if (!c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0) return;
 
-            const sortedSzkods = [...c.jelolo_szervezetek].sort((a, b) => a - b);
-            const key = sortedSzkods.join(',');
-
-            if (!formationsMap[key]) {
-                const fullNames = sortedSzkods.map(id => orgMap[id]?.nev || 'Ismeretlen').join(' - ');
-                const abbrNames = sortedSzkods.map(id => orgMap[id]?.r_nev || orgMap[id]?.nev || 'Ismeretlen').join('-');
-
-                formationsMap[key] = {
-                    key, szkods: sortedSzkods, abbr: abbrNames, fullName: fullNames,
-                    registeredOevks: new Set(), pendingOevks: new Set(),
-                    registeredCounties: new Set(), pendingCounties: new Set()
-                };
-            }
-
-            const f = formationsMap[key];
-            const oevkObj = c.maz + '-' + c.evk;
-            const isRegistered = c.statusName.startsWith('Nyilvántartásba véve') || c.statusName === 'Bejelentve' || c.statusName === 'Ismételten bejelentve';
-
-            if (isRegistered) {
-                f.registeredOevks.add(oevkObj);
-                f.registeredCounties.add(c.maz);
-            } else {
-                f.pendingOevks.add(oevkObj);
-                f.pendingCounties.add(c.maz);
-            }
+        // 4. Transform Formations Progress & Stats
+        const formationsProgress = calculateFormationsProgress(candidates, orgMap);
+        const stats = generateStats({
+            partyCounts, organizations, statusCounts, statusCategories,
+            countyCounts, countyStatsObj, districts, candidates, allCandidates,
+            totalEligibleVoters, yesterdayData, statusMap, isExcludedStatus
         });
 
-        const formationsProgress = Object.values(formationsMap).map(f => {
-            const hasCapital = f.registeredCounties.has('01');
-            const pendingHasCapital = f.pendingCounties.has('01') || hasCapital;
-
-            const uniquePendingOevks = new Set([...f.pendingOevks].filter(x => !f.registeredOevks.has(x)));
-            const uniquePendingCounties = new Set([...f.pendingCounties].filter(x => !f.registeredCounties.has(x)));
-
-            const regOevkCount = f.registeredOevks.size;
-            const pendingOevkCount = uniquePendingOevks.size;
-            const regCountyCount = f.registeredCounties.size;
-            const pendingCountyCount = uniquePendingCounties.size;
-
-            const isSure = regOevkCount >= 71 && regCountyCount >= 15 && hasCapital;
-            const isPossible = (regOevkCount + pendingOevkCount) >= 71 && (regCountyCount + pendingCountyCount) >= 15 && pendingHasCapital;
-
-            return {
-                ...f, regOevkCount, pendingOevkCount, totalOevkCount: regOevkCount + pendingOevkCount,
-                regCountyCount, pendingCountyCount, totalCountyCount: regCountyCount + pendingCountyCount,
-                hasCapital, pendingHasCapital, isSure, isPossible
-            };
-        }).sort((a, b) => b.totalOevkCount - a.totalOevkCount);
-
-        // 5. Stats aggregation
-        const topParties = Object.entries(partyCounts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
-        const topRegisteredParties = organizations
-            .filter(o => !o.isCoalitionPartner)
-            .map(org => ({ name: org.coalitionAbbr || org.r_nev || org.nev, count: org.registeredCandidateCount }))
-            .sort((a, b) => b.count - a.count)
-            .slice(0, 10);
-
-        const topCounties = Object.entries(countyCounts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
-        const countiesData = Object.values(countyStatsObj).sort((a, b) => b.candidateCount - a.candidateCount);
-        const mostContestedOevk = districts.length > 0 ? districts[0] : null;
-
-        const recentUpdates = [...candidates]
-            .filter(c => c.allapot_valt)
-            .sort((a, b) => new Date(b.allapot_valt).getTime() - new Date(a.allapot_valt).getTime())
-            .slice(0, 8);
-
-        // Helper: meghatározza, hogy egy státusz "kizárt"-e (nem aktív jelölt)
-        const isExcludedStatus = (statusName) => {
-            if (!statusName) return false;
-            const lower = statusName.toLowerCase();
-            return lower.includes('törölve') ||
-                lower.includes('elutasítva') ||
-                lower.includes('visszautasítva') ||
-                lower.includes('kiesett') ||
-                lower.includes('visszalépett') ||
-                lower.includes('visszavon') ||
-                lower.includes('nem kíván') ||
-                lower.includes('megszűnt');
-        };
-
-        const diffs = { candidates: 0, organizations: 0, districts: 0, voters: 0 };
-        if (yesterdayData) {
-            // Tegnapi aktív (nem kizárt) jelöltek száma a pontos összehasonlításhoz
-            const yesterdayActiveCandCount = (yesterdayData.jeloltek || []).filter(c => {
-                const statusName = statusMap[c.allapot] || '';
-                return !isExcludedStatus(statusName);
-            }).length;
-            diffs.candidates = candidates.length - yesterdayActiveCandCount;
-            diffs.organizations = organizations.length - (yesterdayData.szervezetek?.length || 0);
-            diffs.districts = districts.length - (yesterdayData.oevk?.length || 0);
-
-            let yesterdayTotalVoters = 0;
-            if (yesterdayData.oevk) yesterdayData.oevk.forEach(d => { yesterdayTotalVoters += (d.letszam?.indulo || 0); });
-            diffs.voters = totalEligibleVoters - yesterdayTotalVoters;
-        }
-
-        // 6. Removed candidates:
-        //    a) Teljesen eltűnt az adatbázisból (ID sincs ma)
-        //    b) Tegnap aktív volt, ma kizárt státuszú (ez csökkenti az "Induló Jelöltek" számát)
-        const todayCandIdSet = new Set(allCandidates.map(c => String(c.ej_id || c.szj)));
-
-        // a) Teljesen eltűnt jelöltek
-        const goneCandidates = yesterdayData ? (yesterdayData.jeloltek || []).filter(c => {
-            const id = String(c.ej_id || c.szj);
-            return !todayCandIdSet.has(id);
-        }).map(c => ({
-            ...c,
-            statusName: yesterdayJeloltStatusMap[String(c.ej_id || c.szj)] || 'Ismeretlen',
-            removalReason: 'Eltűnt az adatbázisból',
-            isRemoved: true
-        })) : [];
-
-        // b) Tegnap aktív, ma kizárt (státuszuk megváltozott kizáróra a snapshot összehasonlítás szerint)
-        const newlyExcludedCandidates = allCandidates.filter(c => {
-            if (!c.isExcluded) return false;       // csak a ma kizártak
-            if (!c.hasStatusChanged) return false;  // csak ha változott a státusz
-            const oldStatus = c.oldStatusName;
-            if (!oldStatus) return false;           // csak ha volt tegnapi adat
-            return !isExcludedStatus(oldStatus);   // és tegnap aktív volt
-        }).map(c => ({
-            ...c,
-            removalReason: `Státusz: ${c.oldStatusName} → ${c.statusName}`,
-            isRemoved: true
-        }));
-
-        const removedCandidates = [...goneCandidates, ...newlyExcludedCandidates];
+        // 5. Transform OEVK Polygons
+        const oevkPoligonok = processOevkPolygons(data.oevkPoligonok);
 
         return {
-            allCandidates, candidates, districts, organizations, countiesData, formationsProgress, removedCandidates,
-            settlements: data.telepulesek || [],
-            oevkPoligonok: {
-                type: 'FeatureCollection',
-                features: (data.oevkPoligonok || []).map(p => {
-                    if (!p.poligon) return null;
-
-                    // NVI formátum: "lat lon,lat lon,..."
-                    // GeoJSON elvárás: [[lon, lat], [lon, lat], ...]
-                    const coords = p.poligon.split(',').map(pair => {
-                        const pts = pair.trim().split(/\s+/);
-                        if (pts.length < 2) return null;
-                        const lat = parseFloat(pts[0]);
-                        const lon = parseFloat(pts[1]);
-                        if (isNaN(lat) || isNaN(lon)) return null;
-                        return [lon, lat];
-                    }).filter(Boolean);
-
-                    if (coords.length < 3) return null;
-
-                    // GeoJSON poligon gyűrűnek zártnak kell lennie (első pont = utolsó pont)
-                    if (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1]) {
-                        coords.push(coords[0]);
-                    }
-
-
-
-                    // Meghatározzuk a feature-t
-                    const feature = {
-                        type: 'Feature',
-                        id: `oevk-${p.maz}-${p.evk}`,
-                        properties: {
-                            maz: p.maz,
-                            evk: p.evk,
-                            name: `${p.maz}-${p.evk}`
-                        },
-                        geometry: {
-                            type: 'Polygon',
-                            coordinates: [coords]
-                        }
-                    };
-
-                    // d3-geo gömbfelületi terület alapú javítás:
-                    // Ha a terület > 2π (fél gömb), akkor a poligon invertált (kifelé tölt)
-                    if (geoArea(feature) > 2 * Math.PI) {
-                        feature.geometry.coordinates[0].reverse();
-                    }
-
-                    return feature;
-                }).filter(Boolean)
-            },
-            stats: {
-                topParties,
-                topRegisteredParties,
-                statusCounts,
-                statusCategories,
-                statusBreakdown: calculateStatusBreakdown(statusCounts),
-                topCounties,
-                totalEligibleVoters,
-                mostContestedOevk,
-                recentUpdates,
-                diffs,
-                trivia: calculateTrivia(candidates),
-                strategic: calculateStrategicMetrics(districts, organizations, candidates, countiesData)
-            }
+            allCandidates, candidates, districts, organizations,
+            countiesData: Object.values(countyStatsObj).sort((a, b) => b.candidateCount - a.candidateCount),
+            formationsProgress, removedCandidates,
+            settlements: data.telepulesek || [], oevkPoligonok, stats
         };
     }, [data, yesterdayData, isAllUploaded]);
 }
