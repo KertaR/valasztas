@@ -4,17 +4,23 @@ import {
 } from 'lucide-react';
 import NavItem from '../ui/NavItem';
 
-export default function Sidebar({
-    activeTab,
-    switchTab,
-    enrichedData,
-    isMobileMenuOpen,
-    setIsMobileMenuOpen,
-    setIsSearchOpen,
-    toggleDarkMode,
-    isDarkMode,
-    handleClearState
-}) {
+import { useUIContext, useDataContext } from '../../contexts';
+
+export default function Sidebar() {
+    const {
+        activeTab,
+        switchTab,
+        isMobileMenuOpen,
+        setIsMobileMenuOpen,
+        setIsSearchOpen,
+        toggleDarkMode,
+        isDarkMode
+    } = useUIContext();
+
+    const {
+        enrichedData,
+        handleClearState
+    } = useDataContext();
     return (
         <>
             {/* Mobile Backdrop */}

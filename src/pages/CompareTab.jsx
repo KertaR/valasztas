@@ -5,8 +5,10 @@ import { motion } from 'framer-motion';
 
 // Compare Components
 import { CandidateSearch, OrgSearch, CandidateCompareCard, OrgCompareCard } from '../components';
+import { useDataContext } from '../contexts';
 
-export default function CompareTab({ enrichedData }) {
+export default function CompareTab() {
+    const { enrichedData } = useDataContext();
     const [mode, setMode] = useState('candidates'); // 'candidates' or 'organizations'
     const [itemA, setItemA] = useState(null);
     const [itemB, setItemB] = useState(null);

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { StatusBadge } from '../ui';
 import { toPng } from 'html-to-image';
 import { getInitials, getImageUrl } from '../../utils/helpers';
+import { useUIContext, useDataContext } from '../../contexts';
 
 const STATUS_GROUPS = [
     { key: 'all', label: 'Összes' },
@@ -12,7 +13,10 @@ const STATUS_GROUPS = [
     { key: 'rejected', label: 'Elutasítva/Törölve', match: s => s.toLowerCase().includes('törölve') || s.toLowerCase().includes('elutasítva') || s.toLowerCase().includes('kiesett') || s.toLowerCase().includes('visszalépett') || s.toLowerCase().includes('visszautasítva') || s.toLowerCase().includes('nem kíván') },
 ];
 
-export default function OrgModal({ selectedOrg, enrichedData, onClose }) {
+export default function OrgModal() {
+    const { selectedOrg, setSelectedOrg } = useUIContext();
+    const { enrichedData } = useDataContext();
+    const onClose = () => setSelectedOrg(null);
     const cardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
     const [isCopied, setIsCopied] = useState(false);

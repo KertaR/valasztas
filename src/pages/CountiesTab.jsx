@@ -5,8 +5,11 @@ import { toPng } from 'html-to-image';
 
 // Counties Components
 import { CountyChart, CountyTable } from '../components';
+import { useUIContext, useDataContext } from '../contexts';
 
-export default function CountiesTab({ enrichedData, setSelectedCountyDetail, setSelectedOevk }) {
+export default function CountiesTab() {
+    const { enrichedData } = useDataContext();
+    const { setSelectedCountyDetail, setSelectedOevk } = useUIContext();
     const countiesRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
 

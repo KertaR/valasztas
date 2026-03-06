@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { X, UserPlus, UserMinus, RefreshCw, ChevronDown, ChevronUp, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { StatusBadge } from '../ui';
+import { useUIContext, useDataContext } from '../../contexts';
 
 const TABS = [
     { id: 'added', label: 'Hozzáadva', icon: UserPlus, color: 'text-emerald-600 dark:text-emerald-400', activeBg: 'bg-emerald-50 dark:bg-emerald-900/30 border-emerald-500' },
@@ -98,7 +99,10 @@ function CandidateRow({ candidate, type }) {
     );
 }
 
-export default function CandidatesDiffModal({ isOpen, onClose, enrichedData }) {
+export default function CandidatesDiffModal() {
+    const { isCandidatesDiffOpen: isOpen, setIsCandidatesDiffOpen } = useUIContext();
+    const { enrichedData } = useDataContext();
+    const onClose = () => setIsCandidatesDiffOpen(false);
     const [activeTab, setActiveTab] = useState('added');
     const [search, setSearch] = useState('');
 

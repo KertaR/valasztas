@@ -1,8 +1,11 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Activity, UserPlus, FileEdit, Building2, CheckCircle2, ChevronRight, Filter, ArrowRightLeft, ChevronDown } from 'lucide-react';
+import { useUIContext, useDataContext } from '../contexts';
 
-export default function ChangelogTab({ enrichedData, setSelectedCandidate, setSelectedOrg }) {
+export default function ChangelogTab() {
+    const { enrichedData } = useDataContext();
+    const { setSelectedCandidate, setSelectedOrg } = useUIContext();
     const [filterBy, setFilterBy] = useState('all'); // 'all', 'status', 'new_cand', 'new_org'
     const [visibleCount, setVisibleCount] = useState(50);
 

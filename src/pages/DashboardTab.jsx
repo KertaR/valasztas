@@ -8,8 +8,13 @@ import {
 import { motion } from 'framer-motion';
 import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
+import { useUIContext, useDataContext } from '../contexts';
 
-export default function DashboardTab({ enrichedData, data, setSelectedOevk, setSelectedCandidate, onStatusClick, onCandidatesDiffClick, lastFetchTime, autoRefresh, setAutoRefresh, onRefresh, isLoadingWeb }) {
+export default function DashboardTab() {
+    const { enrichedData, data, lastFetchTime, autoRefresh, setAutoRefresh, fetchDataFromWeb: onRefresh, isLoadingWeb } = useDataContext();
+    const { setSelectedOevk, setSelectedCandidate, setActiveTab, setIsCandidatesDiffOpen } = useUIContext();
+    const onStatusClick = () => setActiveTab('valtozasok');
+    const onCandidatesDiffClick = () => setIsCandidatesDiffOpen(true);
     const dashboardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
 
@@ -65,8 +70,8 @@ export default function DashboardTab({ enrichedData, data, setSelectedOevk, setS
                             onClick={() => setAutoRefresh(prev => !prev)}
                             title={autoRefresh ? 'Auto-frissítés kikapcsolása (10 perc)' : 'Auto-frissítés bekapcsolása (10 perc)'}
                             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${autoRefresh
-                                    ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50 hover:bg-emerald-100'
-                                    : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
+                                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50 hover:bg-emerald-100'
+                                : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
                                 }`}
                         >
                             <RefreshCw className={`w-3.5 h-3.5 ${autoRefresh ? 'animate-spin [animation-duration:3s]' : ''}`} />

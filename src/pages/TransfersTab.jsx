@@ -1,8 +1,11 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Globe, Users, ArrowRightLeft, Search } from 'lucide-react';
+import { useUIContext, useDataContext } from '../contexts';
 
-export default function TransfersTab({ enrichedData, setSelectedOevk }) {
+export default function TransfersTab() {
+    const { enrichedData } = useDataContext();
+    const { setSelectedOevk } = useUIContext();
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('total');
 

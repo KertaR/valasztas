@@ -4,20 +4,23 @@ import { motion } from 'framer-motion';
 
 // Candidate Components
 import { CandidateFilters, CandidateTable, CandidateGrid, CandidatePagination } from '../components';
+import { useUIContext, useFilterContext } from '../contexts';
 
-export default function CandidatesTab({
-    processedCandidates, exportToCSV,
-    quickFilter, setQuickFilter,
-    searchTerm, setSearchTerm,
-    selectedCounty, setSelectedCounty,
-    filterOptions,
-    selectedParty, setSelectedParty,
-    selectedStatus, setSelectedStatus,
-    handleSort, sortConfig,
-    paginatedCandidates, setSelectedCandidate,
-    currentPage, setCurrentPage,
-    itemsPerPage, totalPages
-}) {
+export default function CandidatesTab() {
+    const {
+        processedCandidates, exportToCSV,
+        quickFilter, setQuickFilter,
+        searchTerm, setSearchTerm,
+        selectedCounty, setSelectedCounty,
+        filterOptions,
+        selectedParty, setSelectedParty,
+        selectedStatus, setSelectedStatus,
+        handleSort, sortConfig,
+        paginatedCandidates,
+        currentPage, setCurrentPage,
+        itemsPerPage, totalPages
+    } = useFilterContext();
+    const { setSelectedCandidate } = useUIContext();
     const [viewMode, setViewMode] = useState('table'); // 'table' or 'grid'
 
     const getSortIcon = (key) => {

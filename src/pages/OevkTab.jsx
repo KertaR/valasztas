@@ -2,8 +2,11 @@ import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Filter, Search, ArrowUpDown } from 'lucide-react';
 import { DistrictGrid, DistrictHeatmap } from '../components';
+import { useUIContext, useDataContext } from '../contexts';
 
-export default function OevkTab({ enrichedData, setSelectedOevk }) {
+export default function OevkTab() {
+    const { enrichedData } = useDataContext();
+    const { setSelectedOevk } = useUIContext();
     const [searchTerm, setSearchTerm] = useState('');
     const [filter, setFilter] = useState('all'); // all, hot, empty
     const [sortBy, setSortBy] = useState('candidates'); // candidates, name

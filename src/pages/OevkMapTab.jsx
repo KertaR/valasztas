@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
 import { geoContains } from 'd3-geo';
 import 'leaflet/dist/leaflet.css';
 import { MapPin, Users, Crosshair, ShieldAlert, X, Search, Loader2 } from 'lucide-react';
+import { useDataContext } from '../contexts';
 
 // Magyarország nagyjábóli határai: DNy (Lat, Lng), ÉK (Lat, Lng)
 const HUNGARY_BOUNDS = [
@@ -26,7 +27,10 @@ function MapController({ centerPos }) {
 // ────────────────────────────────────────────────
 // Fő komponens
 // ────────────────────────────────────────────────
-export default function OevkMapTab({ districts, candidates, organizations, oevkPoligonok }) {
+export default function OevkMapTab() {
+    const { enrichedData } = useDataContext();
+    const { districts, candidates, organizations, oevkPoligonok } = enrichedData || {};
+
     const [selectedParty, setSelectedParty] = useState('all');
     const [selectedDistrict, setSelectedDistrict] = useState(null);
 

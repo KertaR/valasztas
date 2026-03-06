@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Calculator, PieChart as PieChartIcon, Percent, AlertCircle, Zap, Download, Loader2 } from 'lucide-react';
 import { toPng } from 'html-to-image';
+import { useDataContext } from '../contexts';
 
 const PRESETS = [
     { label: 'Medián (jan.)', votes: { fidesz: 45, tisza: 33, dk: 6, mhm: 7, egyhat: 0, egyeb: 9 } },
@@ -11,7 +12,8 @@ const PRESETS = [
     { label: 'Ellenzéki előny', votes: { fidesz: 36, tisza: 44, dk: 7, mhm: 5, egyhat: 0, egyeb: 8 } },
 ];
 
-export default function SeatCalculatorTab({ enrichedData }) {
+export default function SeatCalculatorTab() {
+    const { enrichedData } = useDataContext();
     const calcRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
 

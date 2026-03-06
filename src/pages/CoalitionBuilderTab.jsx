@@ -2,6 +2,7 @@ import { useState, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Network, Plus, Trash2, Map, AlertTriangle, CheckCircle2, Search, Download, Loader2 } from 'lucide-react';
 import { toPng } from 'html-to-image';
+import { useDataContext } from '../contexts';
 
 // Segédfüggvény a megyei kódok / nevek feloldására (ha nincs meg azonnal)
 const calculateListProgress = (uniqueOevksSet, registeredOevksSet, candidatesList) => {
@@ -31,7 +32,8 @@ const calculateListProgress = (uniqueOevksSet, registeredOevksSet, candidatesLis
     };
 };
 
-export default function CoalitionBuilderTab({ enrichedData }) {
+export default function CoalitionBuilderTab() {
+    const { enrichedData } = useDataContext();
     const [selectedPartyIds, setSelectedPartyIds] = useState([]);
     const [partySearch, setPartySearch] = useState('');
     const simResultRef = useRef(null);

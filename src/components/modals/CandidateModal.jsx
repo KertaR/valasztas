@@ -4,8 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { StatusBadge } from '../ui';
 import { toPng } from 'html-to-image';
 import { getInitials, getImageUrl } from '../../utils/helpers';
+import { useUIContext } from '../../contexts';
 
-export default function CandidateModal({ candidate, onClose }) {
+export default function CandidateModal() {
+    const { selectedCandidate: candidate, setSelectedCandidate } = useUIContext();
+    const onClose = () => setSelectedCandidate(null);
     const cardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
     const [isCopied, setIsCopied] = useState(false);

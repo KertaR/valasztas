@@ -110,7 +110,7 @@ export function useElectionData(showToast, onClearCallback) {
                 oevk: oevk.list || [],
                 jeloltek: jeloltek.list || [],
                 szervezetek: szervezetek.list || [],
-                oevkPoligonok: oevkPoligonok.list || [],
+                oevkPoligonok: oevkPoligonok.features ? oevkPoligonok : (oevkPoligonok.list || []),
                 listakEsJeloltek: listakEsJeloltek?.list || []
             });
             showToast('Élő adatok sikeresen betöltve az NVI szerveréről!');
@@ -138,7 +138,7 @@ export function useElectionData(showToast, onClearCallback) {
                         else if (file.name.includes('OevkAdatok')) newData.oevk = listData;
                         else if (file.name.includes('EgyeniJeloltek')) newData.jeloltek = listData;
                         else if (file.name.includes('Szervezetek')) newData.szervezetek = listData;
-                        else if (file.name.includes('OevkPoligonok')) newData.oevkPoligonok = listData;
+                        else if (file.name.includes('OevkPoligonok')) newData.oevkPoligonok = json.features ? json : listData;
                         else if (file.name.includes('ListakEsJeloltek')) newData.listakEsJeloltek = listData;
 
                         const isNowComplete = Object.values(newData).every(val => val !== null);

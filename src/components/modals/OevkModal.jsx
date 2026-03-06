@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { StatusBadge } from '../ui';
 import { toPng } from 'html-to-image';
 import { getInitials, getImageUrl } from '../../utils/helpers';
+import { useUIContext, useDataContext } from '../../contexts';
 
 // Pártszín térkép
 const PARTY_COLORS = {
@@ -31,7 +32,10 @@ const getPartyColor = (partyName) => {
     return `hsl(${h}, 60%, 45%)`;
 };
 
-export default function OevkModal({ selectedOevk, enrichedData, onClose }) {
+export default function OevkModal() {
+    const { selectedOevk, setSelectedOevk } = useUIContext();
+    const { enrichedData } = useDataContext();
+    const onClose = () => setSelectedOevk(null);
     const cardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
     const [isCopied, setIsCopied] = useState(false);

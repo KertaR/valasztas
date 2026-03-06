@@ -2,8 +2,13 @@ import { useRef, useState } from 'react';
 import { X, Users, Map, Download, Loader2, MapPin, UsersRound, Building2, PieChart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toPng } from 'html-to-image';
+import { useUIContext, useDataContext } from '../../contexts';
 
-export default function CountyModal({ selectedCounty, enrichedData, onClose, onSelectOevk }) {
+export default function CountyModal() {
+    const { selectedCountyDetail: selectedCounty, setSelectedCountyDetail, setSelectedOevk } = useUIContext();
+    const { enrichedData } = useDataContext();
+    const onClose = () => setSelectedCountyDetail(null);
+    const onSelectOevk = setSelectedOevk;
     const modalRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
 

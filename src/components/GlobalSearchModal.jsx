@@ -2,8 +2,15 @@ import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Search, UserCircle2, Building2, Map, Command, X, ArrowUp, ArrowDown, CornerDownLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getImageUrl, getInitials } from '../utils/helpers';
+import { useUIContext, useDataContext } from '../contexts';
 
-export default function GlobalSearchModal({ isOpen, onClose, enrichedData, onSelectCandidate, onSelectOrg, onSelectOevk }) {
+export default function GlobalSearchModal() {
+    const { isSearchOpen: isOpen, setIsSearchOpen, setSelectedCandidate, setSelectedOrg, setSelectedOevk } = useUIContext();
+    const { enrichedData } = useDataContext();
+    const onClose = () => setIsSearchOpen(false);
+    const onSelectCandidate = setSelectedCandidate;
+    const onSelectOrg = setSelectedOrg;
+    const onSelectOevk = setSelectedOevk;
     const [search, setSearch] = useState('');
     const [activeIdx, setActiveIdx] = useState(-1);
     const inputRef = useRef(null);

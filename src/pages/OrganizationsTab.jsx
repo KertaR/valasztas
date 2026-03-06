@@ -4,8 +4,11 @@ import { Search, Grid, List, Zap } from 'lucide-react';
 
 // Organizations Components
 import { OrganizationsGrid, OrganizationsTable } from '../components';
+import { useUIContext, useDataContext } from '../contexts';
 
-export default function OrganizationsTab({ enrichedData, setSelectedOrg }) {
+export default function OrganizationsTab() {
+    const { enrichedData } = useDataContext();
+    const { setSelectedOrg } = useUIContext();
     const [viewMode, setViewMode] = useState('grid');
     const [showOnlyNew, setShowOnlyNew] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');

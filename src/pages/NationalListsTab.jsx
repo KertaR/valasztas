@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { List, Search, Users, CheckCircle2, AlertCircle, XCircle, Info, X, ShieldCheck, ChevronRight, ChevronDown, ChevronUp, Map, MapPin, Check } from 'lucide-react';
 import { getImageUrl } from '../utils/helpers';
+import { useDataContext } from '../contexts';
 
 const COUNTY_MAP = {
     "01": "Budapest",
@@ -26,7 +27,8 @@ const COUNTY_MAP = {
     "20": "Zala"
 };
 
-export default function NationalListsTab({ enrichedData }) {
+export default function NationalListsTab() {
+    const { enrichedData } = useDataContext();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedFormation, setSelectedFormation] = useState(null); // Modal state
     const [expandedCounties, setExpandedCounties] = useState({});

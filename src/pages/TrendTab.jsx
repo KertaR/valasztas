@@ -4,6 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { TrendingUp, Users, FileCheck2, CalendarClock, Loader2, Download } from 'lucide-react';
 import { toPng } from 'html-to-image';
 import { PROXIES } from '../utils/constants';
+import { useDataContext } from '../contexts';
 
 const fetchJson = async (baseUrl) => {
     for (const proxy of PROXIES) {
@@ -46,7 +47,8 @@ const generateHistoryDates = () => {
     return dates;
 };
 
-export default function TrendTab({ enrichedData }) {
+export default function TrendTab() {
+    const { enrichedData } = useDataContext();
     const trendRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);
     const [trendData, setTrendData] = useState([]);
