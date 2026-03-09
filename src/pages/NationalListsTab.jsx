@@ -73,8 +73,18 @@ export default function NationalListsTab() {
     }, [enrichedData]);
 
     const filteredData = listsData.filter(f => {
+        // Find matching candidates
+        let matchingCandidates = [];
+        if (f.officialCandidates) {
+            matchingCandidates = f.officialCandidates.filter(cand =>
+                cand.neve.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        }
+
         const matchesSearch = f.abbr.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            f.fullName.toLowerCase().includes(searchTerm.toLowerCase());
+            f.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            matchingCandidates.length > 0;
+
         if (!matchesSearch) return false;
 
         if (statusFilter === 'official') return !!f.officialCandidates;
@@ -124,7 +134,7 @@ export default function NationalListsTab() {
                     </div>
                     <input
                         type="text"
-                        placeholder="Formáció keresése..."
+                        placeholder="Formáció vagy jelölt keresése..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm transition-all shadow-sm"
@@ -168,6 +178,20 @@ export default function NationalListsTab() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
                 {filteredData.map(f => {
                     const hasOfficial = !!f.officialCandidates;
+
+                    let displayCandidates = [];
+                    if (hasOfficial) {
+                        const matchingCandidates = searchTerm ? f.officialCandidates.filter(cand => 
+                            cand.neve.toLowerCase().includes(searchTerm.toLowerCase())
+                        ) : [];
+                        
+                        // Show up to 3 candidates. If there are search matches, prioritize them.
+                        if (matchingCandidates.length > 0) {
+                            displayCandidates = matchingCandidates.slice(0, 3);
+                        } else {
+                            displayCandidates = f.officialCandidates.slice(0, 3);
+                        }
+                    }
 
                     const oevkRegPercent = Math.min(100, (f.regOevkCount / 71) * 100);
                     const countyRegPercent = Math.min(100, (f.regCountyCount / 15) * 100);
@@ -329,21 +353,28 @@ export default function NationalListsTab() {
                                         </div>
 
                                         <div className="flex flex-col gap-2 mb-4">
-                                            {f.officialCandidates.slice(0, 3).map(cand => (
-                                                <div key={cand.tj_id} className="flex items-center gap-3 bg-slate-50 dark:bg-slate-900/30 rounded-lg p-2 border border-slate-100 dark:border-slate-800/50">
-                                                    <div className="w-6 text-center text-xs font-black text-slate-400">{cand.sorsz}.</div>
-                                                    <div className="w-8 h-8 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden flex-shrink-0">
-                                                        {cand.fenykep ? (
-                                                            <img src={getImageUrl(cand.fenykep)} className="w-full h-full object-cover" alt="" />
-                                                        ) : (
-                                                            <div className="w-full h-full flex items-center justify-center text-slate-300"><Users className="w-4 h-4" /></div>
-                                                        )}
+                                            {displayCandidates.map(cand => {
+                                                const isMatch = searchTerm && cand.neve.toLowerCase().includes(searchTerm.toLowerCase());
+                                                return (
+                                                    <div key={cand.tj_id || cand.kpn_id || cand.neve} className={`flex items-center gap-3 rounded-lg p-2 border ${
+                                                        isMatch 
+                                                        ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800 shadow-sm' 
+                                                        : 'bg-slate-50 dark:bg-slate-900/30 border-slate-100 dark:border-slate-800/50'
+                                                    }`}>
+                                                        <div className={`w-6 text-center text-xs font-black ${isMatch ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`}>{cand.sorsz}.</div>
+                                                        <div className={`w-8 h-8 rounded-md bg-white dark:bg-slate-800 border overflow-hidden flex-shrink-0 ${isMatch ? 'border-blue-200 dark:border-blue-700' : 'border-slate-200 dark:border-slate-700'}`}>
+                                                            {cand.fenykep ? (
+                                                                <img src={getImageUrl(cand.fenykep)} className="w-full h-full object-cover" alt="" />
+                                                            ) : (
+                                                                <div className={`w-full h-full flex items-center justify-center ${isMatch ? 'text-blue-400' : 'text-slate-300'}`}><Users className="w-4 h-4" /></div>
+                                                            )}
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <div className="text-sm font-bold text-slate-800 dark:text-white truncate" title={cand.neve}>{cand.neve}</div>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex-1 min-w-0">
-                                                        <div className="text-sm font-bold text-slate-800 dark:text-white truncate" title={cand.neve}>{cand.neve}</div>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
 
                                         {f.officialCandidates.length > 3 && (
@@ -410,26 +441,39 @@ export default function NationalListsTab() {
                                     </div>
 
                                     <div className="flex flex-col gap-2">
-                                        {selectedFormation.officialCandidates.map((cand) => (
-                                            <div key={cand.tj_id || cand.kpn_id || cand.neve} className="flex items-center gap-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 shadow-sm hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors group">
-                                                <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold flex items-center justify-center text-sm flex-shrink-0 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/30 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                                                    {cand.sorsz}.
+                                        {selectedFormation.officialCandidates.map((cand) => {
+                                            const isMatch = searchTerm && cand.neve.toLowerCase().includes(searchTerm.toLowerCase());
+                                            return (
+                                                <div key={cand.tj_id || cand.kpn_id || cand.neve} className={`flex items-center gap-3 bg-white dark:bg-slate-800 border rounded-xl p-2.5 shadow-sm transition-colors group ${
+                                                    isMatch 
+                                                    ? 'border-blue-300 dark:border-blue-700 bg-blue-50/50 dark:bg-blue-900/20' 
+                                                    : 'border-slate-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-700'
+                                                }`}>
+                                                    <div className={`w-10 h-10 rounded-lg border font-bold flex items-center justify-center text-sm flex-shrink-0 transition-colors ${
+                                                        isMatch
+                                                        ? 'bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300'
+                                                        : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900/30 group-hover:text-indigo-600 dark:group-hover:text-indigo-400'
+                                                    }`}>
+                                                        {cand.sorsz}.
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <div className="text-base font-bold text-slate-800 dark:text-slate-100 truncate" title={cand.neve}>
+                                                            {cand.neve}
+                                                        </div>
+                                                        <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                                                            {cand.statusName}
+                                                        </div>
+                                                    </div>
+                                                    {cand.fenykep && (
+                                                        <div className={`w-12 h-12 rounded-lg shrink-0 overflow-hidden border shadow-sm ${
+                                                            isMatch ? 'border-blue-200 dark:border-blue-800' : 'border-slate-200 dark:border-slate-700 bg-slate-200 dark:bg-slate-800'
+                                                        }`}>
+                                                            <img src={getImageUrl(cand.fenykep)} className="w-full h-full object-cover" alt="" />
+                                                        </div>
+                                                    )}
                                                 </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <div className="text-base font-bold text-slate-800 dark:text-slate-100 truncate" title={cand.neve}>
-                                                        {cand.neve}
-                                                    </div>
-                                                    <div className="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate mt-0.5">
-                                                        {cand.statusName}
-                                                    </div>
-                                                </div>
-                                                {cand.fenykep && (
-                                                    <div className="w-12 h-12 rounded-lg shrink-0 overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-slate-200 dark:bg-slate-800">
-                                                        <img src={getImageUrl(cand.fenykep)} className="w-full h-full object-cover" alt="" />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </motion.div>
