@@ -50,14 +50,14 @@ export default function OevkModal() {
             });
     }, [enrichedData.candidates, selectedOevk]);
 
-    if (!selectedOevk) return null;
-
-    const { exportImage, isExporting } = useExportImage(cardRef, `oevk_adatlap_${selectedOevk.maz}_${selectedOevk.evk}`);
+    const { exportImage, isExporting } = useExportImage(cardRef, selectedOevk ? `oevk_adatlap_${selectedOevk.maz}_${selectedOevk.evk}` : 'oevk_adatlap');
     const { handleShare, isCopied } = useShare({
-        title: `Választás '26 - ${selectedOevk.evk_nev}`,
-        text: `📍 ${selectedOevk.evk_nev}\nSzékhely: ${selectedOevk.szekhely}\nVálasztópolgárok: ${selectedOevk.letszam?.indulo?.toLocaleString('hu-HU')} fő\nInduló jelöltek: ${districtCandidates.length} fő.\n\nNézd meg a részleteket a Választás '26 appban:`,
+        title: selectedOevk ? `Választás '26 - ${selectedOevk.evk_nev}` : '',
+        text: selectedOevk ? `📍 ${selectedOevk.evk_nev}\nSzékhely: ${selectedOevk.szekhely}\nVálasztópolgárok: ${selectedOevk.letszam?.indulo?.toLocaleString('hu-HU')} fő\nInduló jelöltek: ${districtCandidates.length} fő.\n\nNézd meg a részleteket a Választás '26 appban:` : '',
         url: window.location.href, // Or a specific deep link if routing is configured
     });
+
+    if (!selectedOevk) return null;
 
     const registeredCount = districtCandidates.filter(c => c.statusName.startsWith('Nyilvántartásba')).length;
     const totalCount = districtCandidates.length;

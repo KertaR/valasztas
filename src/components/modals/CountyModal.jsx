@@ -12,6 +12,8 @@ export default function CountyModal() {
     const onSelectOevk = setSelectedOevk;
     const modalRef = useRef(null);
 
+    const { exportImage, isExporting } = useExportImage(modalRef, selectedCounty ? `valasztas_varmegye_${selectedCounty.nev.toLowerCase().replace(/\s+/g, '_')}` : 'valasztas_varmegye');
+
     if (!selectedCounty) return null;
 
     // Filter districts belonging to this county
@@ -40,8 +42,6 @@ export default function CountyModal() {
     if (independentCount > 0) {
         distributionData.push({ name: 'Független jelöltek (Összesen)', count: independentCount, isParty: false });
     }
-
-    const { exportImage, isExporting } = useExportImage(modalRef, `valasztas_varmegye_${selectedCounty.nev.toLowerCase().replace(/\s+/g, '_')}`);
 
     return (
         <Modal onClose={onClose} maxWidthClass="max-w-2xl" showCloseButton={false} className="rounded-3xl">

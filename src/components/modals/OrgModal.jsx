@@ -58,14 +58,14 @@ export default function OrgModal() {
         return list;
     }, [allOrgCandidates, statusFilter, searchTerm, sortBy]);
 
-    if (!selectedOrg) return null;
-
-    const { exportImage, isExporting } = useExportImage(cardRef, `szervezet_adatlap_${selectedOrg.r_nev || selectedOrg.nev.substring(0, 10)}`);
+    const { exportImage, isExporting } = useExportImage(cardRef, selectedOrg ? `szervezet_adatlap_${selectedOrg.r_nev || selectedOrg.nev.substring(0, 10)}` : 'szervezet_adatlap');
     const { handleShare, isCopied } = useShare({
-        title: `Választás '26 - ${selectedOrg.coalitionAbbr || selectedOrg.r_nev || selectedOrg.nev}`,
-        text: `🏛️ ${selectedOrg.coalitionFullName || selectedOrg.nev}\nLefedettség: ${selectedOrg.oevkCoverage}/106 OEVK (${selectedOrg.coveragePercent}%)\nÖsszes jelölt: ${selectedOrg.candidateCount} fő\n\nNézd meg a részleteket a Választás '26 appban:`,
+        title: selectedOrg ? `Választás '26 - ${selectedOrg.coalitionAbbr || selectedOrg.r_nev || selectedOrg.nev}` : '',
+        text: selectedOrg ? `🏛️ ${selectedOrg.coalitionFullName || selectedOrg.nev}\nLefedettség: ${selectedOrg.oevkCoverage}/106 OEVK (${selectedOrg.coveragePercent}%)\nÖsszes jelölt: ${selectedOrg.candidateCount} fő\n\nNézd meg a részleteket a Választás '26 appban:` : '',
         url: window.location.href, // Or a specific deep link
     });
+
+    if (!selectedOrg) return null;
 
     return (
         <Modal onClose={onClose} maxWidthClass="max-w-4xl">

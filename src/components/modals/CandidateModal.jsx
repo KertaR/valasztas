@@ -9,12 +9,14 @@ export default function CandidateModal() {
     const { selectedCandidate: candidate, setSelectedCandidate } = useUIContext();
     const onClose = () => setSelectedCandidate(null);
     const cardRef = useRef(null);
-    const { exportImage, isExporting } = useExportImage(cardRef, `jelolt_adatlap_${candidate.neve.replace(/\s+/g, '_').toLowerCase()}`);
+    const { exportImage, isExporting } = useExportImage(cardRef, candidate ? `jelolt_adatlap_${candidate.neve.replace(/\s+/g, '_').toLowerCase()}` : 'jelolt_adatlap');
     const { handleShare, isCopied } = useShare({
-        title: `${candidate.neve} - Vál. '26`,
-        text: `Nézd meg ${candidate.neve} (${candidate.partyNames}) adatlapját a ${candidate.countyName} ${candidate.districtName} választókerületben!`,
+        title: candidate ? `${candidate.neve} - Vál. '26` : '',
+        text: candidate ? `Nézd meg ${candidate.neve} (${candidate.partyNames}) adatlapját a ${candidate.countyName} ${candidate.districtName} választókerületben!` : '',
         url: window.location.href,
     });
+
+    if (!candidate) return null;
 
     return (
         <Modal onClose={onClose} maxWidthClass="max-w-lg" showCloseButton={false} className="rounded-3xl">
