@@ -1,9 +1,9 @@
 import { useRef, useState, useMemo } from 'react';
 import { Target, Users, Building2, Download, Loader2, Search, Filter, Share2, Check } from 'lucide-react';
 import { StatusBadge, Modal } from '../ui';
-import { toPng } from 'html-to-image';
 import { getInitials, getImageUrl } from '../../utils/helpers';
 import { useUIContext, useDataContext } from '../../contexts';
+import { useExportImage, useShare } from '../../hooks';
 
 const STATUS_GROUPS = [
     { key: 'all', label: 'Összes' },
@@ -17,8 +17,6 @@ export default function OrgModal() {
     const { enrichedData } = useDataContext();
     const onClose = () => setSelectedOrg(null);
     const cardRef = useRef(null);
-    const [isExporting, setIsExporting] = useState(false);
-    const [isCopied, setIsCopied] = useState(false);
     const [statusFilter, setStatusFilter] = useState('all');
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('name'); // 'name' | 'county' | 'status'
@@ -62,53 +60,12 @@ export default function OrgModal() {
 
     if (!selectedOrg) return null;
 
-    const exportImage = async () => {
-        if (!cardRef.current) return;
-        setIsExporting(true);
-        try {
-            const dataUrl = await toPng(cardRef.current, {
-                cacheBust: true,
-                backgroundColor: '#ffffff',
-                pixelRatio: 3
-            });
-            const link = document.createElement('a');
-            link.download = `szervezet_adatlap_${selectedOrg.r_nev || selectedOrg.nev.substring(0, 10)}.png`;
-            link.href = dataUrl;
-            link.click();
-        } catch (err) {
-            console.error('Image export failed:', err);
-            alert('Hiba történt a kép generálása közben.');
-        } finally {
-            setIsExporting(false);
-        }
-    };
-
-    const handleShare = async () => {
-        const shareData = {
-            title: `Választás '26 - ${selectedOrg.coalitionAbbr || selectedOrg.r_nev || selectedOrg.nev}`,
-            text: `🏛️ ${selectedOrg.coalitionFullName || selectedOrg.nev}\nLefedettség: ${selectedOrg.oevkCoverage}/106 OEVK (${selectedOrg.coveragePercent}%)\nÖsszes jelölt: ${selectedOrg.candidateCount} fő\n\nNézd meg a részleteket a Választás '26 appban:`,
-            url: window.location.href, // Or a specific deep link
-        };
-
-        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-            try {
-                await navigator.share(shareData);
-            } catch (err) {
-                if (err.name !== 'AbortError') {
-                    console.error('Error sharing:', err);
-                }
-            }
-        } else {
-            // Fallback: Copy to clipboard
-            try {
-                await navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
-                setIsCopied(true);
-                setTimeout(() => setIsCopied(false), 2000);
-            } catch (err) {
-                console.error('Failed to copy fallback:', err);
-            }
-        }
-    };
+    const { exportImage, isExporting } = useExportImage(cardRef, `szervezet_adatlap_${selectedOrg.r_nev || selectedOrg.nev.substring(0, 10)}`);
+    const { handleShare, isCopied } = useShare({
+        title: `Választás '26 - ${selectedOrg.coalitionAbbr || selectedOrg.r_nev || selectedOrg.nev}`,
+        text: `🏛️ ${selectedOrg.coalitionFullName || selectedOrg.nev}\nLefedettség: ${selectedOrg.oevkCoverage}/106 OEVK (${selectedOrg.coveragePercent}%)\nÖsszes jelölt: ${selectedOrg.candidateCount} fő\n\nNézd meg a részleteket a Választás '26 appban:`,
+        url: window.location.href, // Or a specific deep link
+    });
 
     return (
         <Modal onClose={onClose} maxWidthClass="max-w-4xl">

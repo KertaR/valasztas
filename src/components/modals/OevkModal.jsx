@@ -1,9 +1,9 @@
 import { useRef, useState, useMemo, useEffect } from 'react';
 import { Users, Map, Download, Loader2, TrendingUp, Shield, Share2, Check } from 'lucide-react';
 import { StatusBadge, Modal } from '../ui';
-import { toPng } from 'html-to-image';
 import { getInitials, getImageUrl } from '../../utils/helpers';
 import { useUIContext, useDataContext } from '../../contexts';
+import { useExportImage, useShare } from '../../hooks';
 
 // Pártszín térkép
 const PARTY_COLORS = {
@@ -36,8 +36,6 @@ export default function OevkModal() {
     const { enrichedData } = useDataContext();
     const onClose = () => setSelectedOevk(null);
     const cardRef = useRef(null);
-    const [isExporting, setIsExporting] = useState(false);
-    const [isCopied, setIsCopied] = useState(false);
 
     // *** Minden hook UNCONDITIONALLY, early return ELŐTT ***
     const districtCandidates = useMemo(() => {
@@ -54,53 +52,12 @@ export default function OevkModal() {
 
     if (!selectedOevk) return null;
 
-    const exportImage = async () => {
-        if (!cardRef.current) return;
-        setIsExporting(true);
-        try {
-            const dataUrl = await toPng(cardRef.current, {
-                cacheBust: true,
-                backgroundColor: '#ffffff',
-                pixelRatio: 3
-            });
-            const link = document.createElement('a');
-            link.download = `oevk_adatlap_${selectedOevk.maz}_${selectedOevk.evk}.png`;
-            link.href = dataUrl;
-            link.click();
-        } catch (err) {
-            console.error('Image export failed:', err);
-            alert('Hiba történt a kép generálása közben.');
-        } finally {
-            setIsExporting(false);
-        }
-    };
-
-    const handleShare = async () => {
-        const shareData = {
-            title: `Választás '26 - ${selectedOevk.evk_nev}`,
-            text: `📍 ${selectedOevk.evk_nev}\nSzékhely: ${selectedOevk.szekhely}\nVálasztópolgárok: ${selectedOevk.letszam?.indulo?.toLocaleString('hu-HU')} fő\nInduló jelöltek: ${districtCandidates.length} fő.\n\nNézd meg a részleteket a Választás '26 appban:`,
-            url: window.location.href, // Or a specific deep link if routing is configured
-        };
-
-        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
-            try {
-                await navigator.share(shareData);
-            } catch (err) {
-                if (err.name !== 'AbortError') {
-                    console.error('Error sharing:', err);
-                }
-            }
-        } else {
-            // Fallback: Copy to clipboard
-            try {
-                await navigator.clipboard.writeText(`${shareData.title}\n${shareData.text}\n${shareData.url}`);
-                setIsCopied(true);
-                setTimeout(() => setIsCopied(false), 2000);
-            } catch (err) {
-                console.error('Failed to copy fallback:', err);
-            }
-        }
-    };
+    const { exportImage, isExporting } = useExportImage(cardRef, `oevk_adatlap_${selectedOevk.maz}_${selectedOevk.evk}`);
+    const { handleShare, isCopied } = useShare({
+        title: `Választás '26 - ${selectedOevk.evk_nev}`,
+        text: `📍 ${selectedOevk.evk_nev}\nSzékhely: ${selectedOevk.szekhely}\nVálasztópolgárok: ${selectedOevk.letszam?.indulo?.toLocaleString('hu-HU')} fő\nInduló jelöltek: ${districtCandidates.length} fő.\n\nNézd meg a részleteket a Választás '26 appban:`,
+        url: window.location.href, // Or a specific deep link if routing is configured
+    });
 
     const registeredCount = districtCandidates.filter(c => c.statusName.startsWith('Nyilvántartásba')).length;
     const totalCount = districtCandidates.length;

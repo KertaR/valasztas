@@ -1,64 +1,20 @@
 import { useRef, useState } from 'react';
 import { MapPin, Building2, Download, Loader2, UserCircle2, Stamp, Share2, Check, X } from 'lucide-react';
 import { StatusBadge, Modal } from '../ui';
-import { toPng } from 'html-to-image';
 import { getInitials, getImageUrl } from '../../utils/helpers';
 import { useUIContext } from '../../contexts';
+import { useExportImage, useShare } from '../../hooks';
 
 export default function CandidateModal() {
     const { selectedCandidate: candidate, setSelectedCandidate } = useUIContext();
     const onClose = () => setSelectedCandidate(null);
     const cardRef = useRef(null);
-    const [isExporting, setIsExporting] = useState(false);
-    const [isCopied, setIsCopied] = useState(false);
-
-    if (!candidate) return null;
-
-    const exportImage = async () => {
-        if (!cardRef.current) return;
-        setIsExporting(true);
-        try {
-            const dataUrl = await toPng(cardRef.current, {
-                cacheBust: true,
-                backgroundColor: '#ffffff',
-                pixelRatio: 3 // High-Quality for social media
-            });
-            const link = document.createElement('a');
-            link.download = `jelolt_adatlap_${candidate.neve.replace(/\s+/g, '_').toLowerCase()}.png`;
-            link.href = dataUrl;
-            link.click();
-        } catch (err) {
-            console.error('Image export failed:', err);
-            alert('Hiba történt a kép generálása közben.');
-        } finally {
-            setIsExporting(false);
-        }
-    };
-
-    const handleShare = async () => {
-        const shareData = {
-            title: `${candidate.neve} - Vál. '26`,
-            text: `Nézd meg ${candidate.neve} (${candidate.partyNames}) adatlapját a ${candidate.countyName} ${candidate.districtName} választókerületben!`,
-            url: window.location.href, // Esetleg ha van paraméteres routing: window.location.origin + '?jelolt=' + candidate.szemely_azonosito
-        };
-
-        if (navigator.share) {
-            try {
-                await navigator.share(shareData);
-            } catch (err) {
-                console.log('Megosztás megszakítva', err);
-            }
-        } else {
-            // Fallback vágólapra másolás
-            try {
-                await navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`);
-                setIsCopied(true);
-                setTimeout(() => setIsCopied(false), 2000);
-            } catch (err) {
-                alert('Sikertelen másolás a vágólapra.');
-            }
-        }
-    };
+    const { exportImage, isExporting } = useExportImage(cardRef, `jelolt_adatlap_${candidate.neve.replace(/\s+/g, '_').toLowerCase()}`);
+    const { handleShare, isCopied } = useShare({
+        title: `${candidate.neve} - Vál. '26`,
+        text: `Nézd meg ${candidate.neve} (${candidate.partyNames}) adatlapját a ${candidate.countyName} ${candidate.districtName} választókerületben!`,
+        url: window.location.href,
+    });
 
     return (
         <Modal onClose={onClose} maxWidthClass="max-w-lg" showCloseButton={false} className="rounded-3xl">

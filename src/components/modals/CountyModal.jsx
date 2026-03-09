@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Users, Map, Download, Loader2, MapPin, UsersRound, Building2, PieChart } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { toPng } from 'html-to-image';
+import { useExportImage } from '../../hooks';
 import { useUIContext, useDataContext } from '../../contexts';
 import { Modal } from '../ui';
 
@@ -11,7 +11,6 @@ export default function CountyModal() {
     const onClose = () => setSelectedCountyDetail(null);
     const onSelectOevk = setSelectedOevk;
     const modalRef = useRef(null);
-    const [isExporting, setIsExporting] = useState(false);
 
     if (!selectedCounty) return null;
 
@@ -42,26 +41,7 @@ export default function CountyModal() {
         distributionData.push({ name: 'Független jelöltek (Összesen)', count: independentCount, isParty: false });
     }
 
-    const exportImage = async () => {
-        if (!modalRef.current) return;
-        setIsExporting(true);
-        try {
-            const dataUrl = await toPng(modalRef.current, {
-                cacheBust: true,
-                backgroundColor: '#ffffff',
-                pixelRatio: 2
-            });
-            const link = document.createElement('a');
-            link.download = `valasztas_varmegye_${selectedCounty.nev.toLowerCase().replace(/\s+/g, '_')}.png`;
-            link.href = dataUrl;
-            link.click();
-        } catch (err) {
-            console.error('Export failed:', err);
-            alert('Hiba történt az exportálás közben.');
-        } finally {
-            setIsExporting(false);
-        }
-    };
+    const { exportImage, isExporting } = useExportImage(modalRef, `valasztas_varmegye_${selectedCounty.nev.toLowerCase().replace(/\s+/g, '_')}`);
 
     return (
         <Modal onClose={onClose} maxWidthClass="max-w-2xl" showCloseButton={false} className="rounded-3xl">
