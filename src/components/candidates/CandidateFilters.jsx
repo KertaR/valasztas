@@ -1,4 +1,5 @@
-import { Search, Zap, Filter } from 'lucide-react';
+import { Zap } from 'lucide-react';
+import { SearchField, FilterSelect } from '../ui';
 
 export default function CandidateFilters({
     searchTerm, setSearchTerm,
@@ -40,52 +41,32 @@ export default function CandidateFilters({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 relative">
-                <div className="relative group">
-                    <input
-                        type="text"
-                        placeholder="Keresés névre..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none transition-all text-sm font-semibold text-slate-800 dark:text-slate-200 hover:bg-white dark:hover:bg-slate-800"
-                    />
-                    <Search className="w-4 h-4 text-slate-400 absolute left-4 top-[14px] group-focus-within:text-blue-500 transition-colors" />
-                </div>
+                <SearchField
+                    value={searchTerm}
+                    onChange={setSearchTerm}
+                    placeholder="Keresés névre..."
+                />
 
-                <div className="relative group">
-                    <Filter className="w-4 h-4 text-slate-400 absolute left-4 top-[14px] group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                    <select
-                        value={selectedCounty}
-                        onChange={(e) => setSelectedCounty(e.target.value)}
-                        className="w-full pl-10 pr-8 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none appearance-none text-sm font-semibold text-slate-700 dark:text-slate-200 cursor-pointer transition-all hover:bg-white dark:hover:bg-slate-800"
-                    >
-                        <option value="">Összes vármegye</option>
-                        {filterOptions.counties.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                </div>
+                <FilterSelect
+                    value={selectedCounty}
+                    onChange={setSelectedCounty}
+                    options={filterOptions.counties}
+                    defaultOptionLabel="Összes vármegye"
+                />
 
-                <div className="relative group">
-                    <Filter className="w-4 h-4 text-slate-400 absolute left-4 top-[14px] group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                    <select
-                        value={selectedParty}
-                        onChange={(e) => setSelectedParty(e.target.value)}
-                        className="w-full pl-10 pr-8 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none appearance-none text-sm font-semibold text-slate-700 dark:text-slate-200 cursor-pointer transition-all hover:bg-white dark:hover:bg-slate-800"
-                    >
-                        <option value="">Összes szervezet</option>
-                        {filterOptions.parties.map(p => <option key={p} value={p}>{p}</option>)}
-                    </select>
-                </div>
+                <FilterSelect
+                    value={selectedParty}
+                    onChange={setSelectedParty}
+                    options={filterOptions.parties}
+                    defaultOptionLabel="Összes szervezet"
+                />
 
-                <div className="relative group">
-                    <Filter className="w-4 h-4 text-slate-400 absolute left-4 top-[14px] group-focus-within:text-blue-500 transition-colors pointer-events-none" />
-                    <select
-                        value={selectedStatus}
-                        onChange={(e) => setSelectedStatus(e.target.value)}
-                        className="w-full pl-10 pr-8 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none appearance-none text-sm font-semibold text-slate-700 dark:text-slate-200 cursor-pointer transition-all hover:bg-white dark:hover:bg-slate-800"
-                    >
-                        <option value="">Összes állapot</option>
-                        {filterOptions.statuses.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
-                </div>
+                <FilterSelect
+                    value={selectedStatus}
+                    onChange={setSelectedStatus}
+                    options={filterOptions.statuses}
+                    defaultOptionLabel="Összes állapot"
+                />
             </div>
         </div>
     );

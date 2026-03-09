@@ -1,17 +1,13 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Zap, Building2, Map, Users, Target, CheckCircle2, AlertCircle, XCircle } from 'lucide-react';
-import { getImageUrl } from '../../utils/helpers';
+import { EmptyState } from '../ui';
+import OrganizationLogo from './OrganizationLogo';
 
 export default function OrganizationsGrid({ organizations, onSelect }) {
     if (organizations.length === 0) {
         return (
-            <div className="p-12 text-center bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
-                <div className="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors">
-                    <Building2 className="w-8 h-8 text-slate-300" />
-                </div>
-                <p className="text-slate-500 dark:text-slate-400 font-medium">Nem található jelölő szervezet a megadott feltételekkel.</p>
-            </div>
+            <EmptyState icon={Building2} text="Nem található jelölő szervezet a megadott feltételekkel." />
         );
     }
 
@@ -41,25 +37,11 @@ export default function OrganizationsGrid({ organizations, onSelect }) {
                             {/* Header */}
                             <div className="flex items-start gap-4 mb-5">
                                 <div className="relative">
-                                    {org.emblema ? (
-                                        <div className="w-14 h-14 bg-white rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-sm p-1.5 flex items-center justify-center relative z-10">
-                                            <img
-                                                src={getImageUrl(org.emblema)}
-                                                alt={org.r_nev || org.nev}
-                                                crossOrigin="anonymous"
-                                                className="w-full h-full object-contain"
-                                                onError={(e) => {
-                                                    e.target.style.display = 'none';
-                                                    e.target.nextElementSibling.style.display = 'block';
-                                                }}
-                                            />
-                                            <Building2 className="w-6 h-6 text-slate-300 hidden" />
-                                        </div>
-                                    ) : (
-                                        <div className="w-14 h-14 bg-slate-50 dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-center relative z-10">
-                                            <Building2 className="w-6 h-6 text-slate-300 dark:text-slate-600" />
-                                        </div>
-                                    )}
+                                    <OrganizationLogo
+                                        emblema={org.emblema}
+                                        nev={org.nev}
+                                        r_nev={org.r_nev}
+                                    />
                                     {org.isNew && (
                                         <div className="absolute -bottom-2 -right-2 bg-amber-500 text-white p-1 rounded-full shadow-lg ring-2 ring-white dark:ring-slate-900 z-20">
                                             <Zap className="w-3 h-3" />

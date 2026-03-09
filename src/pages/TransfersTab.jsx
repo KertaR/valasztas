@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Globe, Users, ArrowRightLeft, Search } from 'lucide-react';
+import { PageLayout } from '../components/ui';
 import { useUIContext, useDataContext } from '../contexts';
 
 export default function TransfersTab() {
@@ -66,17 +67,12 @@ export default function TransfersTab() {
     };
 
     return (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="space-y-6">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white flex items-center gap-3">
-                        <ArrowRightLeft className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                        Átjelentkezők és Külképviselet
-                    </h1>
-                    <p className="text-slate-500 dark:text-slate-400 mt-1">Azoknak a választóknak a száma, akik nem a lakóhelyükön szavaznak</p>
-                </div>
-            </div>
-
+        <PageLayout
+            title="Átjelentkezők és Külképviselet"
+            subtitle="Azoknak a választóknak a száma, akik nem a lakóhelyükön szavaznak"
+            icon={ArrowRightLeft}
+            maxWidthClass=""
+        >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm relative overflow-hidden group hover:border-blue-300 dark:hover:border-blue-700/50 transition-colors">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-500">
@@ -229,6 +225,6 @@ export default function TransfersTab() {
                     </table>
                 </div>
             </div>
-        </motion.div>
+        </PageLayout>
     );
 }

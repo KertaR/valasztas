@@ -1,0 +1,3261 @@
+{
+  "statistics": {
+    "detectionDate": "2026-03-09T13:47:06.511Z",
+    "formats": {
+      "javascript": {
+        "sources": {
+          "src/utils/transformers/statsTransformer.js": {
+            "lines": 121,
+            "tokens": 1689,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/utils/transformers/organizationTransformer.js": {
+            "lines": 100,
+            "tokens": 1304,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/utils/transformers/mapTransformer.js": {
+            "lines": 69,
+            "tokens": 684,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/utils/transformers/candidateTransformer.js": {
+            "lines": 109,
+            "tokens": 1301,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/ToastContainer.jsx": {
+            "lines": 0,
+            "tokens": 32,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/StatusBadge.jsx": {
+            "lines": 1,
+            "tokens": 13,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/StatCard.jsx": {
+            "lines": 10,
+            "tokens": 194,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/NavItem.jsx": {
+            "lines": 2,
+            "tokens": 79,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/index.js": {
+            "lines": 4,
+            "tokens": 87,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/FileStatusCard.jsx": {
+            "lines": 1,
+            "tokens": 37,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/organizations/OrganizationsTable.jsx": {
+            "lines": 94,
+            "tokens": 1010,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 50,
+            "duplicatedTokens": 477,
+            "percentage": 53.19,
+            "percentageTokens": 47.23,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/organizations/OrganizationsHeader.jsx": {
+            "lines": 3,
+            "tokens": 53,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/organizations/OrganizationsGrid.jsx": {
+            "lines": 54,
+            "tokens": 545,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 50,
+            "duplicatedTokens": 477,
+            "percentage": 92.59,
+            "percentageTokens": 87.52,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/oevk/index.js": {
+            "lines": 2,
+            "tokens": 51,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/oevk/DistrictHeatmap.jsx": {
+            "lines": 4,
+            "tokens": 76,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/oevk/DistrictGrid.jsx": {
+            "lines": 2,
+            "tokens": 27,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/oevk/DistrictCard.jsx": {
+            "lines": 26,
+            "tokens": 287,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/national-lists/OfficialListModal.jsx": {
+            "lines": 38,
+            "tokens": 499,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 50,
+            "duplicatedTokens": 682,
+            "percentage": 131.58,
+            "percentageTokens": 136.67,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/national-lists/FormationStatusBadge.jsx": {
+            "lines": 3,
+            "tokens": 21,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/national-lists/FormationCard.jsx": {
+            "lines": 132,
+            "tokens": 1549,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/national-lists/CandidateItem.jsx": {
+            "lines": 23,
+            "tokens": 316,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/OrgModal.jsx": {
+            "lines": 154,
+            "tokens": 1771,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 14,
+            "duplicatedTokens": 249,
+            "percentage": 9.09,
+            "percentageTokens": 14.06,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/OevkModal.jsx": {
+            "lines": 134,
+            "tokens": 1685,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 43,
+            "duplicatedTokens": 614,
+            "percentage": 32.09,
+            "percentageTokens": 36.44,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/index.js": {
+            "lines": 4,
+            "tokens": 87,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/CountyModal.jsx": {
+            "lines": 108,
+            "tokens": 1323,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 86,
+            "percentage": 5.56,
+            "percentageTokens": 6.5,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/CandidatesDiffModal.jsx": {
+            "lines": 212,
+            "tokens": 2305,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 5,
+            "duplicatedTokens": 84,
+            "percentage": 2.36,
+            "percentageTokens": 3.64,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/CandidateModal.jsx": {
+            "lines": 118,
+            "tokens": 1265,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 5,
+            "duplicatedTokens": 84,
+            "percentage": 4.24,
+            "percentageTokens": 6.64,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/map/MapSidebarInfo.jsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/map/MapSearchBar.jsx": {
+            "lines": 14,
+            "tokens": 147,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/map/MapDisplay.jsx": {
+            "lines": 63,
+            "tokens": 621,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/UploadScreen.jsx": {
+            "lines": 32,
+            "tokens": 443,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/Sidebar.jsx": {
+            "lines": 56,
+            "tokens": 1162,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/TopPartiesChart.jsx": {
+            "lines": 17,
+            "tokens": 446,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/RecentChanges.jsx": {
+            "lines": 37,
+            "tokens": 433,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/ListProgress.jsx": {
+            "lines": 42,
+            "tokens": 654,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/index.js": {
+            "lines": 5,
+            "tokens": 105,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/ContestedDistrict.jsx": {
+            "lines": 0,
+            "tokens": 11,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/CandidateStatusChart.jsx": {
+            "lines": 56,
+            "tokens": 882,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/counties/CountyTable.jsx": {
+            "lines": 97,
+            "tokens": 1106,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/counties/CountyChart.jsx": {
+            "lines": 25,
+            "tokens": 243,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/OrgSearch.jsx": {
+            "lines": 31,
+            "tokens": 363,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 30,
+            "duplicatedTokens": 335,
+            "percentage": 96.77,
+            "percentageTokens": 92.29,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/OrgCompareCard.jsx": {
+            "lines": 12,
+            "tokens": 151,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/index.js": {
+            "lines": 3,
+            "tokens": 69,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/CandidateSearch.jsx": {
+            "lines": 31,
+            "tokens": 363,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 30,
+            "duplicatedTokens": 335,
+            "percentage": 96.77,
+            "percentageTokens": 92.29,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/CandidateCompareCard.jsx": {
+            "lines": 28,
+            "tokens": 300,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/index.js": {
+            "lines": 3,
+            "tokens": 69,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/CandidateTable.jsx": {
+            "lines": 65,
+            "tokens": 928,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/CandidatePagination.jsx": {
+            "lines": 11,
+            "tokens": 128,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/CandidateGrid.jsx": {
+            "lines": 55,
+            "tokens": 643,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/CandidateFilters.jsx": {
+            "lines": 69,
+            "tokens": 695,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 25,
+            "duplicatedTokens": 233,
+            "percentage": 36.23,
+            "percentageTokens": 33.53,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/calculator/ParliamentChart.jsx": {
+            "lines": 20,
+            "tokens": 259,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/calculator/CalculatorResults.jsx": {
+            "lines": 4,
+            "tokens": 82,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/calculator/CalculatorControls.jsx": {
+            "lines": 50,
+            "tokens": 681,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/analysis/LowIntensityDistricts.jsx": {
+            "lines": 1,
+            "tokens": 17,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/analysis/CoverageGaps.jsx": {
+            "lines": 9,
+            "tokens": 121,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/analysis/BattlegroundList.jsx": {
+            "lines": 1,
+            "tokens": 17,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/utils/mockTrendData.js": {
+            "lines": 74,
+            "tokens": 1271,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/utils/helpers.js": {
+            "lines": 17,
+            "tokens": 268,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/utils/dataHelpers.js": {
+            "lines": 117,
+            "tokens": 1590,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/utils/constants.js": {
+            "lines": 60,
+            "tokens": 577,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/TrendTab.jsx": {
+            "lines": 139,
+            "tokens": 2432,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 58,
+            "duplicatedTokens": 1012,
+            "percentage": 41.73,
+            "percentageTokens": 41.61,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/TransfersTab.jsx": {
+            "lines": 134,
+            "tokens": 1883,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 39,
+            "duplicatedTokens": 557,
+            "percentage": 29.1,
+            "percentageTokens": 29.58,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/SeatCalculatorTab.jsx": {
+            "lines": 60,
+            "tokens": 570,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 24,
+            "duplicatedTokens": 315,
+            "percentage": 40,
+            "percentageTokens": 55.26,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/OrganizationsTab.jsx": {
+            "lines": 81,
+            "tokens": 888,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 20,
+            "duplicatedTokens": 218,
+            "percentage": 24.69,
+            "percentageTokens": 24.55,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/OevkTab.jsx": {
+            "lines": 61,
+            "tokens": 642,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 25,
+            "duplicatedTokens": 233,
+            "percentage": 40.98,
+            "percentageTokens": 36.29,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/OevkMapTab.jsx": {
+            "lines": 64,
+            "tokens": 549,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/NationalListsTab.jsx": {
+            "lines": 85,
+            "tokens": 998,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 39,
+            "duplicatedTokens": 557,
+            "percentage": 45.88,
+            "percentageTokens": 55.81,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/index.js": {
+            "lines": 13,
+            "tokens": 249,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/DashboardTab.jsx": {
+            "lines": 82,
+            "tokens": 979,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/CountiesTab.jsx": {
+            "lines": 25,
+            "tokens": 371,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 22,
+            "duplicatedTokens": 315,
+            "percentage": 88,
+            "percentageTokens": 84.91,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/CompareTab.jsx": {
+            "lines": 157,
+            "tokens": 1691,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/CoalitionBuilderTab.jsx": {
+            "lines": 180,
+            "tokens": 2165,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/ChangelogTab.jsx": {
+            "lines": 160,
+            "tokens": 1903,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 68,
+            "duplicatedTokens": 756,
+            "percentage": 42.5,
+            "percentageTokens": 39.73,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/CandidatesTab.jsx": {
+            "lines": 67,
+            "tokens": 652,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/hooks/useSeatCalculator.js": {
+            "lines": 151,
+            "tokens": 2128,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/hooks/useEnrichedData.js": {
+            "lines": 168,
+            "tokens": 2119,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/hooks/useElectionData.js": {
+            "lines": 194,
+            "tokens": 2203,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/hooks/useCandidateFilters.js": {
+            "lines": 108,
+            "tokens": 1648,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/contexts/UIContext.jsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/contexts/FilterContext.jsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/contexts/DataContext.jsx": {
+            "lines": 0,
+            "tokens": 3,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/index.js": {
+            "lines": 10,
+            "tokens": 115,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/GlobalSearchModal.jsx": {
+            "lines": 150,
+            "tokens": 1934,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 5,
+            "duplicatedTokens": 71,
+            "percentage": 3.33,
+            "percentageTokens": 3.67,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/App.jsx": {
+            "lines": 69,
+            "tokens": 759,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 4791,
+          "tokens": 60025,
+          "sources": 84,
+          "clones": 15,
+          "duplicatedLines": 304,
+          "duplicatedTokens": 3845,
+          "percentage": 6.35,
+          "percentageTokens": 6.41,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "jsx": {
+        "sources": {
+          "src/components/ui/ToastContainer.jsx": {
+            "lines": 14,
+            "tokens": 225,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/StatusBadge.jsx": {
+            "lines": 23,
+            "tokens": 246,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/StatCard.jsx": {
+            "lines": 37,
+            "tokens": 491,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/NavItem.jsx": {
+            "lines": 7,
+            "tokens": 142,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/ui/FileStatusCard.jsx": {
+            "lines": 9,
+            "tokens": 125,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/organizations/OrganizationsTable.jsx": {
+            "lines": 136,
+            "tokens": 1435,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 69,
+            "percentage": 4.41,
+            "percentageTokens": 4.81,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/organizations/OrganizationsHeader.jsx": {
+            "lines": 18,
+            "tokens": 222,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/organizations/OrganizationsGrid.jsx": {
+            "lines": 146,
+            "tokens": 1567,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/oevk/DistrictHeatmap.jsx": {
+            "lines": 67,
+            "tokens": 724,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/oevk/DistrictGrid.jsx": {
+            "lines": 14,
+            "tokens": 118,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/oevk/DistrictCard.jsx": {
+            "lines": 46,
+            "tokens": 479,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/national-lists/OfficialListModal.jsx": {
+            "lines": 57,
+            "tokens": 662,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/national-lists/FormationStatusBadge.jsx": {
+            "lines": 46,
+            "tokens": 422,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/national-lists/FormationCard.jsx": {
+            "lines": 199,
+            "tokens": 2215,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/national-lists/CandidateItem.jsx": {
+            "lines": 57,
+            "tokens": 645,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/OrgModal.jsx": {
+            "lines": 284,
+            "tokens": 3672,
+            "sources": 1,
+            "clones": 8,
+            "duplicatedLines": 108,
+            "duplicatedTokens": 1144,
+            "percentage": 38.03,
+            "percentageTokens": 31.15,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/OevkModal.jsx": {
+            "lines": 263,
+            "tokens": 3327,
+            "sources": 1,
+            "clones": 5,
+            "duplicatedLines": 75,
+            "duplicatedTokens": 837,
+            "percentage": 28.52,
+            "percentageTokens": 25.16,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/CountyModal.jsx": {
+            "lines": 192,
+            "tokens": 2279,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 41,
+            "duplicatedTokens": 543,
+            "percentage": 21.35,
+            "percentageTokens": 23.83,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/CandidatesDiffModal.jsx": {
+            "lines": 257,
+            "tokens": 2843,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/modals/CandidateModal.jsx": {
+            "lines": 195,
+            "tokens": 2131,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 28,
+            "duplicatedTokens": 284,
+            "percentage": 14.36,
+            "percentageTokens": 13.33,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/map/MapSidebarInfo.jsx": {
+            "lines": 81,
+            "tokens": 810,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/map/MapSearchBar.jsx": {
+            "lines": 81,
+            "tokens": 731,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/map/MapLegend.jsx": {
+            "lines": 70,
+            "tokens": 844,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/map/MapDisplay.jsx": {
+            "lines": 92,
+            "tokens": 807,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/map/MapController.jsx": {
+            "lines": 11,
+            "tokens": 136,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/UploadScreen.jsx": {
+            "lines": 68,
+            "tokens": 785,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/layout/Sidebar.jsx": {
+            "lines": 90,
+            "tokens": 1436,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/TopPartiesChart.jsx": {
+            "lines": 51,
+            "tokens": 970,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/RecentChanges.jsx": {
+            "lines": 89,
+            "tokens": 1177,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/ListProgress.jsx": {
+            "lines": 85,
+            "tokens": 1145,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/ElectionCountdown.jsx": {
+            "lines": 45,
+            "tokens": 664,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/ContestedDistrict.jsx": {
+            "lines": 26,
+            "tokens": 274,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/dashboard/CandidateStatusChart.jsx": {
+            "lines": 107,
+            "tokens": 1479,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/counties/CountyTable.jsx": {
+            "lines": 188,
+            "tokens": 2109,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 47,
+            "duplicatedTokens": 612,
+            "percentage": 25,
+            "percentageTokens": 29.02,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/counties/CountyChart.jsx": {
+            "lines": 44,
+            "tokens": 453,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/OrgSearch.jsx": {
+            "lines": 80,
+            "tokens": 995,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 31,
+            "duplicatedTokens": 343,
+            "percentage": 38.75,
+            "percentageTokens": 34.47,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/OrgCompareCard.jsx": {
+            "lines": 99,
+            "tokens": 1174,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/CandidateSearch.jsx": {
+            "lines": 82,
+            "tokens": 938,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 31,
+            "duplicatedTokens": 343,
+            "percentage": 37.8,
+            "percentageTokens": 36.57,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/compare/CandidateCompareCard.jsx": {
+            "lines": 85,
+            "tokens": 918,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 6,
+            "duplicatedTokens": 71,
+            "percentage": 7.06,
+            "percentageTokens": 7.73,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/CandidateTable.jsx": {
+            "lines": 90,
+            "tokens": 1159,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/CandidatePagination.jsx": {
+            "lines": 40,
+            "tokens": 402,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/CandidateGrid.jsx": {
+            "lines": 83,
+            "tokens": 876,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/candidates/CandidateFilters.jsx": {
+            "lines": 91,
+            "tokens": 877,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 22,
+            "duplicatedTokens": 192,
+            "percentage": 24.18,
+            "percentageTokens": 21.89,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/calculator/ParliamentChart.jsx": {
+            "lines": 73,
+            "tokens": 764,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/calculator/CalculatorResults.jsx": {
+            "lines": 67,
+            "tokens": 897,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/calculator/CalculatorControls.jsx": {
+            "lines": 75,
+            "tokens": 917,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/analysis/LowIntensityDistricts.jsx": {
+            "lines": 38,
+            "tokens": 407,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/analysis/CoverageGaps.jsx": {
+            "lines": 36,
+            "tokens": 384,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/analysis/BattlegroundList.jsx": {
+            "lines": 40,
+            "tokens": 429,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/TrendTab.jsx": {
+            "lines": 345,
+            "tokens": 5101,
+            "sources": 1,
+            "clones": 8,
+            "duplicatedLines": 65,
+            "duplicatedTokens": 904,
+            "percentage": 18.84,
+            "percentageTokens": 17.72,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/TransfersTab.jsx": {
+            "lines": 233,
+            "tokens": 3280,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/SeatCalculatorTab.jsx": {
+            "lines": 153,
+            "tokens": 1816,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 16,
+            "duplicatedTokens": 174,
+            "percentage": 10.46,
+            "percentageTokens": 9.58,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/OrganizationsTab.jsx": {
+            "lines": 142,
+            "tokens": 1639,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/OevkTab.jsx": {
+            "lines": 119,
+            "tokens": 1399,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/OevkMapTab.jsx": {
+            "lines": 283,
+            "tokens": 3080,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/NationalListsTab.jsx": {
+            "lines": 184,
+            "tokens": 2218,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/ErrorBoundary.jsx": {
+            "lines": 39,
+            "tokens": 370,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/DashboardTab.jsx": {
+            "lines": 140,
+            "tokens": 1673,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/CountiesTab.jsx": {
+            "lines": 65,
+            "tokens": 830,
+            "sources": 1,
+            "clones": 2,
+            "duplicatedLines": 15,
+            "duplicatedTokens": 172,
+            "percentage": 23.08,
+            "percentageTokens": 20.72,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/CompareTab.jsx": {
+            "lines": 263,
+            "tokens": 3186,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 11,
+            "duplicatedTokens": 106,
+            "percentage": 4.18,
+            "percentageTokens": 3.33,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/CoalitionBuilderTab.jsx": {
+            "lines": 345,
+            "tokens": 4176,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/ChangelogTab.jsx": {
+            "lines": 214,
+            "tokens": 2687,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/pages/CandidatesTab.jsx": {
+            "lines": 108,
+            "tokens": 1065,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/contexts/UIContext.jsx": {
+            "lines": 79,
+            "tokens": 899,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/contexts/FilterContext.jsx": {
+            "lines": 21,
+            "tokens": 238,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/contexts/DataContext.jsx": {
+            "lines": 34,
+            "tokens": 322,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/components/GlobalSearchModal.jsx": {
+            "lines": 296,
+            "tokens": 3897,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/main.jsx": {
+            "lines": 9,
+            "tokens": 67,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/App.jsx": {
+            "lines": 117,
+            "tokens": 1139,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 7363,
+          "tokens": 88009,
+          "sources": 69,
+          "clones": 22,
+          "duplicatedLines": 251,
+          "duplicatedTokens": 2897,
+          "percentage": 3.41,
+          "percentageTokens": 3.29,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "css": {
+        "sources": {
+          "src/index.css": {
+            "lines": 12,
+            "tokens": 69,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "src/App.css": {
+            "lines": 41,
+            "tokens": 262,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 53,
+          "tokens": 331,
+          "sources": 2,
+          "clones": 0,
+          "duplicatedLines": 0,
+          "duplicatedTokens": 0,
+          "percentage": 0,
+          "percentageTokens": 0,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      }
+    },
+    "total": {
+      "lines": 12207,
+      "tokens": 148365,
+      "sources": 155,
+      "clones": 37,
+      "duplicatedLines": 555,
+      "duplicatedTokens": 6742,
+      "percentage": 4.55,
+      "percentageTokens": 4.54,
+      "newDuplicatedLines": 0,
+      "newClones": 0
+    }
+  },
+  "duplicates": [
+    {
+      "format": "javascript",
+      "lines": 51,
+      "fragment": "}\r\n                            onClick={() => onSelect(org)}\r\n                            className=\"bg-white dark:bg-slate-900 rounded-3xl p-6 border-2 border-slate-100 dark:border-slate-800 hover:border-indigo-400 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col relative overflow-hidden\"\r\n                        >\r\n                            {isOfficialNationalList && (\r\n                                <div className=\"absolute top-0 left-0 w-full h-1.5 bg-emerald-500\"></div>\r\n                            )}\r\n\r\n                            {/* Header */}\r\n                            <div className=\"flex items-start gap-4 mb-5\">\r\n                                <div className=\"relative\">\r\n                                    {org.emblema ? (\r\n                                        <div className=\"w-14 h-14 bg-white rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-sm p-1.5 flex items-center justify-center relative z-10\">\r\n                                            <img\r\n                                                src={getImageUrl(org.emblema)}\r\n                                                alt={org.r_nev || org.nev}\r\n                                                crossOrigin=\"anonymous\"\r\n                                                className=\"w-full h-full object-contain\"\r\n                                                onError={(e) => {\r\n                                                    e.target.style.display = 'none';\r\n                                                    e.target.nextElementSibling.style.display = 'block';\r\n                                                }}\r\n                                            />\r\n                                            <Building2 className=\"w-6 h-6 text-slate-300 hidden\" />\r\n                                        </div>\r\n                                    ) : (\r\n                                        <div className=\"w-14 h-14 bg-slate-50 dark:bg-slate-800 rounded-2xl border-2 border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-center relative z-10\">\r\n                                            <Building2 className=\"w-6 h-6 text-slate-300 dark:text-slate-600\" />\r\n                                        </div>\r\n                                    )}\r\n                                    {org.isNew && (\r\n                                        <div className=\"absolute -bottom-2 -right-2 bg-amber-500 text-white p-1 rounded-full shadow-lg ring-2 ring-white dark:ring-slate-900 z-20\">\r\n                                            <Zap className=\"w-3 h-3\" />\r\n                                        </div>\r\n                                    )}\r\n                                </div>\r\n                                <div className=\"flex-1 min-w-0\">\r\n                                    <h3 className=\"text-lg font-black text-slate-800 dark:text-white leading-tight line-clamp-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors\">\r\n                                        {org.coalitionAbbr || org.r_nev || org.nev}\r\n                                    </h3>\r\n                                    <p className=\"text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1 font-medium\">\r\n                                        {org.coalitionFullName || org.nev}\r\n                                    </p>\r\n                                </div>\r\n                            </div>\r\n\r\n                            {/* Coalition Tags */}\r\n                            {org.alliances && org.alliances.length > 0 && !org.isCoalitionMain && (\r\n                                <div className=\"flex flex-wrap gap-1.5 mb-4\">\r\n                                    {org.alliances.map((a, i) => (\r\n                                        <span key={i}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\organizations\\OrganizationsGrid.jsx",
+        "start": 33,
+        "end": 83,
+        "startLoc": {
+          "line": 33,
+          "column": 6,
+          "position": 410
+        },
+        "endLoc": {
+          "line": 83,
+          "column": 2,
+          "position": 887
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\organizations\\OrganizationsTable.jsx",
+        "start": 20,
+        "end": 58,
+        "startLoc": {
+          "line": 20,
+          "column": 5,
+          "position": 239
+        },
+        "endLoc": {
+          "line": 58,
+          "column": 2,
+          "position": 655
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 6,
+      "fragment": "={onClose}>\r\n                <motion.div\r\n                    initial={{ opacity: 0, scale: 0.95, y: 20 }}\r\n                    animate={{ opacity: 1, scale: 1, y: 0 }}\r\n                    exit={{ opacity: 0, scale: 0.95, y: 20 }}\r\n                    transition={{",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 116,
+        "end": 121,
+        "startLoc": {
+          "line": 116,
+          "column": 8,
+          "position": 1799
+        },
+        "endLoc": {
+          "line": 121,
+          "column": 2,
+          "position": 1879
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\national-lists\\OfficialListModal.jsx",
+        "start": 13,
+        "end": 17,
+        "startLoc": {
+          "line": 13,
+          "column": 8,
+          "position": 147
+        },
+        "endLoc": {
+          "line": 17,
+          "column": 2,
+          "position": 228
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 35,
+      "fragment": "={onClose}>\r\n                <motion.div\r\n                    initial={{ opacity: 0, scale: 0.95, y: 20 }}\r\n                    animate={{ opacity: 1, scale: 1, y: 0 }}\r\n                    exit={{ opacity: 0, scale: 0.95, y: 20 }}\r\n                    transition={{ type: \"spring\", duration: 0.5, bounce: 0.2 }}\r\n                    className=\"bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col transition-colors\"\r\n                    onClick={e => e.stopPropagation()}\r\n                >\r\n                    {/* Záró Gomb */}\r\n                    <button onClick={onClose} className=\"absolute top-4 right-4 z-50 p-2 bg-slate-900/10 dark:bg-slate-100/10 hover:bg-slate-900/20 dark:hover:bg-slate-100/20 backdrop-blur-md rounded-full text-slate-700 dark:text-slate-100 hover:text-slate-900 dark:hover:text-white transition-all\">\r\n                        <X className=\"w-5 h-5\" />\r\n                    </button>\r\n\r\n                    {/* Exportálható Fejléc */}\r\n                    <div ref={cardRef} className=\"px-5 py-6 sm:px-8 border-b border-slate-100 dark:border-slate-800 flex flex-col bg-gradient-to-br from-blue-50 dark:from-blue-900/60 to-emerald-50 dark:to-emerald-900/60 relative overflow-hidden transition-colors\">\r\n                        <Map className=\"absolute -right-4 -top-4 w-32 h-32 text-blue-200 dark:text-blue-400 opacity-50 dark:opacity-20 transition-colors\" />\r\n                        <div className=\"relative z-10 w-full mb-5\">\r\n                            <div className=\"flex items-center gap-2 mb-3 flex-wrap\">\r\n                                <span className=\"bg-blue-600 dark:bg-blue-500 text-white text-[10px] uppercase font-bold px-3 py-1 rounded-full shadow-sm tracking-widest transition-colors\">{selectedOevk.maz}-{selectedOevk.evk}</span>\r\n                                <span className=\"text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 hidden sm:inline transition-colors\">Választókerület Részletek</span>\r\n                            </div>\r\n                            <h2 className=\"text-2xl md:text-3xl font-black text-slate-900 dark:text-white leading-tight pr-12 transition-colors\">{selectedOevk.evk_nev}</h2>\r\n\r\n                            <div className=\"mt-4 flex flex-wrap gap-3 items-center\">\r\n                                <div className=\"bg-white/60 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg px-4 py-2 border border-white/50 dark:border-slate-700/50 shadow-sm leading-none flex gap-2 items-center transition-colors\">\r\n                                    <span className=\"text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 transition-colors\">Székhely: </span> {selectedOevk.szekhely}\r\n                                </div>\r\n                                <div className=\"bg-white/60 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-sm font-black rounded-lg px-4 py-2 border border-white/50 dark:border-slate-700/50 shadow-sm leading-none flex gap-2 items-center transition-colors\">\r\n                                    <span className=\"text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 transition-colors\">Választók: </span>\r\n                                    <span className=\"text-blue-700 dark:text-blue-400 transition-colors\">{selectedOevk.letszam?.indulo?.toLocaleString('hu-HU')} fő</span>\r\n                                </div>\r\n                                {/* Kompetitivitás badge */}\r\n                                {competitiveness && (\r\n                                    <div className={`flex items-center gap-2 text-sm font-bold rounded-lg px-4 py-2 border shadow-sm transition-colors ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\OevkModal.jsx",
+        "start": 119,
+        "end": 153,
+        "startLoc": {
+          "line": 119,
+          "column": 8,
+          "position": 1576
+        },
+        "endLoc": {
+          "line": 153,
+          "column": 100,
+          "position": 2021
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\national-lists\\OfficialListModal.jsx",
+        "start": 13,
+        "end": 138,
+        "startLoc": {
+          "line": 13,
+          "column": 8,
+          "position": 147
+        },
+        "endLoc": {
+          "line": 138,
+          "column": 12,
+          "position": 2045
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 10,
+      "fragment": "}>\r\n                                                        {jelolt.fenykep ? (\r\n                                                            <img src={getImageUrl(jelolt.fenykep)} alt={jelolt.neve} crossOrigin=\"anonymous\" className=\"w-full h-full object-cover\"\r\n                                                                onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />\r\n                                                        ) : null}\r\n                                                        <div className={`w-full h-full flex items-center justify-center ${jelolt.fenykep ? 'hidden' : ''}`}>{getInitials(jelolt.neve)}</div>\r\n                                                    </div>\r\n                                                    {jelolt.neve}\r\n                                                </div>\r\n                                                <div className=\"md:hidden mt-1 ml-5 text-xs font-semibold truncate max-w-[200px] transition-colors\" style={{",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\OevkModal.jsx",
+        "start": 236,
+        "end": 245,
+        "startLoc": {
+          "line": 236,
+          "column": 2,
+          "position": 2996
+        },
+        "endLoc": {
+          "line": 245,
+          "column": 2,
+          "position": 3165
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 252,
+        "end": 270,
+        "startLoc": {
+          "line": 252,
+          "column": 4,
+          "position": 3258
+        },
+        "endLoc": {
+          "line": 270,
+          "column": 7,
+          "position": 3567
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 13,
+      "fragment": ") return null;\r\n\r\n    const exportImage = async () => {\r\n        if (!cardRef.current) return;\r\n        setIsExporting(true);\r\n        try {\r\n            const dataUrl = await toPng(cardRef.current, {\r\n                cacheBust: true,\r\n                backgroundColor: '#ffffff',\r\n                pixelRatio: 3\r\n            });\r\n            const link = document.createElement('a');\r\n            link.download = `oevk_adatlap_",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\OevkModal.jsx",
+        "start": 56,
+        "end": 68,
+        "startLoc": {
+          "line": 56,
+          "column": 13,
+          "position": 768
+        },
+        "endLoc": {
+          "line": 68,
+          "column": 15,
+          "position": 894
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 64,
+        "end": 76,
+        "startLoc": {
+          "line": 64,
+          "column": 12,
+          "position": 1231
+        },
+        "endLoc": {
+          "line": 76,
+          "column": 20,
+          "position": 1357
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 14,
+      "fragment": "}.png`;\r\n            link.href = dataUrl;\r\n            link.click();\r\n        } catch (err) {\r\n            console.error('Image export failed:', err);\r\n            alert('Hiba történt a kép generálása közben.');\r\n        } finally {\r\n            setIsExporting(false);\r\n        }\r\n    };\r\n\r\n    const handleShare = async () => {\r\n        const shareData = {\r\n            title: `Választás '26 - ${selectedOevk",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\OevkModal.jsx",
+        "start": 68,
+        "end": 81,
+        "startLoc": {
+          "line": 68,
+          "column": 4,
+          "position": 905
+        },
+        "endLoc": {
+          "line": 81,
+          "column": 13,
+          "position": 1023
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 76,
+        "end": 89,
+        "startLoc": {
+          "line": 76,
+          "column": 2,
+          "position": 1374
+        },
+        "endLoc": {
+          "line": 89,
+          "column": 12,
+          "position": 1492
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 23,
+      "fragment": "};\r\n\r\n        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {\r\n            try {\r\n                await navigator.share(shareData);\r\n            } catch (err) {\r\n                if (err.name !== 'AbortError') {\r\n                    console.error('Error sharing:', err);\r\n                }\r\n            }\r\n        } else {\r\n            // Fallback: Copy to clipboard\r\n            try {\r\n                await navigator.clipboard.writeText(`${shareData.title}\\n${shareData.text}\\n${shareData.url}`);\r\n                setIsCopied(true);\r\n                setTimeout(() => setIsCopied(false), 2000);\r\n            } catch (err) {\r\n                console.error('Failed to copy fallback:', err);\r\n            }\r\n        }\r\n    };\r\n\r\n    const",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\OevkModal.jsx",
+        "start": 84,
+        "end": 106,
+        "startLoc": {
+          "line": 84,
+          "column": 9,
+          "position": 1087
+        },
+        "endLoc": {
+          "line": 106,
+          "column": 6,
+          "position": 1305
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 92,
+        "end": 114,
+        "startLoc": {
+          "line": 92,
+          "column": 9,
+          "position": 1559
+        },
+        "endLoc": {
+          "line": 114,
+          "column": 7,
+          "position": 1777
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 20,
+      "fragment": "};\r\n\r\n    return (\r\n        <AnimatePresence>\r\n            <div className=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm\" onClick={onClose}>\r\n                <motion.div\r\n                    initial={{ opacity: 0, scale: 0.95, y: 20 }}\r\n                    animate={{ opacity: 1, scale: 1, y: 0 }}\r\n                    exit={{ opacity: 0, scale: 0.95, y: 20 }}\r\n                    transition={{ type: \"spring\", duration: 0.5, bounce: 0.2 }}\r\n                    className=\"bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col transition-colors\"\r\n                    onClick={e => e.stopPropagation()}\r\n                >\r\n                    {/* Záró Gomb */}\r\n                    <button onClick={onClose} className=\"absolute top-4 right-4 z-50 p-2 bg-slate-900/10 dark:bg-slate-100/10 hover:bg-slate-900/20 dark:hover:bg-slate-100/20 backdrop-blur-md rounded-full text-slate-700 dark:text-slate-100 hover:text-slate-900 dark:hover:text-white transition-all\">\r\n                        <X className=\"w-5 h-5\" />\r\n                    </button>\r\n\r\n                    {/* Exportálható Fejléc */}\r\n                    <div ref={cardRef} className=\"px-5 py-6 sm:px-8 border-b border-slate-100 dark:border-slate-800 flex flex-col bg-gradient-to-br from-blue-50 dark:from-blue-900/60 to-emerald-50 dark:to-emerald-900/60 relative overflow-hidden transition-colors",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\OevkModal.jsx",
+        "start": 115,
+        "end": 134,
+        "startLoc": {
+          "line": 115,
+          "column": 2,
+          "position": 1547
+        },
+        "endLoc": {
+          "line": 134,
+          "column": 213,
+          "position": 1760
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 112,
+        "end": 131,
+        "startLoc": {
+          "line": 112,
+          "column": 5,
+          "position": 1770
+        },
+        "endLoc": {
+          "line": 131,
+          "column": 225,
+          "position": 1983
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 10,
+      "fragment": ">\r\n                                                        {jelolt.fenykep ? (\r\n                                                            <img src={getImageUrl(jelolt.fenykep)} alt={jelolt.neve} crossOrigin=\"anonymous\" className=\"w-full h-full object-cover\"\r\n                                                                onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />\r\n                                                        ) : null}\r\n                                                        <div className={`w-full h-full flex items-center justify-center ${jelolt.fenykep ? 'hidden' : ''}`}>{getInitials(jelolt.neve)}</div>\r\n                                                    </div>\r\n                                                    {jelolt.neve}\r\n                                                </div>\r\n                                                <div className=\"md:hidden mt-1 ml-5 text-xs font-semibold truncate max-w-[200px] transition-colors",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\OevkModal.jsx",
+        "start": 236,
+        "end": 245,
+        "startLoc": {
+          "line": 236,
+          "column": 2,
+          "position": 2997
+        },
+        "endLoc": {
+          "line": 245,
+          "column": 83,
+          "position": 3159
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 255,
+        "end": 264,
+        "startLoc": {
+          "line": 255,
+          "column": 2,
+          "position": 3301
+        },
+        "endLoc": {
+          "line": 264,
+          "column": 90,
+          "position": 3463
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": "={onClose}>\r\n                <motion.div\r\n                    initial={{ opacity: 0, scale: 0.95, y: 20 }}\r\n                    animate={{ opacity: 1, scale: 1, y: 0 }}\r\n                    exit={{ opacity: 0, scale: 0.95, y: 20 }}\r\n                    className=\"bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col relative\"\r\n                    onClick={e ",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\CountyModal.jsx",
+        "start": 67,
+        "end": 73,
+        "startLoc": {
+          "line": 67,
+          "column": 8,
+          "position": 799
+        },
+        "endLoc": {
+          "line": 73,
+          "column": 3,
+          "position": 885
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\national-lists\\OfficialListModal.jsx",
+        "start": 13,
+        "end": 17,
+        "startLoc": {
+          "line": 13,
+          "column": 8,
+          "position": 147
+        },
+        "endLoc": {
+          "line": 17,
+          "column": 2,
+          "position": 228
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 6,
+      "fragment": "={onClose}>\r\n                <motion.div\r\n                    initial={{ opacity: 0, scale: 0.95, y: 30 }}\r\n                    animate={{ opacity: 1, scale: 1, y: 0 }}\r\n                    exit={{ opacity: 0, scale: 0.95, y: 30 }}\r\n                    transition={{ type: \"spring\"",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\CandidateModal.jsx",
+        "start": 66,
+        "end": 71,
+        "startLoc": {
+          "line": 66,
+          "column": 8,
+          "position": 760
+        },
+        "endLoc": {
+          "line": 71,
+          "column": 9,
+          "position": 844
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\CandidatesDiffModal.jsx",
+        "start": 147,
+        "end": 153,
+        "startLoc": {
+          "line": 147,
+          "column": 8,
+          "position": 1802
+        },
+        "endLoc": {
+          "line": 153,
+          "column": 9,
+          "position": 1887
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 10,
+      "fragment": ") return null;\r\n\r\n    const exportImage = async () => {\r\n        if (!cardRef.current) return;\r\n        setIsExporting(true);\r\n        try {\r\n            const dataUrl = await toPng(cardRef.current, {\r\n                cacheBust: true,\r\n                backgroundColor: '#ffffff',\r\n                pixelRatio: 3 // High-Quality for social media",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\CandidateModal.jsx",
+        "start": 16,
+        "end": 25,
+        "startLoc": {
+          "line": 16,
+          "column": 10,
+          "position": 248
+        },
+        "endLoc": {
+          "line": 25,
+          "column": 33,
+          "position": 344
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 64,
+        "end": 74,
+        "startLoc": {
+          "line": 64,
+          "column": 12,
+          "position": 1231
+        },
+        "endLoc": {
+          "line": 74,
+          "column": 2,
+          "position": 1329
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 14,
+      "fragment": ")}.png`;\r\n            link.href = dataUrl;\r\n            link.click();\r\n        } catch (err) {\r\n            console.error('Image export failed:', err);\r\n            alert('Hiba történt a kép generálása közben.');\r\n        } finally {\r\n            setIsExporting(false);\r\n        }\r\n    };\r\n\r\n    const handleShare = async () => {\r\n        const shareData = {\r\n            title: `",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\modals\\CandidateModal.jsx",
+        "start": 28,
+        "end": 41,
+        "startLoc": {
+          "line": 28,
+          "column": 2,
+          "position": 392
+        },
+        "endLoc": {
+          "line": 41,
+          "column": 2,
+          "position": 509
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 76,
+        "end": 89,
+        "startLoc": {
+          "line": 76,
+          "column": 3,
+          "position": 1373
+        },
+        "endLoc": {
+          "line": 89,
+          "column": 18,
+          "position": 1490
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 7,
+      "fragment": "return (\r\n        <div className=\"bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors\">\r\n            <div className=\"overflow-x-auto\">\r\n                <table className=\"w-full text-left border-collapse min-w-[600px] transition-colors\">\r\n                    <thead className=\"bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-slate-700 transition-colors\">\r\n                        <tr>\r\n                            <th className=\"p-4 font-semibold\">V",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\counties\\CountyTable.jsx",
+        "start": 16,
+        "end": 22,
+        "startLoc": {
+          "line": 16,
+          "column": 5,
+          "position": 179
+        },
+        "endLoc": {
+          "line": 22,
+          "column": 2,
+          "position": 248
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\organizations\\OrganizationsTable.jsx",
+        "start": 5,
+        "end": 11,
+        "startLoc": {
+          "line": 5,
+          "column": 5,
+          "position": 55
+        },
+        "endLoc": {
+          "line": 11,
+          "column": 10,
+          "position": 124
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 14,
+      "fragment": ".id) {\r\n                                        if (c.partyNames === 'Független') {\r\n                                            independentCount++;\r\n                                        } else {\r\n                                            partyStats[c.partyNames] = (partyStats[c.partyNames] || 0) + 1;\r\n                                        }\r\n                                    }\r\n                                });\r\n\r\n                                const sortedParties = Object.entries(partyStats)\r\n                                    .map(([name, count]) => ({ name, count, isParty: true }))\r\n                                    .sort((a, b) => b.count - a.count);\r\n\r\n                                distributionData",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\counties\\CountyTable.jsx",
+        "start": 45,
+        "end": 58,
+        "startLoc": {
+          "line": 45,
+          "column": 7,
+          "position": 559
+        },
+        "endLoc": {
+          "line": 58,
+          "column": 17,
+          "position": 719
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\CountyModal.jsx",
+        "start": 25,
+        "end": 38,
+        "startLoc": {
+          "line": 25,
+          "column": 15,
+          "position": 332
+        },
+        "endLoc": {
+          "line": 38,
+          "column": 58,
+          "position": 492
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 16,
+      "fragment": ") => {\r\n                                                                                const totalActiveInCounty = distributionData.reduce((acc, curr) => acc + curr.count, 0);\r\n                                                                                const percent = Math.round((item.count / totalActiveInCounty) * 100);\r\n                                                                                return (\r\n                                                                                    <div key={item.name} className=\"space-y-1\">\r\n                                                                                        <div className=\"flex justify-between text-[11px] font-bold\">\r\n                                                                                            <span className={`${item.isParty ? 'text-slate-700 dark:text-slate-200' : 'text-slate-500 dark:text-slate-400 font-black'} truncate max-w-[200px] sm:max-w-[250px] uppercase tracking-tight`}>\r\n                                                                                                {item.name}\r\n                                                                                            </span>\r\n                                                                                            <span className=\"text-slate-500 dark:text-slate-400\">{item.count} jelölt ({percent}%)</span>\r\n                                                                                        </div>\r\n                                                                                        <div className=\"w-full h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner\">\r\n                                                                                            <motion.div\r\n                                                                                                initial={{ width: 0 }}\r\n                                                                                                animate={{ width: `${percent}%` }}\r\n                                                                                                transition={{ duration: 1, delay: idxx",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\counties\\CountyTable.jsx",
+        "start": 116,
+        "end": 131,
+        "startLoc": {
+          "line": 116,
+          "column": 5,
+          "position": 1349
+        },
+        "endLoc": {
+          "line": 131,
+          "column": 5,
+          "position": 1598
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\CountyModal.jsx",
+        "start": 136,
+        "end": 151,
+        "startLoc": {
+          "line": 136,
+          "column": 4,
+          "position": 1601
+        },
+        "endLoc": {
+          "line": 151,
+          "column": 4,
+          "position": 1850
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 14,
+      "fragment": ">\r\n                                                                                <div className=\"flex justify-between items-start mb-2\">\r\n                                                                                    <span className=\"text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase\">{oevk.maz_nev} {oevk.evk}.</span>\r\n                                                                                    <span className=\"bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded text-[10px] font-bold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700\">{oevk.candidateCount} jelölt</span>\r\n                                                                                </div>\r\n                                                                                <p className=\"font-bold text-slate-800 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-1\">{oevk.evk_nev}</p>\r\n                                                                            </div>\r\n                                                                        ))}\r\n                                                                    </div>\r\n                                                                </div>\r\n                                                            </div>\r\n                                                        </div>\r\n                                                    </motion.div>\r\n                                                </td",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\counties\\CountyTable.jsx",
+        "start": 164,
+        "end": 177,
+        "startLoc": {
+          "line": 164,
+          "column": 77,
+          "position": 1908
+        },
+        "endLoc": {
+          "line": 177,
+          "column": 3,
+          "position": 2042
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\CountyModal.jsx",
+        "start": 177,
+        "end": 190,
+        "startLoc": {
+          "line": 177,
+          "column": 41,
+          "position": 2130
+        },
+        "endLoc": {
+          "line": 190,
+          "column": 4,
+          "position": 2264
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 31,
+      "fragment": "={() => { onChange(null); setSearch(''); }} className=\"p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-400 transition-colors\">\r\n                        <X className=\"w-4 h-4\" />\r\n                    </button>\r\n                </div>\r\n            ) : (\r\n                <div className=\"relative\">\r\n                    <Search className=\"absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400\" />\r\n                    <input\r\n                        type=\"text\"\r\n                        placeholder={placeholder}\r\n                        value={search}\r\n                        onChange={e => { setSearch(e.target.value); setIsOpen(true); }}\r\n                        onFocus={() => setIsOpen(true)}\r\n                        className=\"w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 text-slate-800 dark:text-slate-100 transition-colors\"\r\n                    />\r\n                    <AnimatePresence>\r\n                        {isOpen && (\r\n                            <>\r\n                                <div className=\"fixed inset-0 z-10\" onClick={() => setIsOpen(false)} />\r\n                                <motion.div\r\n                                    initial={{ opacity: 0, y: -10 }}\r\n                                    animate={{ opacity: 1, y: 0 }}\r\n                                    exit={{ opacity: 0, y: -10 }}\r\n                                    className=\"absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-20 overflow-hidden max-h-[300px] overflow-y-auto transition-colors\"\r\n                                >\r\n                                    {filtered.length === 0 ? (\r\n                                        <div className=\"p-4 text-center text-slate-500 dark:text-slate-400 text-sm\">Nincs találat</div>\r\n                                    ) : (\r\n                                        filtered.map(c => (\r\n                                            <div\r\n                                                key={c",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\compare\\CandidateSearch.jsx",
+        "start": 31,
+        "end": 61,
+        "startLoc": {
+          "line": 31,
+          "column": 8,
+          "position": 425
+        },
+        "endLoc": {
+          "line": 61,
+          "column": 2,
+          "position": 760
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\compare\\OrgSearch.jsx",
+        "start": 34,
+        "end": 64,
+        "startLoc": {
+          "line": 34,
+          "column": 8,
+          "position": 508
+        },
+        "endLoc": {
+          "line": 64,
+          "column": 2,
+          "position": 843
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 17,
+      "fragment": "}</div>\r\n                        </div>\r\n                    </div>\r\n                    <button onClick={() => { onChange(null); setSearch(''); }} className=\"p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-400 transition-colors\">\r\n                        <X className=\"w-4 h-4\" />\r\n                    </button>\r\n                </div>\r\n            ) : (\r\n                <div className=\"relative\">\r\n                    <Search className=\"absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400\" />\r\n                    <input\r\n                        type=\"text\"\r\n                        placeholder={placeholder}\r\n                        value={search}\r\n                        onChange={e => { setSearch(e.target.value); setIsOpen(true); }}\r\n                        onFocus={() => setIsOpen(true)}\r\n                        className=\"w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 text-slate-800 dark:text-slate-100 transition-colors",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\compare\\CandidateSearch.jsx",
+        "start": 28,
+        "end": 44,
+        "startLoc": {
+          "line": 28,
+          "column": 11,
+          "position": 402
+        },
+        "endLoc": {
+          "line": 44,
+          "column": 238,
+          "position": 581
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\compare\\OrgSearch.jsx",
+        "start": 31,
+        "end": 47,
+        "startLoc": {
+          "line": 31,
+          "column": 6,
+          "position": 485
+        },
+        "endLoc": {
+          "line": 47,
+          "column": 242,
+          "position": 664
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 16,
+      "fragment": "\"\r\n                    />\r\n                    <AnimatePresence>\r\n                        {isOpen && (\r\n                            <>\r\n                                <div className=\"fixed inset-0 z-10\" onClick={() => setIsOpen(false)} />\r\n                                <motion.div\r\n                                    initial={{ opacity: 0, y: -10 }}\r\n                                    animate={{ opacity: 1, y: 0 }}\r\n                                    exit={{ opacity: 0, y: -10 }}\r\n                                    className=\"absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-20 overflow-hidden max-h-[300px] overflow-y-auto transition-colors\"\r\n                                >\r\n                                    {filtered.length === 0 ? (\r\n                                        <div className=\"p-4 text-center text-slate-500 dark:text-slate-400 text-sm\">Nincs találat</div>\r\n                                    ) : (\r\n                                        filtered.map(c",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\compare\\CandidateSearch.jsx",
+        "start": 44,
+        "end": 59,
+        "startLoc": {
+          "line": 44,
+          "column": 238,
+          "position": 582
+        },
+        "endLoc": {
+          "line": 59,
+          "column": 2,
+          "position": 746
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\compare\\OrgSearch.jsx",
+        "start": 47,
+        "end": 62,
+        "startLoc": {
+          "line": 47,
+          "column": 242,
+          "position": 665
+        },
+        "endLoc": {
+          "line": 62,
+          "column": 2,
+          "position": 829
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 7,
+      "fragment": ">\r\n                        <div className=\"w-10 h-10 rounded-xl bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center flex-shrink-0 text-indigo-600 dark:text-indigo-400 transition-colors\">\r\n                            <Building2 className=\"w-5 h-5\" />\r\n                        </div>\r\n                        <div className=\"flex-1 min-w-0\">\r\n                            <p className=\"text-[10px] font-black text-indigo-400 dark:text-indigo-500 uppercase tracking-wider mb-0.5 transition-colors\">Jelölő Szervezet</p>\r\n                            <p className=\"font-bold text-slate-800 dark:text-slate-100 text-sm truncate transition-colors",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\compare\\CandidateCompareCard.jsx",
+        "start": 62,
+        "end": 68,
+        "startLoc": {
+          "line": 62,
+          "column": 2,
+          "position": 672
+        },
+        "endLoc": {
+          "line": 68,
+          "column": 80,
+          "position": 743
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\CandidateModal.jsx",
+        "start": 131,
+        "end": 137,
+        "startLoc": {
+          "line": 131,
+          "column": 4,
+          "position": 1466
+        },
+        "endLoc": {
+          "line": 137,
+          "column": 93,
+          "position": 1537
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 12,
+      "fragment": "}</option>)}\r\n                    </select>\r\n                </div>\r\n\r\n                <div className=\"relative group\">\r\n                    <Filter className=\"w-4 h-4 text-slate-400 absolute left-4 top-[14px] group-focus-within:text-blue-500 transition-colors pointer-events-none\" />\r\n                    <select\r\n                        value={selectedStatus}\r\n                        onChange={(e) => setSelectedStatus(e.target.value)}\r\n                        className=\"w-full pl-10 pr-8 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none appearance-none text-sm font-semibold text-slate-700 dark:text-slate-200 cursor-pointer transition-all hover:bg-white dark:hover:bg-slate-800\"\r\n                    >\r\n                        <option value=\"\">Összes állapot",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\candidates\\CandidateFilters.jsx",
+        "start": 74,
+        "end": 85,
+        "startLoc": {
+          "line": 74,
+          "column": 2,
+          "position": 709
+        },
+        "endLoc": {
+          "line": 85,
+          "column": 8,
+          "position": 805
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\candidates\\CandidateFilters.jsx",
+        "start": 62,
+        "end": 73,
+        "startLoc": {
+          "line": 62,
+          "column": 2,
+          "position": 578
+        },
+        "endLoc": {
+          "line": 73,
+          "column": 10,
+          "position": 674
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 7,
+      "fragment": "}>\r\n                                    <CartesianGrid strokeDasharray=\"3 3\" vertical={false} stroke=\"#e2e8f0\" strokeOpacity={0.15} />\r\n                                    <XAxis dataKey=\"name\" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor=\"end\" />\r\n                                    <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />\r\n                                    <Tooltip content={<CustomTooltip />} />\r\n                                    <Legend verticalAlign=\"top\" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />\r\n                                    <Line type=\"monotone\" dataKey={`fidesz_",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 328,
+        "end": 334,
+        "startLoc": {
+          "line": 328,
+          "column": 2,
+          "position": 4621
+        },
+        "endLoc": {
+          "line": 334,
+          "column": 9,
+          "position": 4812
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 293,
+        "end": 301,
+        "startLoc": {
+          "line": 293,
+          "column": 2,
+          "position": 3973
+        },
+        "endLoc": {
+          "line": 301,
+          "column": 2,
+          "position": 4195
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 12,
+      "fragment": "(0, 10)}.png`;\r\n            link.href = dataUrl;\r\n            link.click();\r\n        } catch (err) {\r\n            console.error('Image export failed:', err);\r\n            alert('Hiba történt a kép generálása közben.');\r\n        } finally {\r\n            setIsExporting(false);\r\n        }\r\n    };\r\n\r\n    const currentStats",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 149,
+        "end": 160,
+        "startLoc": {
+          "line": 149,
+          "column": 6,
+          "position": 2051
+        },
+        "endLoc": {
+          "line": 160,
+          "column": 13,
+          "position": 2145
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\modals\\OrgModal.jsx",
+        "start": 76,
+        "end": 87,
+        "startLoc": {
+          "line": 76,
+          "column": 10,
+          "position": 1368
+        },
+        "endLoc": {
+          "line": 87,
+          "column": 12,
+          "position": 1462
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 7,
+      "fragment": ">\r\n                                    <CartesianGrid strokeDasharray=\"3 3\" vertical={false} stroke=\"#e2e8f0\" strokeOpacity={0.15} />\r\n                                    <XAxis dataKey=\"name\" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor=\"end\" />\r\n                                    <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />\r\n                                    <Tooltip content={<CustomTooltip />} />\r\n                                    <Legend verticalAlign=\"top\" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />\r\n                                    <Line",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 328,
+        "end": 334,
+        "startLoc": {
+          "line": 328,
+          "column": 2,
+          "position": 4622
+        },
+        "endLoc": {
+          "line": 334,
+          "column": 5,
+          "position": 4801
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 295,
+        "end": 301,
+        "startLoc": {
+          "line": 295,
+          "column": 5,
+          "position": 3987
+        },
+        "endLoc": {
+          "line": 301,
+          "column": 5,
+          "position": 4166
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 25,
+      "fragment": "={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className=\"space-y-6 max-w-7xl mx-auto pb-10\">\r\n            {/* Header Area */}\r\n            <div className=\"flex flex-col md:flex-row justify-between items-start md:items-center gap-4\">\r\n                <div>\r\n                    <h1 className=\"text-2xl md:text-3xl font-bold text-slate-800 dark:text-white flex items-center gap-3\">\r\n                        <Calculator className=\"w-8 h-8 text-blue-600 dark:text-blue-400\" />\r\n                        Mandátumbecslő Kalkulátor\r\n                    </h1>\r\n                    <p className=\"text-slate-500 dark:text-slate-400 mt-1\">\"Mi lenne, ha holnap lenne a választás?\" Szimuláld az eredményeket országos listás arányok alapján.</p>\r\n                </div>\r\n                <div className=\"flex flex-wrap items-center gap-2\">\r\n                    <button\r\n                        onClick={exportImage}\r\n                        disabled={isExporting}\r\n                        className=\"px-4 py-2 bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 font-bold rounded-xl shadow-sm transition-all text-sm flex items-center gap-2 disabled:opacity-50\"\r\n                    >\r\n                        {isExporting ? <Loader2 className=\"w-4 h-4 animate-spin\" /> : <Download className=\"w-4 h-4\" />}\r\n                        <span className=\"hidden sm:inline\">{isExporting ? 'Mentés...' : 'Exportálás'}</span>\r\n                    </button>\r\n                    {/* Preset gyorsbeállítások */}\r\n                    <div className=\"flex items-center gap-1 bg-slate-100 dark:bg-slate-800/60 p-1 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm\">\r\n                        <div className=\"px-2 flex items-center text-slate-400\"><Zap className=\"w-3.5 h-3.5\" /></div>\r\n                        {PRESETS.map(p => (\r\n                            <button\r\n                                key={p",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\SeatCalculatorTab.jsx",
+        "start": 89,
+        "end": 113,
+        "startLoc": {
+          "line": 89,
+          "column": 8,
+          "position": 1218
+        },
+        "endLoc": {
+          "line": 113,
+          "column": 2,
+          "position": 1533
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 210,
+        "end": 229,
+        "startLoc": {
+          "line": 210,
+          "column": 8,
+          "position": 2736
+        },
+        "endLoc": {
+          "line": 229,
+          "column": 2,
+          "position": 3014
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 12,
+      "fragment": "${new Date().toISOString().slice(0, 10)}.png`;\r\n            link.href = dataUrl;\r\n            link.click();\r\n        } catch (err) {\r\n            console.error('Image export failed:', err);\r\n            alert('Hiba történt a kép generálása közben.');\r\n        } finally {\r\n            setIsExporting(false);\r\n        }\r\n    };\r\n\r\n    // Use our custom hook",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\SeatCalculatorTab.jsx",
+        "start": 66,
+        "end": 77,
+        "startLoc": {
+          "line": 66,
+          "column": 17,
+          "position": 1014
+        },
+        "endLoc": {
+          "line": 77,
+          "column": 23,
+          "position": 1118
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 149,
+        "end": 87,
+        "startLoc": {
+          "line": 149,
+          "column": 16,
+          "position": 2039
+        },
+        "endLoc": {
+          "line": 87,
+          "column": 6,
+          "position": 1460
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 6,
+      "fragment": "\"\r\n                    >\r\n                        {isExporting ? <Loader2 className=\"w-4 h-4 animate-spin\" /> : <Download className=\"w-4 h-4\" />}\r\n                        <span className=\"hidden sm:inline\">{isExporting ? 'Mentés...' : 'Exportálás'}</span>\r\n                    </button>\r\n                    {",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\SeatCalculatorTab.jsx",
+        "start": 103,
+        "end": 108,
+        "startLoc": {
+          "line": 103,
+          "column": 170,
+          "position": 1401
+        },
+        "endLoc": {
+          "line": 108,
+          "column": 2,
+          "position": 1471
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 223,
+        "end": 228,
+        "startLoc": {
+          "line": 223,
+          "column": 312,
+          "position": 2926
+        },
+        "endLoc": {
+          "line": 228,
+          "column": 2,
+          "position": 2996
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 11,
+      "fragment": "} />\r\n                    </motion.div>\r\n                ) : (\r\n                    <motion.div\r\n                        key=\"table\"\r\n                        initial={{ opacity: 0, y: 10 }}\r\n                        animate={{ opacity: 1, y: 0 }}\r\n                        exit={{ opacity: 0, scale: 0.95 }}\r\n                        transition={{ duration: 0.2 }}\r\n                    >\r\n                        <OrganizationsTable organizations={filteredAndSortedOrgs} onSelect={setSelectedOrg}",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\OrganizationsTab.jsx",
+        "start": 127,
+        "end": 137,
+        "startLoc": {
+          "line": 127,
+          "column": 15,
+          "position": 1497
+        },
+        "endLoc": {
+          "line": 137,
+          "column": 2,
+          "position": 1606
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\OrganizationsTab.jsx",
+        "start": 110,
+        "end": 127,
+        "startLoc": {
+          "line": 110,
+          "column": 2,
+          "position": 1319
+        },
+        "endLoc": {
+          "line": 127,
+          "column": 2,
+          "position": 1497
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 26,
+      "fragment": "} />\r\n\r\n            <div className=\"bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-4 transition-colors flex-wrap\">\r\n                <div className=\"relative flex-1 min-w-[200px]\">\r\n                    <Search className=\"absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400\" />\r\n                    <input\r\n                        type=\"text\"\r\n                        placeholder=\"Keresés név vagy megye alapján...\"\r\n                        value={searchTerm}\r\n                        onChange={(e) => setSearchTerm(e.target.value)}\r\n                        className=\"w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 ring-blue-500 transition-all text-slate-800 dark:text-slate-100\"\r\n                    />\r\n                </div>\r\n                {/* Megye szűrő */}\r\n                <select\r\n                    value={selectedCounty}\r\n                    onChange={(e) => setSelectedCounty(e.target.value)}\r\n                    className=\"px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 focus:ring-2 ring-blue-500 focus:outline-none transition-all cursor-pointer min-w-[180px]\"\r\n                >\r\n                    <option value=\"\">Minden megye</option>\r\n                    {counties.map(c => <option key={c} value={c}>{c}</option>)}\r\n                </select>\r\n                <div className=\"flex items-center gap-2\">\r\n                    <div className=\"flex bg-slate-50 dark:bg-slate-800 p-1 rounded-xl border border-slate-100 dark:border-slate-700\">\r\n                        <button\r\n                            onClick={(",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\OevkTab.jsx",
+        "start": 57,
+        "end": 82,
+        "startLoc": {
+          "line": 57,
+          "column": 16,
+          "position": 808
+        },
+        "endLoc": {
+          "line": 82,
+          "column": 2,
+          "position": 1041
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\candidates\\CandidateFilters.jsx",
+        "start": 36,
+        "end": 69,
+        "startLoc": {
+          "line": 36,
+          "column": 2,
+          "position": 350
+        },
+        "endLoc": {
+          "line": 69,
+          "column": 14,
+          "position": 632
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 40,
+      "fragment": "={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className=\"space-y-6 max-w-7xl mx-auto pb-10\">\r\n            {/* Fejléc és Kereső */}\r\n            <div className=\"flex flex-col md:flex-row justify-between items-start md:items-center gap-4\">\r\n                <div className=\"flex items-center gap-4\">\r\n                    <div className=\"p-3 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-2xl shadow-sm border border-blue-200 dark:border-blue-800\">\r\n                        <List className=\"w-6 h-6\" />\r\n                    </div>\r\n                    <div>\r\n                        <h1 className=\"text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight\">Országos Listák</h1>\r\n                        <p className=\"text-sm text-slate-500 dark:text-slate-400 font-medium mt-1 max-w-xl\">\r\n                            A pártok és pártszövetségek haladása az országos listaállításhoz, és a hivatalosan bejelentett listák.\r\n                        </p>\r\n                    </div>\r\n                </div>\r\n\r\n                <div className=\"relative w-full md:w-72 mt-2 md:mt-0\">\r\n                    <div className=\"absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none\">\r\n                        <Search className=\"w-4 h-4 text-slate-400\" />\r\n                    </div>\r\n                    <input\r\n                        type=\"text\"\r\n                        placeholder=\"Formáció vagy jelölt keresése...\"\r\n                        value={searchTerm}\r\n                        onChange={(e) => setSearchTerm(e.target.value)}\r\n                        className=\"w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500 text-sm transition-all shadow-sm\"\r\n                    />\r\n                </div>\r\n            </div>\r\n\r\n            {/* Szűrő sáv */}\r\n            <div className=\"flex flex-wrap gap-2 bg-white dark:bg-slate-900 p-2 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800\">\r\n                {[\r\n                    { key: 'all', label: 'Összes', count: counts.all, cls: 'bg-slate-800 text-white dark:bg-white dark:text-slate-900', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' },\r\n                    { key: 'official', label: 'Hivatalos Lista', count: counts.official, cls: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-300', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20' },\r\n                    { key: 'sure', label: 'Jogosult', count: counts.sure, cls: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20' },\r\n                    { key: 'possible', label: 'Küzd', count: counts.possible, cls: 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-amber-50 dark:hover:bg-amber-900/20' },\r\n                    { key: 'none', label: 'Nincs esély', count: counts.none, cls: 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300', inactive: 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800' },\r\n                ].map(({ key, label, count, cls, inactive }) => (\r\n                    <button\r\n                        key={key",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\NationalListsTab.jsx",
+        "start": 91,
+        "end": 130,
+        "startLoc": {
+          "line": 91,
+          "column": 8,
+          "position": 1180
+        },
+        "endLoc": {
+          "line": 130,
+          "column": 4,
+          "position": 1737
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TransfersTab.jsx",
+        "start": 69,
+        "end": 161,
+        "startLoc": {
+          "line": 69,
+          "column": 8,
+          "position": 1048
+        },
+        "endLoc": {
+          "line": 161,
+          "column": 2,
+          "position": 2184
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 23,
+      "fragment": "={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className=\"space-y-6 max-w-6xl mx-auto transition-colors\">\r\n            <div className=\"flex items-center justify-between\">\r\n                <div>\r\n                    <h1 className=\"text-2xl md:text-3xl font-bold text-slate-800 dark:text-white transition-colors\">Vármegyei Összesítések</h1>\r\n                    <p className=\"text-sm md:text-base text-slate-500 dark:text-slate-400 mt-1 font-medium transition-colors\">Adatok és statisztikák megyei szintre aggregálva.</p>\r\n                </div>\r\n                <div className=\"flex flex-wrap items-center gap-3\">\r\n                    <div className=\"hidden sm:flex bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 p-3 rounded-xl border border-blue-100 dark:border-blue-800/50 items-center gap-3 transition-colors\">\r\n                        <Info className=\"w-6 h-6 flex-shrink-0\" />\r\n                        <p className=\"text-xs font-semibold leading-tight max-w-[200px]\">A táblázat mutatja a kerületek (OEVK) számát és az ott indulókat.</p>\r\n                    </div>\r\n                    <button\r\n                        onClick={exportImage}\r\n                        disabled={isExporting}\r\n                        className=\"flex items-center gap-2 bg-slate-800 dark:bg-slate-100 text-white dark:text-slate-900 border border-slate-700 dark:border-slate-300 hover:bg-slate-700 dark:hover:bg-slate-200 px-4 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-500 disabled:opacity-50\"\r\n                    >\r\n                        {isExporting ? <Loader2 className=\"w-4 h-4 animate-spin\" /> : <Download className=\"w-4 h-4\" />}\r\n                        <span className=\"hidden sm:inline\">{isExporting ? 'Mentés...' : 'Exportálás'}</span>\r\n                    </button>\r\n                </div>\r\n            </div>\r\n\r\n            <div ref={countiesRef",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\CountiesTab.jsx",
+        "start": 37,
+        "end": 59,
+        "startLoc": {
+          "line": 37,
+          "column": 8,
+          "position": 437
+        },
+        "endLoc": {
+          "line": 59,
+          "column": 12,
+          "position": 752
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 210,
+        "end": 229,
+        "startLoc": {
+          "line": 210,
+          "column": 8,
+          "position": 2736
+        },
+        "endLoc": {
+          "line": 229,
+          "column": 2,
+          "position": 3014
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 11,
+      "fragment": "${new Date().toISOString().slice(0, 10)}.png`;\r\n            link.href = dataUrl;\r\n            link.click();\r\n        } catch (err) {\r\n            console.error('Image export failed:', err);\r\n            alert('Hiba történt a kép generálása közben.');\r\n        } finally {\r\n            setIsExporting(false);\r\n        }\r\n    };\r\n    return",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\CountiesTab.jsx",
+        "start": 26,
+        "end": 36,
+        "startLoc": {
+          "line": 26,
+          "column": 22,
+          "position": 325
+        },
+        "endLoc": {
+          "line": 36,
+          "column": 7,
+          "position": 427
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 149,
+        "end": 87,
+        "startLoc": {
+          "line": 149,
+          "column": 16,
+          "position": 2039
+        },
+        "endLoc": {
+          "line": 87,
+          "column": 6,
+          "position": 1460
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 6,
+      "fragment": "\"\r\n                    >\r\n                        {isExporting ? <Loader2 className=\"w-4 h-4 animate-spin\" /> : <Download className=\"w-4 h-4\" />}\r\n                        <span className=\"hidden sm:inline\">{isExporting ? 'Mentés...' : 'Exportálás'}</span>\r\n                    </button>\r\n                </",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\CountiesTab.jsx",
+        "start": 51,
+        "end": 56,
+        "startLoc": {
+          "line": 51,
+          "column": 314,
+          "position": 662
+        },
+        "endLoc": {
+          "line": 56,
+          "column": 3,
+          "position": 732
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 223,
+        "end": 228,
+        "startLoc": {
+          "line": 223,
+          "column": 312,
+          "position": 2926
+        },
+        "endLoc": {
+          "line": 228,
+          "column": 2,
+          "position": 2996
+        }
+      }
+    },
+    {
+      "format": "jsx",
+      "lines": 12,
+      "fragment": "${new Date().toISOString().slice(0, 10)}.png`;\r\n            link.href = dataUrl;\r\n            link.click();\r\n        } catch (err) {\r\n            console.error('Image export failed:', err);\r\n            alert('Hiba történt a kép generálása közben.');\r\n        } finally {\r\n            setIsExporting(false);\r\n        }\r\n    };\r\n\r\n    const isSameParty",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\CompareTab.jsx",
+        "start": 28,
+        "end": 39,
+        "startLoc": {
+          "line": 28,
+          "column": 18,
+          "position": 403
+        },
+        "endLoc": {
+          "line": 39,
+          "column": 12,
+          "position": 509
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\TrendTab.jsx",
+        "start": 149,
+        "end": 87,
+        "startLoc": {
+          "line": 149,
+          "column": 16,
+          "position": 2039
+        },
+        "endLoc": {
+          "line": 87,
+          "column": 12,
+          "position": 1462
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 35,
+      "fragment": "${c.szj || c.ej_id}-${idx}`}\r\n                    onClick={() => setSelectedCandidate(c)}\r\n                    className=\"p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all cursor-pointer group flex items-start gap-4\"\r\n                >\r\n                    <div className=\"p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 rounded-lg flex-shrink-0 group-hover:scale-110 transition-transform\">\r\n                        <UserPlus className=\"w-5 h-5\" />\r\n                    </div>\r\n                    <div className=\"flex-1 min-w-0\">\r\n                        <div className=\"flex justify-between items-start mb-2\">\r\n                            <div>\r\n                                <h4 className=\"font-bold text-slate-800 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate\">\r\n                                    {c.neve}\r\n                                </h4>\r\n                                <p className=\"text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mt-0.5\">Új jelölt rögzítve &bull; {c.maz}-{c.evk} OEVK</p>\r\n                            </div>\r\n                            <ChevronRight className=\"w-5 h-5 text-slate-400 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all\" />\r\n                        </div>\r\n                        <div className=\"flex flex-wrap gap-2 text-xs font-medium text-slate-500 dark:text-slate-400 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800\">\r\n                            <span className=\"bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md\">{c.districtName}</span>\r\n                            <span className=\"bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-2 py-1 rounded-md border border-indigo-100 dark:border-indigo-800/50\">{c.partyNames}</span>\r\n                            <span className=\"bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-2 py-1 rounded-md font-bold\">{c.statusName}</span>\r\n                        </div>\r\n                    </div>\r\n                </motion.div>\r\n            );\r\n        }\r\n\r\n        if (item.type === 'new_org') {\r\n            const o = item.data;\r\n            return (\r\n                <motion.div\r\n                    initial={{ opacity: 0, y: 10 }}\r\n                    animate={{ opacity: 1, y: 0 }}\r\n                    transition={{ delay: idx * 0.05 }}\r\n                    key={`neworg-",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\pages\\ChangelogTab.jsx",
+        "start": 82,
+        "end": 116,
+        "startLoc": {
+          "line": 82,
+          "column": 10,
+          "position": 1110
+        },
+        "endLoc": {
+          "line": 116,
+          "column": 9,
+          "position": 1488
+        }
+      },
+      "secondFile": {
+        "name": "src\\pages\\ChangelogTab.jsx",
+        "start": 46,
+        "end": 82,
+        "startLoc": {
+          "line": 46,
+          "column": 9,
+          "position": 732
+        },
+        "endLoc": {
+          "line": 82,
+          "column": 10,
+          "position": 1109
+        }
+      }
+    },
+    {
+      "format": "javascript",
+      "lines": 6,
+      "fragment": "={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}\r\n                    className=\"absolute inset-0 bg-slate-900/60 backdrop-blur-sm\"\r\n                    onClick={onClose}\r\n                />\r\n                <motion.div\r\n                    initial={{ opacity: 0, scale: 0.95, y: -",
+      "tokens": 0,
+      "firstFile": {
+        "name": "src\\components\\GlobalSearchModal.jsx",
+        "start": 112,
+        "end": 117,
+        "startLoc": {
+          "line": 112,
+          "column": 8,
+          "position": 1659
+        },
+        "endLoc": {
+          "line": 117,
+          "column": 2,
+          "position": 1730
+        }
+      },
+      "secondFile": {
+        "name": "src\\components\\national-lists\\OfficialListModal.jsx",
+        "start": 11,
+        "end": 16,
+        "startLoc": {
+          "line": 11,
+          "column": 8,
+          "position": 105
+        },
+        "endLoc": {
+          "line": 16,
+          "column": 3,
+          "position": 176
+        }
+      }
+    }
+  ]
+}

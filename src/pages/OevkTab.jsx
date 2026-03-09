@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Filter, Search, ArrowUpDown } from 'lucide-react';
+import { Filter, ArrowUpDown } from 'lucide-react';
 import { DistrictGrid, DistrictHeatmap } from '../components';
+import { SearchField, FilterSelect } from '../components/ui';
 import { useUIContext, useDataContext } from '../contexts';
 
 export default function OevkTab() {
@@ -57,25 +58,27 @@ export default function OevkTab() {
             <DistrictHeatmap districts={enrichedData.districts} onSelect={setSelectedOevk} />
 
             <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row gap-4 transition-colors flex-wrap">
-                <div className="relative flex-1 min-w-[200px]">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <input
-                        type="text"
-                        placeholder="Keresés név vagy megye alapján..."
+                <div className="flex-1 min-w-[200px]">
+                    <SearchField
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-sm focus:ring-2 ring-blue-500 transition-all text-slate-800 dark:text-slate-100"
+                        onChange={setSearchTerm}
+                        placeholder="Keresés név vagy megye alapján..."
+                        className=""
+                        inputClassName="border-none bg-slate-50 dark:bg-slate-800"
                     />
                 </div>
                 {/* Megye szűrő */}
-                <select
-                    value={selectedCounty}
-                    onChange={(e) => setSelectedCounty(e.target.value)}
-                    className="px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 focus:ring-2 ring-blue-500 focus:outline-none transition-all cursor-pointer min-w-[180px]"
-                >
-                    <option value="">Minden megye</option>
-                    {counties.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
+                <div className="min-w-[180px]">
+                    <FilterSelect
+                        value={selectedCounty}
+                        onChange={setSelectedCounty}
+                        options={counties}
+                        defaultOptionLabel="Minden megye"
+                        icon={null}
+                        className=""
+                        selectClassName="bg-slate-50 dark:bg-slate-800 border-none"
+                    />
+                </div>
                 <div className="flex items-center gap-2">
                     <div className="flex bg-slate-50 dark:bg-slate-800 p-1 rounded-xl border border-slate-100 dark:border-slate-700">
                         <button
