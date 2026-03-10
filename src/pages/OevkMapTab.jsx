@@ -182,8 +182,8 @@ export default function OevkMapTab() {
 
     // Kiemeltek: top 5 jogerős OEVK-lefedettség szerint
     const featuredParties = organizations
-        .filter(org => !isExcluded(org) && org.registeredFinalOevkCoverage > 0)
-        .sort((a, b) => b.registeredFinalOevkCoverage - a.registeredFinalOevkCoverage)
+        .filter(org => !isExcluded(org) && org.registeredOevkCoverage > 0)
+        .sort((a, b) => b.registeredOevkCoverage - a.registeredOevkCoverage)
         .slice(0, 5);
 
     const featuredIds = new Set(featuredParties.map(o => o.szkod));
@@ -234,7 +234,7 @@ export default function OevkMapTab() {
                             {featuredParties.map(org => (
                                 <option key={org.szkod} value={org.szkod.toString()}>
                                     {org.coalitionAbbr || org.r_nev}
-                                    {org.registeredFinalOevkCoverage > 0 ? ` (${org.registeredFinalOevkCoverage} jogerős)` : ''}
+                                    {org.registeredOevkCoverage > 0 ? ` (${org.registeredOevkCoverage} nyilvántartva)` : ''}
                                 </option>
                             ))}
                         </optgroup>

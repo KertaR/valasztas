@@ -53,8 +53,7 @@ export default function OrgCompareCard({ org }) {
                 {/* OEVK Coverage */}
                 <div className="space-y-2">
                     <div className="flex justify-between text-[10px] font-black uppercase tracking-tighter transition-colors">
-                        <span className="text-emerald-700 dark:text-emerald-500">Jogerős: {org.registeredFinalOevkCoverage || 0}</span>
-                        <span className="text-emerald-500 dark:text-emerald-400">Nem jog.: {org.registeredOevkCoverage - (org.registeredFinalOevkCoverage || 0)}</span>
+                        <span className="text-emerald-700 dark:text-emerald-500">Nyilvántartva: {org.registeredOevkCoverage || 0}</span>
                         <span className="text-slate-400 dark:text-slate-500">Összes: {org.oevkCoverage}</span>
                     </div>
                     <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden relative border border-slate-200/50 dark:border-slate-700/50 transition-colors">
@@ -63,16 +62,12 @@ export default function OrgCompareCard({ org }) {
                             style={{ width: `${org.coveragePercent}%` }}
                         ></div>
                         <div
-                            className="absolute h-full bg-emerald-400 dark:bg-emerald-300 transition-all duration-700 delay-100"
-                            style={{ width: `${org.registeredCoveragePercent}%` }}
-                        ></div>
-                        <div
                             className="absolute h-full bg-emerald-700 dark:bg-emerald-600 shadow-[0_0_8px_rgba(4,120,87,0.4)] transition-all duration-700 delay-200"
-                            style={{ width: `${org.registeredFinalCoveragePercent || 0}%` }}
+                            style={{ width: `${org.registeredCoveragePercent || 0}%` }}
                         ></div>
                     </div>
                     <div className="flex justify-between text-[10px] font-bold text-slate-500 dark:text-slate-600 transition-colors">
-                        <span>{org.registeredFinalCoveragePercent || 0}% Jogerős</span>
+                        <span>{org.registeredCoveragePercent || 0}% Nyilvántartva</span>
                         <span>{org.coveragePercent}% Összes</span>
                     </div>
                 </div>
@@ -89,9 +84,9 @@ export default function OrgCompareCard({ org }) {
                     <div className="bg-emerald-50 dark:bg-emerald-900/20 p-4 rounded-xl border border-emerald-100 dark:border-emerald-800/30 transition-colors">
                         <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 mb-2 transition-colors">
                             <Stamp className="w-3.5 h-3.5" />
-                            <span className="text-[9px] font-black uppercase tracking-wider">Jogerős</span>
+                            <span className="text-[9px] font-black uppercase tracking-wider">Nyilvántartva</span>
                         </div>
-                        <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 transition-colors">{org.registeredFinalCount || 0}</p>
+                        <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 transition-colors">{org.registeredCandidateCount || 0}</p>
                     </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@ export const generateTrendData = (enrichedData) => {
     const mhmFinal = enrichedData.organizations.find(o => o.nev.includes('Mi Hazánk'))?.candidateCount || 106;
 
     const totalFinal = enrichedData.candidates.length;
-    const registeredFinal = enrichedData.candidates.filter(c => c.statusName === 'Nyilvántartásba véve').length;
+    const registeredFinal = enrichedData.candidates.filter(c => c.statusName.startsWith('Nyilvántartásba véve')).length;
 
     // Menjünk vissza az időben 7 napot, napi 3 méréssel (9:00, 13:00, 17:00)
     let currentTotal = Math.max(0, totalFinal - 450); // Kezdőpont

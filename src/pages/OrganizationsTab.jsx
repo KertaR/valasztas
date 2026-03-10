@@ -33,8 +33,8 @@ export default function OrganizationsTab() {
 
         list.sort((a, b) => {
             if (sortBy === 'coverage') {
-                if (b.registeredFinalOevkCoverage !== a.registeredFinalOevkCoverage) {
-                    return b.registeredFinalOevkCoverage - a.registeredFinalOevkCoverage;
+                if (b.registeredOevkCoverage !== a.registeredOevkCoverage) {
+                    return b.registeredOevkCoverage - a.registeredOevkCoverage;
                 }
                 return b.oevkCoverage - a.oevkCoverage;
             }

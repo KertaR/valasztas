@@ -64,22 +64,16 @@ export default function OrganizationsTable({ organizations, onSelect }) {
                 <div className="flex flex-col gap-2 w-full max-w-[200px]">
                     <div className="flex justify-between items-center text-[11px] font-bold">
                         <div className="flex gap-2.5">
-                            <span className="flex items-center gap-1.5 opacity-90 text-emerald-700 dark:text-emerald-500" title="Jogerős nyilvántartásba vétel">
+                            <span className="flex items-center gap-1.5 opacity-90 text-emerald-700 dark:text-emerald-500" title="Nyilvántartásba vett jelöltek">
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shadow-[0_0_4px_rgba(5,150,105,0.8)]"></span>
-                                {org.registeredFinalOevkCoverage}
+                                {org.registeredOevkCoverage}
                             </span>
-                            {(org.registeredOevkCoverage - org.registeredFinalOevkCoverage) > 0 && (
-                                <span className="flex items-center gap-1.5 text-emerald-600/70 dark:text-emerald-400/80" title="Nem jogerős">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                                    {org.registeredOevkCoverage - org.registeredFinalOevkCoverage}
-                                </span>
-                            )}
                             <span className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500" title="Összes induló">
                                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-500/30"></span>
                                 {org.oevkCoverage}
                             </span>
                         </div>
-                        <span className="text-emerald-700 dark:text-emerald-400/90 font-black">{org.registeredFinalCoveragePercent}%</span>
+                        <span className="text-emerald-700 dark:text-emerald-400/90 font-black">{org.registeredCoveragePercent}%</span>
                     </div>
 
                     <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden relative">
@@ -88,12 +82,8 @@ export default function OrganizationsTable({ organizations, onSelect }) {
                             style={{ width: `${org.coveragePercent}%` }}
                         ></div>
                         <div
-                            className="absolute h-full bg-emerald-400/80 transition-all duration-700 delay-100"
-                            style={{ width: `${org.registeredCoveragePercent}%` }}
-                        ></div>
-                        <div
                             className="absolute h-full bg-emerald-600 shadow-[0_0_6px_rgba(5,150,105,0.8)] transition-all duration-700 delay-200"
-                            style={{ width: `${org.registeredFinalCoveragePercent}%` }}
+                            style={{ width: `${org.registeredCoveragePercent}%` }}
                         ></div>
                     </div>
                 </div>
@@ -106,8 +96,13 @@ export default function OrganizationsTable({ organizations, onSelect }) {
             cellClassName: 'text-right',
             render: (org) => (
                 <div className="flex flex-col items-end gap-1">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black shadow-sm border whitespace-nowrap transition-colors ${org.registeredFinalOevkCoverage > 0 ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-100 dark:border-emerald-800/50' : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700'}`}>
-                        {org.registeredFinalOevkCoverage} jogerős
+                    {org.nationalListStatus && (
+                        <span className="inline-flex items-center gap-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border border-blue-200 dark:border-blue-800/50 mb-0.5" title={org.nationalListStatus}>
+                            <Zap className="w-3 h-3" /> Listás
+                        </span>
+                    )}
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black shadow-sm border whitespace-nowrap transition-colors ${org.registeredOevkCoverage > 0 ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-100 dark:border-emerald-800/50' : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700'}`}>
+                        {org.registeredOevkCoverage} nyilvántartva
                     </span>
                     <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 transition-colors">
                         {org.candidateCount} összesen
