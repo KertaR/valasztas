@@ -26,22 +26,36 @@ export const processCoalitions = (organizations) => {
 };
 
 export const calculateStrategicMetrics = (districts, organizations, candidates, countiesData) => {
+    // Előkészítjük a jelenléti térképet a $O(1)$ lookup-hoz (O(N) idő)
+    const countyPresence = {};
+    countiesData.forEach(c => countyPresence[c.nev] = new Set());
+
+    candidates.forEach(cand => {
+        if (cand.countyName && cand.jelolo_szervezetek) {
+            if (!countyPresence[cand.countyName]) countyPresence[cand.countyName] = new Set();
+            cand.jelolo_szervezetek.forEach(szkod => countyPresence[cand.countyName].add(szkod));
+        }
+    });
+
     return {
         battlegrounds: districts.filter(d => d.candidateCount >= 8).slice(0, 5),
         atRisk: districts.filter(d => d.candidateCount < 3).slice(0, 5),
         partyGaps: organizations
             .filter(org => !org.isCoalitionPartner && org.registeredOevkCoverage > 0)
             .map(org => {
+                const targetIds = [org.szkod, ...(org.coalitionPartnerIds || [])];
+
                 const missingCounties = countiesData
                     .filter(c => {
-                        const hasCandidateInCounty = candidates.some(cand =>
-                            cand.countyName === c.nev &&
-                            (cand.jelolo_szervezetek?.includes(org.szkod) ||
-                                org.coalitionPartnerIds?.some(pid => cand.jelolo_szervezetek?.includes(pid)))
-                        );
+                        const presenceSet = countyPresence[c.nev];
+                        if (!presenceSet) return true;
+
+                        // Check if any of the targetIds is in the county's presence set
+                        const hasCandidateInCounty = targetIds.some(id => presenceSet.has(id));
                         return !hasCandidateInCounty;
                     })
                     .map(c => c.nev);
+
                 return {
                     name: org.coalitionAbbr || org.r_nev,
                     gapCount: missingCounties.length,

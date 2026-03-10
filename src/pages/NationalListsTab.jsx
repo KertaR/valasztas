@@ -16,13 +16,18 @@ const NationalListsTab = () => {
     const listsData = useMemo(() => {
         if (!enrichedData || !enrichedData.formationsProgress || !enrichedData.organizations) return [];
 
+        const orgMapBySzkod = {};
+        enrichedData.organizations.forEach(o => {
+            orgMapBySzkod[o.szkod] = o;
+        });
+
         return enrichedData.formationsProgress.map(f => {
             let officialCandidates = null;
             let officialStatus = null;
 
             // Check if any of the base organizations in this formation have an official list registered
             for (let szkod of f.szkods) {
-                const org = enrichedData.organizations.find(o => o.szkod === szkod);
+                const org = orgMapBySzkod[szkod];
                 if (org && org.nationalListCandidates && org.nationalListCandidates.length > 0) {
                     officialCandidates = org.nationalListCandidates;
                     officialStatus = org.nationalListStatus;

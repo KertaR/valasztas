@@ -142,7 +142,12 @@ export function useElectionData(showToast, onClearCallback) {
                         else if (file.name.includes('ListakEsJeloltek')) newData.listakEsJeloltek = listData;
 
                         const isNowComplete = Object.values(newData).every(val => val !== null);
-                        if (isNowComplete && !isAllUploaded) showToast('Minden fájl sikeresen feldolgozva!');
+                        const wasCompleteBefore = Object.values(prev).every(val => val !== null);
+
+                        if (isNowComplete && !wasCompleteBefore) {
+                            showToast('Minden fájl sikeresen feldolgozva!');
+                        }
+
                         return newData;
                     });
                 } catch (error) {
