@@ -64,18 +64,30 @@ export default function DashboardTab() {
                             <span>Frissítés: {lastFetchTime.toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>
                     )}
-                    {/* Auto-refresh kapcsoló */}
+                    {/* Auto-refresh kapcsoló (ÉLŐ KÖZVETÍTÉS HATÁS) */}
                     {setAutoRefresh && (
                         <button
                             onClick={() => setAutoRefresh(prev => !prev)}
-                            title={autoRefresh ? 'Auto-frissítés kikapcsolása (10 perc)' : 'Auto-frissítés bekapcsolása (10 perc)'}
-                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border ${autoRefresh
-                                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50 hover:bg-emerald-100'
+                            title={autoRefresh ? 'Auto-frissítés kikapcsolása' : 'Nincs auto-frissítés'}
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all border shadow-sm ${autoRefresh
+                                ? 'bg-slate-900 text-white dark:bg-black border-red-500/50 hover:bg-slate-800'
                                 : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700'
                                 }`}
                         >
-                            <RefreshCw className={`w-3.5 h-3.5 ${autoRefresh ? 'animate-spin [animation-duration:3s]' : ''}`} />
-                            {autoRefresh ? 'Auto (10p)' : 'Auto-off'}
+                            {autoRefresh ? (
+                                <>
+                                    <div className="relative flex items-center justify-center w-3 h-3">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                                    </div>
+                                    <span className="tracking-widest uppercase shadow-black drop-shadow-md">LIVE</span>
+                                </>
+                            ) : (
+                                <>
+                                    <RefreshCw className="w-3.5 h-3.5" />
+                                    <span>Auto-off</span>
+                                </>
+                            )}
                         </button>
                     )}
                     {/* Kézi azonnali frissítés */}

@@ -161,8 +161,8 @@ export default function CoalitionBuilderTab() {
 
                 {/* Bal Oldal: Pártok Kiválasztása */}
                 <div className="xl:col-span-1 space-y-4">
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-5 transition-colors">
-                        <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-4">Szövetség Tagjai</h2>
+                    <div className="bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl rounded-3xl shadow-lg border border-white/50 dark:border-slate-800/80 p-5 transition-colors">
+                        <h2 className="text-xl font-black text-slate-800 dark:text-white mb-5">Szövetség Tagjai</h2>
 
                         <div className="space-y-2 mb-6">
                             <AnimatePresence>
@@ -228,9 +228,9 @@ export default function CoalitionBuilderTab() {
                         <div className="space-y-6" ref={simResultRef}>
 
                             {/* Fő KPI Kártyák */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-                                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Együttes OEVK Lefedettség</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                <div className="bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl shadow-lg border border-white/50 dark:border-slate-800/80 transition-all hover:-translate-y-1">
+                                    <p className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Együttes OEVK Lefedettség</p>
                                     <div className="flex items-end gap-2">
                                         <span className="text-4xl font-black text-slate-800 dark:text-white">{simulation.progress.totalCoverage}</span>
                                         <span className="text-lg font-bold text-slate-400 dark:text-slate-500 mb-1">/ 106</span>
@@ -245,13 +245,13 @@ export default function CoalitionBuilderTab() {
                                         <span className="text-emerald-500">{simulation.progress.registeredCoverage} nyilvántartva</span>
                                     </div>
                                 </div>
-                                <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
-                                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Közös Jelöltek Száma</p>
-                                    <p className="text-4xl font-black text-slate-800 dark:text-white">{simulation.totalCandidatesProcessed}</p>
-                                    <p className="text-sm font-medium text-slate-500 mt-1">{simulation.conflicts.length > 0 ? `${simulation.conflicts.length} db OEVK-ban ütközés van!` : 'Nincs ütközés.'}</p>
+                                <div className="bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl p-6 rounded-3xl shadow-lg border border-white/50 dark:border-slate-800/80 transition-all hover:-translate-y-1">
+                                    <p className="text-xs font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2">Közös Jelöltek Száma</p>
+                                    <p className="text-5xl font-black text-slate-800 dark:text-white drop-shadow-sm">{simulation.totalCandidatesProcessed}</p>
+                                    <p className="text-sm font-bold text-slate-500 mt-2">{simulation.conflicts.length > 0 ? `${simulation.conflicts.length} db OEVK-ban ütközés van!` : 'Nincs ütközés.'}</p>
                                 </div>
-                                <div className={`p-5 rounded-2xl shadow-sm border ${simulation.progress.potentialListRequirement ? 'bg-emerald-50 border-emerald-200 dark:bg-emerald-900/20 dark:border-emerald-800/50' : 'bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800/50'}`}>
-                                    <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${simulation.progress.potentialListRequirement ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}`}>Országos Lista Esély (Bárki)</p>
+                                <div className={`p-6 rounded-3xl shadow-lg border backdrop-blur-xl transition-all hover:-translate-y-1 ${simulation.progress.potentialListRequirement ? 'bg-emerald-50/70 border-emerald-200/80 dark:bg-emerald-900/20 dark:border-emerald-800/50' : 'bg-amber-50/70 border-amber-200/80 dark:bg-amber-900/20 dark:border-amber-800/50'}`}>
+                                    <p className={`text-xs font-black uppercase tracking-widest mb-2 ${simulation.progress.potentialListRequirement ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}`}>Országos Lista Esély (Bárki)</p>
                                     <div className="flex items-center gap-3 mt-2">
                                         {simulation.progress.potentialListRequirement
                                             ? <CheckCircle2 className="w-10 h-10 text-emerald-500" />
@@ -266,8 +266,8 @@ export default function CoalitionBuilderTab() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {/* Ütközések Kártyája */}
-                                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden max-h-[500px]">
-                                    <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-red-50/50 dark:bg-red-900/10 flex items-center justify-between">
+                                <div className="bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl rounded-3xl shadow-lg border border-white/50 dark:border-slate-800/80 flex flex-col overflow-hidden max-h-[500px]">
+                                    <div className="p-5 border-b border-white/50 dark:border-slate-800/80 bg-red-50/50 dark:bg-red-900/20 flex items-center justify-between">
                                         <h3 className="font-bold text-slate-800 dark:text-white flex items-center gap-2">
                                             <AlertTriangle className="w-5 h-5 text-red-500" /> Belső Ütközések
                                         </h3>
@@ -300,8 +300,8 @@ export default function CoalitionBuilderTab() {
                                 </div>
 
                                 {/* Hiányzó Körzetek Kártyája */}
-                                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden max-h-[500px]">
-                                    <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between">
+                                <div className="bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl rounded-3xl shadow-lg border border-white/50 dark:border-slate-800/80 flex flex-col overflow-hidden max-h-[500px]">
+                                    <div className="p-5 border-b border-white/50 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-800/50 flex items-center justify-between">
                                         <h3 className="font-bold text-slate-800 dark:text-white flex items-center gap-2">
                                             <Map className="w-5 h-5 text-slate-400" /> Hiányzó OEVK-k
                                         </h3>
