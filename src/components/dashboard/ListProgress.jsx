@@ -13,7 +13,7 @@ export default function ListProgress({ formations = [] }) {
     };
 
     return (
-        <div className="glass-card rounded-xl p-5 md:p-6 transition-colors">
+        <div className="bg-white/70 dark:bg-slate-900/40 backdrop-blur-xl rounded-3xl shadow-lg border border-white/50 dark:border-slate-800/80 p-5 md:p-6 transition-colors">
             <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
                 <Target className="w-5 h-5 text-indigo-500" />
                 Listaállítási Haladás
@@ -44,14 +44,14 @@ export default function ListProgress({ formations = [] }) {
                                         <span className="text-slate-500 dark:text-slate-400">71 OEVK Jelölt (Indult: {f.totalOevkCount})</span>
                                         <span className={f.isSure ? 'text-emerald-500' : 'text-blue-500'}>{f.regOevkCount} / 71</span>
                                     </div>
-                                    <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200/50 dark:border-slate-700/50 relative">
+                                    <div className="w-full h-2 bg-slate-100/50 dark:bg-slate-800/50 rounded-full overflow-hidden border border-slate-200/50 dark:border-slate-700/30 relative shadow-inner p-0.5">
                                         {/* Background bar for total launched (még nem regisztráltak) */}
                                         <div
-                                            className="h-full absolute inset-y-0 left-0 bg-blue-200 dark:bg-blue-900/50 transition-all duration-1000"
-                                            style={{ width: `${oevkTotProgress}%` }}
+                                            className="h-full absolute inset-y-0.5 left-0.5 bg-blue-300 dark:bg-blue-800/50 rounded-full transition-all duration-1000 blur-[1px]"
+                                            style={{ width: `calc(${oevkTotProgress}% - 4px)` }}
                                         ></div>
                                         <div
-                                            className={`h-full transition-all duration-1000 relative z-10 ${f.isSure ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]' : 'bg-blue-500'}`}
+                                            className={`h-full rounded-full transition-all duration-1000 relative z-10 ${f.isSure ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-blue-500 shadow-[0_0_5px_#3b82f6]'}`}
                                             style={{ width: `${oevkProgress}%` }}
                                         ></div>
                                     </div>
@@ -62,13 +62,13 @@ export default function ListProgress({ formations = [] }) {
                                         <span>14 Vármegye + Budapest</span>
                                         <span className={f.isSure ? 'text-emerald-500' : 'text-purple-500'}>{f.regCountyCount} / 15</span>
                                     </div>
-                                    <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden border border-slate-200/50 dark:border-slate-700/50 relative">
+                                    <div className="w-full h-2 bg-slate-100/50 dark:bg-slate-800/50 rounded-full overflow-hidden border border-slate-200/50 dark:border-slate-700/30 relative shadow-inner p-0.5">
                                         <div
-                                            className="h-full absolute inset-y-0 left-0 bg-purple-200 dark:bg-purple-900/50 transition-all duration-1000"
-                                            style={{ width: `${countyTotProgress}%` }}
+                                            className="h-full absolute inset-y-0.5 left-0.5 bg-purple-300 dark:bg-purple-800/50 rounded-full transition-all duration-1000 blur-[1px]"
+                                            style={{ width: `calc(${countyTotProgress}% - 4px)` }}
                                         ></div>
                                         <div
-                                            className={`h-full transition-all duration-1000 relative z-10 ${f.isSure ? 'bg-emerald-500' : 'bg-purple-500'}`}
+                                            className={`h-full rounded-full transition-all duration-1000 relative z-10 ${f.isSure ? 'bg-emerald-500 shadow-[0_0_8px_#10b981]' : 'bg-purple-500 shadow-[0_0_5px_#a855f7]'}`}
                                             style={{ width: `${countyProgress}%` }}
                                         ></div>
                                     </div>
