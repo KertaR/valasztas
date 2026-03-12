@@ -12,8 +12,8 @@ export default function MapSidebarInfo({
     const data = districtData[selectedDistrict];
 
     return (
-        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-md border-2 border-yellow-400 dark:border-yellow-500/50 p-6 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-yellow-400 dark:bg-yellow-500"></div>
+        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl shadow-2xl shadow-black/10 border-2 border-yellow-400/80 dark:border-yellow-500/50 p-6 relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-yellow-400 dark:bg-yellow-500 shadow-[0_0_15px_rgba(250,204,21,0.5)]"></div>
             <button
                 onClick={onClose}
                 className="absolute top-4 right-4 p-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full text-slate-500 dark:text-slate-400 transition-colors"

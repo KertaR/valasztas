@@ -9,10 +9,10 @@ export const useFilterContext = () => useContext(FilterContext);
 
 export const FilterProvider = ({ children }) => {
     const { enrichedData } = useDataContext();
-    const { showToast } = useUIContext();
+    const { showToast, dashboardStatusFilter, setDashboardStatusFilter } = useUIContext();
     const candidates = enrichedData?.allCandidates || enrichedData?.candidates || [];
 
-    const filterData = useCandidateFilters(candidates, showToast);
+    const filterData = useCandidateFilters(candidates, showToast, dashboardStatusFilter, setDashboardStatusFilter);
 
     return (
         <FilterContext.Provider value={filterData}>

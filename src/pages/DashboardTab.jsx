@@ -12,8 +12,13 @@ import { useUIContext, useDataContext } from '../contexts';
 
 export default function DashboardTab() {
     const { enrichedData, data, lastFetchTime, autoRefresh, setAutoRefresh, fetchDataFromWeb: onRefresh, isLoadingWeb } = useDataContext();
-    const { setSelectedOevk, setSelectedCandidate, setActiveTab, setIsCandidatesDiffOpen } = useUIContext();
-    const onStatusClick = () => setActiveTab('valtozasok');
+    const { setSelectedOevk, setSelectedCandidate, setActiveTab, setIsCandidatesDiffOpen, setDashboardStatusFilter } = useUIContext();
+
+    const onStatusClick = (statusName) => {
+        setDashboardStatusFilter(statusName);
+        setActiveTab('jeloltek');
+    };
+    
     const onCandidatesDiffClick = () => setIsCandidatesDiffOpen(true);
     const dashboardRef = useRef(null);
     const [isExporting, setIsExporting] = useState(false);

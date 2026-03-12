@@ -1,6 +1,6 @@
 export default function MapLegend({ selectedParty }) {
     return (
-        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl shadow-xl shadow-black/5 border border-white/20 dark:border-slate-700/50 p-6">
             <h3 className="text-lg font-black text-slate-800 dark:text-white mb-4">Jelmagyarázat</h3>
 
             {selectedParty === 'all' ? (

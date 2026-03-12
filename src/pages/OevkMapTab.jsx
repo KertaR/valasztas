@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { MapPin } from 'lucide-react';
 import { useDataContext } from '../contexts';
 
@@ -6,6 +7,31 @@ import MapSearchBar from '../components/map/MapSearchBar';
 import MapDisplay from '../components/map/MapDisplay';
 import MapSidebarInfo from '../components/map/MapSidebarInfo';
 import MapLegend from '../components/map/MapLegend';
+
+// ────────────────────────────────────────────────
+// Státusz prioritás és színek – azonos a dashboard CandidateStatusChart-tal
+// ────────────────────────────────────────────────
+const getStatusPriority = (statusName) => {
+    const sn = statusName || '';
+    const sl = sn.toLowerCase();
+    if (sn === 'Nyilvántartásba véve') return 7; // jogerős
+    if (sl.includes('nyilvántartásba') && sl.includes('nem jogerős')) return 6; // nem jogerős nyilv.
+    if (sl.includes('bejelentve') || sl.includes('átvette') || sl.includes('igény') || sl.includes('ismételten')) return 5; // folyamatban
+    if (sl.includes('visszautasítva') && sl.includes('nem jogerős')) return 3; // visszautasítva nem jogerős
+    if (sl.includes('visszautasítva')) return 2; // visszautasítva jogerős
+    if (sl.includes('törölve') || sl.includes('kiesett') || sl.includes('elutasítva') || sl.includes('elveszítette') || sl.includes('lemondott') || sl.includes('elhunyt')) return 1; // törölve/kiesett
+    return 4; // egyéb aktív
+};
+
+const STATUS_COLOR = {
+    7: '#14532d', // jogerős – sötétzöld
+    6: '#86efac', // nem jogerős nyilv. – világoszöld
+    5: '#60a5fa', // folyamatban – kék
+    4: '#60a5fa', // egyéb aktív – kék
+    3: '#fca5a5', // visszautasítva nem jogerős – halványpiros
+    2: '#991b1b', // visszautasítva jogerős – sötétpiros
+    1: '#ef4444', // törölve/kiesett – piros
+};
 
 // ────────────────────────────────────────────────
 // Fő komponens
@@ -23,8 +49,9 @@ export default function OevkMapTab() {
     const [searchError, setSearchError] = useState(null);
     const [mapCenter, setMapCenter] = useState(null); // [lat, lng]
 
-    // Tooltip állapot
-    const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, html: '' });
+    // Tooltip állapot és ref
+    const [tooltipContent, setTooltipContent] = useState(null); // null vagy { html, x, y }
+    const tooltipRef = useRef(null);
 
     // ────────────────────────────────────────────────
     // Körzet adatok előkészítése
@@ -73,30 +100,7 @@ export default function OevkMapTab() {
         return data;
     }, [districts, candidates, oevkPoligonok]);
 
-    // ────────────────────────────────────────────────
-    // Státusz prioritás és színek – azonos a dashboard CandidateStatusChart-tal
-    // ────────────────────────────────────────────────
-    const getStatusPriority = (statusName) => {
-        const sn = statusName || '';
-        const sl = sn.toLowerCase();
-        if (sn === 'Nyilvántartásba véve') return 7; // jogerős
-        if (sl.includes('nyilvántartásba') && sl.includes('nem jogerős')) return 6; // nem jogerős nyilv.
-        if (sl.includes('bejelentve') || sl.includes('átvette') || sl.includes('igény') || sl.includes('ismételten')) return 5; // folyamatban
-        if (sl.includes('visszautasítva') && sl.includes('nem jogerős')) return 3; // visszautasítva nem jogerős
-        if (sl.includes('visszautasítva')) return 2; // visszautasítva jogerős
-        if (sl.includes('törölve') || sl.includes('kiesett') || sl.includes('elutasítva') || sl.includes('elveszítette') || sl.includes('lemondott') || sl.includes('elhunyt')) return 1; // törölve/kiesett
-        return 4; // egyéb aktív
-    };
 
-    const STATUS_COLOR = {
-        7: '#14532d', // jogerős – sötétzöld
-        6: '#86efac', // nem jogerős nyilv. – világoszöld
-        5: '#60a5fa', // folyamatban – kék
-        4: '#60a5fa', // egyéb aktív – kék
-        3: '#fca5a5', // visszautasítva nem jogerős – halványpiros
-        2: '#991b1b', // visszautasítva jogerős – sötétpiros
-        1: '#ef4444', // törölve/kiesett – piros
-    };
 
     // ────────────────────────────────────────────────
     // Szín logika
@@ -137,7 +141,7 @@ export default function OevkMapTab() {
 
         if (bestPriority === 0) return '#f1f5f9'; // nincs jelölt
         return STATUS_COLOR[bestPriority] || '#f1f5f9';
-    }, [districtData, selectedParty, organizations, getStatusPriority, STATUS_COLOR]);
+    }, [districtData, selectedParty, organizations]);
 
     // ────────────────────────────────────────────────
     // Tooltip kezelők
@@ -155,21 +159,20 @@ export default function OevkMapTab() {
                 html += cand ? `${cand.neve}<br/>${cand.statusName}` : '<em>Nincs jelölt</em>';
             }
         }
-        setTooltip({
-            visible: true,
+        setTooltipContent({
             x: e.clientX,
-            y: e.clientY - 10,
+            y: e.clientY,
             html,
         });
     }, [districtData, selectedParty]);
 
-    const handlePathMouseLeave = useCallback(() => setTooltip(t => ({ ...t, visible: false })), []);
+    const handlePathMouseLeave = useCallback(() => setTooltipContent(null), []);
 
     const handlePathMouseMove = useCallback((e) => {
-        setTooltip(t => {
-            if (!t.visible) return t;
-            return { ...t, x: e.clientX, y: e.clientY - 10 };
-        });
+        if (tooltipRef.current) {
+            tooltipRef.current.style.left = `${e.clientX + 15}px`;
+            tooltipRef.current.style.top = `${Math.max(e.clientY + 15, 8)}px`;
+        }
     }, []);
 
     // ────────────────────────────────────────────────
@@ -198,19 +201,19 @@ export default function OevkMapTab() {
     // ────────────────────────────────────────────────
     return (
         <div className="flex flex-col gap-6">
-            {/* Fejléc */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-2">
+            {/* Fejléc és Szűrők */}
+            <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-800/50">
                 <div>
                     <h2 className="text-2xl font-black text-slate-800 dark:text-white flex items-center gap-3">
                         <MapPin className="w-8 h-8 text-blue-600 dark:text-blue-500" />
                         OEVK Lefedettség Térkép
                     </h2>
-                    <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">
+                    <p className="text-slate-500 dark:text-slate-400 font-medium mt-2">
                         Magyarország 106 egyéni választókerületének vizuális állapota
                     </p>
                 </div>
 
-                <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full md:w-auto">
+                <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 w-full xl:w-auto">
                     <MapSearchBar
                         searchQuery={searchQuery}
                         setSearchQuery={setSearchQuery}
@@ -223,9 +226,8 @@ export default function OevkMapTab() {
                         setMapCenter={setMapCenter}
                     />
 
-                    {/* Szűrő */}
                     <select
-                        className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl px-4 py-2 font-bold shadow-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-xl px-4 py-2.5 font-bold shadow-sm focus:ring-2 focus:ring-blue-500 outline-none w-full md:w-auto transition-all"
                         value={selectedParty}
                         onChange={(e) => setSelectedParty(e.target.value)}
                     >
@@ -250,9 +252,9 @@ export default function OevkMapTab() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                {/* Térkép */}
-                <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-2 md:p-4 select-none" style={{ position: 'relative' }}>
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+                {/* Térkép Container */}
+                <div className="xl:col-span-3 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-800/50 p-2 select-none relative h-[500px] md:h-[650px]">
                     <MapDisplay
                         oevkPoligonok={oevkPoligonok}
                         selectedParty={selectedParty}
@@ -263,22 +265,40 @@ export default function OevkMapTab() {
                         handlePathMouseLeave={handlePathMouseLeave}
                         handlePathMouseMove={handlePathMouseMove}
                         setSelectedDistrict={setSelectedDistrict}
-                        tooltip={tooltip}
+                        tooltip={tooltipContent}
                     />
                 </div>
 
-                <div className="lg:col-span-1 flex flex-col gap-4">
-                    <MapSidebarInfo
-                        selectedDistrict={selectedDistrict}
-                        districtData={districtData}
-                        selectedParty={selectedParty}
-                        organizations={organizations}
-                        onClose={() => setSelectedDistrict(null)}
-                    />
-
+                {/* Oldalsáv és Jelmagyarázat */}
+                <div className="xl:col-span-1 flex flex-col gap-6">
+                    {selectedDistrict && (
+                        <MapSidebarInfo
+                            selectedDistrict={selectedDistrict}
+                            districtData={districtData}
+                            selectedParty={selectedParty}
+                            organizations={organizations}
+                            onClose={() => setSelectedDistrict(null)}
+                        />
+                    )}
+                    
                     <MapLegend selectedParty={selectedParty} />
                 </div>
             </div>
+
+            {/* Tooltip renderálása a React Portal segítségével a document.body-ba */}
+            {tooltipContent && createPortal(
+                <div
+                    ref={tooltipRef}
+                    className="pointer-events-none fixed z-[9999] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 text-slate-800 dark:text-slate-200 text-sm px-4 py-3 rounded-2xl shadow-2xl max-w-[250px]"
+                    style={{
+                        left: tooltipContent.x + 15,
+                        top: Math.max(tooltipContent.y + 15, 8),
+                    }}
+                >
+                    <div dangerouslySetInnerHTML={{ __html: tooltipContent.html }} />
+                </div>,
+                document.body
+            )}
         </div>
     );
 }

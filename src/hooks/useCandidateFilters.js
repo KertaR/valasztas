@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 
-export function useCandidateFilters(enrichedDataCandidates, showToast) {
+export function useCandidateFilters(enrichedDataCandidates, showToast, dashboardStatusFilter, setDashboardStatusFilter) {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedParty, setSelectedParty] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
@@ -10,6 +10,18 @@ export function useCandidateFilters(enrichedDataCandidates, showToast) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const itemsPerPage = 50;
+
+    // Listen for global status requests from the Dashboard
+    useEffect(() => {
+        if (dashboardStatusFilter) {
+            setSelectedStatus(dashboardStatusFilter);
+            setQuickFilter('all');
+            setSearchTerm('');
+            setSelectedParty('');
+            setSelectedCounty('');
+            setDashboardStatusFilter(null); // Consume the filter so it doesn't get stuck
+        }
+    }, [dashboardStatusFilter, setDashboardStatusFilter]);
 
     const filterOptions = useMemo(() => {
         if (!enrichedDataCandidates || !enrichedDataCandidates.length) return { parties: [], statuses: [], counties: [] };

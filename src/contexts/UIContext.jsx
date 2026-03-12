@@ -17,12 +17,16 @@ export const UIProvider = ({ children }) => {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isCandidatesDiffOpen, setIsCandidatesDiffOpen] = useState(false);
 
+    // Global filters payload from cross-tab navigation
+    const [dashboardStatusFilter, setDashboardStatusFilter] = useState(null);
+
     const handleClearApp = () => {
         setActiveTab('dashboard');
         setSelectedCandidate(null);
         setSelectedOevk(null);
         setSelectedOrg(null);
         setSelectedCountyDetail(null);
+        setDashboardStatusFilter(null);
     };
 
     const switchTab = (tab) => { setActiveTab(tab); setIsMobileMenuOpen(false); };
@@ -72,6 +76,7 @@ export const UIProvider = ({ children }) => {
         isMobileMenuOpen, setIsMobileMenuOpen,
         isSearchOpen, setIsSearchOpen,
         isCandidatesDiffOpen, setIsCandidatesDiffOpen,
+        dashboardStatusFilter, setDashboardStatusFilter,
         handleClearApp,
         isDarkMode, toggleDarkMode
     };
