@@ -11,29 +11,29 @@ export default function CandidateTable({
     setSelectedCandidate
 }) {
     return (
-        <table className="w-full text-left border-collapse bg-white dark:bg-slate-900 transition-colors">
-            <thead className="bg-slate-50/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-500 dark:text-slate-400 sticky top-0 z-10 shadow-sm text-xs uppercase tracking-widest font-black transition-colors">
+        <table className="w-full text-left border-collapse bg-transparent transition-colors">
+            <thead className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md text-slate-500 dark:text-slate-400 sticky top-0 z-10 text-xs uppercase tracking-widest font-black transition-colors shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)]">
                 <tr>
-                    <th className="p-4 border-b border-slate-200/80 dark:border-slate-700/80 cursor-pointer select-none hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors group" onClick={() => handleSort('neve')}>
+                    <th className="p-4 border-b border-white/50 dark:border-slate-700/50 cursor-pointer select-none hover:bg-white/40 dark:hover:bg-slate-700/30 transition-colors group" onClick={() => handleSort('neve')}>
                         <div className="flex items-center gap-1 md:gap-2">Jelölt neve {getSortIcon('neve')}</div>
                     </th>
-                    <th className="p-4 border-b border-slate-200/80 dark:border-slate-700/80 cursor-pointer select-none hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors group hidden md:table-cell" onClick={() => handleSort('districtName')}>
+                    <th className="p-4 border-b border-white/50 dark:border-slate-700/50 cursor-pointer select-none hover:bg-white/40 dark:hover:bg-slate-700/30 transition-colors group hidden md:table-cell" onClick={() => handleSort('districtName')}>
                         <div className="flex items-center gap-2">Választókerület {getSortIcon('districtName')}</div>
                     </th>
-                    <th className="p-4 border-b border-slate-200/80 dark:border-slate-700/80 cursor-pointer select-none hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors group hidden sm:table-cell" onClick={() => handleSort('partyNames')}>
+                    <th className="p-4 border-b border-white/50 dark:border-slate-700/50 cursor-pointer select-none hover:bg-white/40 dark:hover:bg-slate-700/30 transition-colors group hidden sm:table-cell" onClick={() => handleSort('partyNames')}>
                         <div className="flex items-center gap-2">Szervezet {getSortIcon('partyNames')}</div>
                     </th>
-                    <th className="p-4 border-b border-slate-200/80 dark:border-slate-700/80 cursor-pointer select-none hover:bg-slate-100 dark:hover:bg-slate-700/50 transition-colors group" onClick={() => handleSort('allapot_valt')}>
+                    <th className="p-4 border-b border-white/50 dark:border-slate-700/50 cursor-pointer select-none hover:bg-white/40 dark:hover:bg-slate-700/30 transition-colors group" onClick={() => handleSort('allapot_valt')}>
                         <div className="flex items-center gap-1 md:gap-2">Legutóbbi Változás {getSortIcon('allapot_valt')}</div>
                     </th>
                 </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+            <tbody className="divide-y divide-slate-200/30 dark:divide-slate-800/40">
                 {candidates.map((jelolt, idx) => (
-                    <tr key={jelolt.ej_id || idx} onClick={() => setSelectedCandidate(jelolt)} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer group">
+                    <tr key={jelolt.ej_id || idx} onClick={() => setSelectedCandidate(jelolt)} className="hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-all duration-300 cursor-pointer group hover:shadow-[inset_0_0_20px_rgba(79,70,229,0.05)] relative z-0 hover:z-10">
                         <td className="p-4">
                             <div className="flex items-center gap-3 md:gap-4">
-                                <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-50 dark:from-blue-900/40 dark:to-indigo-900/20 text-blue-700 dark:text-blue-300 flex items-center justify-center font-bold text-sm md:text-base shadow-sm border border-slate-200/50 dark:border-slate-700/50 flex-shrink-0 group-hover:scale-105 transition-transform relative">
+                                <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-100/80 to-blue-50/80 dark:from-indigo-900/40 dark:to-blue-900/20 text-indigo-700 dark:text-indigo-300 flex items-center justify-center font-bold text-sm md:text-base shadow-sm border border-white/60 dark:border-slate-700/50 flex-shrink-0 group-hover:scale-110 group-hover:shadow-[0_0_15px_rgba(79,70,229,0.3)] transition-all duration-300 relative">
                                     {jelolt.fenykep ? (
                                         <img
                                             src={getImageUrl(jelolt.fenykep)}

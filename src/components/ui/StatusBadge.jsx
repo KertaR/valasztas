@@ -15,7 +15,7 @@ export default function StatusBadge({ status }) {
 
     return (
         <span
-            className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] md:text-xs font-bold shadow-sm border ${colorClass} max-w-full truncate block transition-colors`}
+            className={`inline-flex items-center justify-center px-2.5 py-1 rounded-md text-[10px] md:text-xs font-bold shadow-sm border ${colorClass} max-w-full break-words whitespace-normal leading-tight text-center transition-colors`}
             title={status}
         >
             {status}
