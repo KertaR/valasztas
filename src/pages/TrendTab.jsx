@@ -4,23 +4,19 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { TrendingUp, Users, FileCheck2, CalendarClock, Loader2 } from 'lucide-react';
 import { PageLayout, ExportButton } from '../components/ui';
 import { useExportImage } from '../hooks/useExportImage';
-import { PROXIES } from '../utils/constants';
 import { useDataContext } from '../contexts';
 
-const fetchJson = async (baseUrl) => {
-    for (const proxy of PROXIES) {
-        try {
-            const finalUrl = proxy === 'https://corsproxy.io/?' ? proxy + baseUrl : (proxy !== '' ? proxy + encodeURIComponent(baseUrl) : baseUrl);
-            const res = await fetch(finalUrl);
-            if (res.ok) {
-                return await res.json();
-            }
-        } catch (e) {
-            continue;
+const fetchJson = async (url) => {
+    try {
+        const res = await fetch(url);
+        if (res.ok) {
+            return await res.json();
         }
+    } catch (e) {
+        console.warn('Hiba a trend letöltésnél:', e);
     }
     return null;
-}
+};
 
 const generateHistoryDates = () => {
     const dates = [];
@@ -82,7 +78,7 @@ export default function TrendTab() {
                         try { return JSON.parse(cached); } catch (e) { /* ignore */ }
                     }
 
-                    const data = await fetchJson(`https://vtr.valasztas.hu/ogy2026/data/${info.verStr}/ver/EgyeniJeloltek.json`);
+                    const data = await fetchJson(`/api/nvi/${info.verStr}/ver/EgyeniJeloltek.json`);
                     if (!data || !data.list) return null;
 
                     const candidates = data.list;

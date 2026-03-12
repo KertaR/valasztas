@@ -8,4 +8,13 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/api/nvi': {
+        target: 'https://vtr.valasztas.hu/ogy2026/data',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/nvi/, ''),
+      },
+    },
+  },
 })

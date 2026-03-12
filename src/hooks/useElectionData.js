@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { getNviUrls, NVI_DATE, NVI_DATE_YESTERDAY, PROXIES, CONFIG_URL } from '../utils/constants';
+import { getNviUrls, NVI_DATE, NVI_DATE_YESTERDAY, CONFIG_URL } from '../utils/constants';
 
 export function useElectionData(showToast, onClearCallback) {
     const [data, setData] = useState({
@@ -28,32 +28,21 @@ export function useElectionData(showToast, onClearCallback) {
         setFetchError(null);
 
         try {
-            const fetchJson = async (baseUrl) => {
-                for (let i = 0; i < PROXIES.length; i++) {
-                    const proxy = PROXIES[i];
-                    try {
-                        let finalUrl = baseUrl;
-                        if (proxy === 'https://corsproxy.io/?') {
-                            finalUrl = proxy + baseUrl;
-                        } else if (proxy !== '') {
-                            finalUrl = proxy + encodeURIComponent(baseUrl);
-                        }
-
-                        const res = await fetch(finalUrl);
-                        if (res.ok) {
-                            return await res.json();
-                        }
-                    } catch (e) {
-                        // A natív fetch hiba (CORS) localhoston normális, ne ijesszük meg a felhasználót
-                        if (i === 0) {
-                            console.log(`💡 Közvetlen kapcsolat (CORS) nem lehetséges, váltás biztonságos csatornára (Proxy)...`);
-                        } else {
-                            console.warn(`⚠️ Proxy hiba (${proxy}), próbálkozás a következővel...`);
-                        }
-                        continue;
+            const fetchJson = async (url) => {
+                // Determine the correct URL based on environment (Vite DEV vs Vercel PROD).
+                // In local Vite dev, we need the absolute URL to bypass cors (though local handles it).
+                // Actually, Vite supports proxy rules in vite.config.js, or we can just hope public API allows localhost.
+                // If the app is hosted on Vercel, relative paths hit the vercel.json rewrites.
+                try {
+                    const res = await fetch(url);
+                    if (res.ok) {
+                        return await res.json();
                     }
+                    throw new Error(`HTTP error! status: ${res.status} when fetching ${url}`);
+                } catch (e) {
+                    console.warn(`Hiba történt a(z) ${url} cím lekérésekor:`, e);
+                    throw e; // Propagate error outwards
                 }
-                throw new Error('Minden elérési út elbukott. Kérlek töltsd fel a fájlokat manuálisan.');
             };
 
             // 1. Fetch current version config

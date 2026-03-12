@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/nvi/:match*",
+            "destination": "https://vtr.valasztas.hu/ogy2026/data/:match*"
+        }
+    ]
+}

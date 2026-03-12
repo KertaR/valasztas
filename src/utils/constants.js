@@ -9,21 +9,18 @@ const getCurrentNviDateStr = (offsetDays = 0) => {
 export const NVI_DATE = getCurrentNviDateStr(0);
 export const NVI_DATE_YESTERDAY = getCurrentNviDateStr(1);
 
-export const CONFIG_URL = 'https://vtr.valasztas.hu/ogy2026/data/config.json';
+export const CONFIG_URL = '/api/nvi/config.json';
 
+// Fetch through the local Vercel rewrite route to avoid CORS constraints.
 export const getNviUrls = (verStr) => ({
-    megyek: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/Megyek.json`,
-    telepulesek: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/Telepulesek.json`,
-    oevk: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/OevkAdatok.json`,
-    jeloltek: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/EgyeniJeloltek.json`,
-    szervezetek: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/Szervezetek.json`,
-    oevkPoligonok: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/OevkPoligonok.json`,
-    listakEsJeloltek: `https://vtr.valasztas.hu/ogy2026/data/${verStr}/ver/ListakEsJeloltek.json`
+    megyek: `/api/nvi/${verStr}/ver/Megyek.json`,
+    telepulesek: `/api/nvi/${verStr}/ver/Telepulesek.json`,
+    oevk: `/api/nvi/${verStr}/ver/OevkAdatok.json`,
+    jeloltek: `/api/nvi/${verStr}/ver/EgyeniJeloltek.json`,
+    szervezetek: `/api/nvi/${verStr}/ver/Szervezetek.json`,
+    oevkPoligonok: `/api/nvi/${verStr}/ver/OevkPoligonok.json`,
+    listakEsJeloltek: `/api/nvi/${verStr}/ver/ListakEsJeloltek.json`
 });
-export const PROXIES = [
-    '', // Natív
-    'https://corsproxy.io/?'
-];
 
 export const STATUS_MAP = {
     "0": "Bejelentve",
