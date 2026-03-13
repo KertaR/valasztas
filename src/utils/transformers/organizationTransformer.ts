@@ -1,4 +1,50 @@
+import { NVISzervezet, NVIJelolt } from '../../types/nvi';
+import { EnrichedCandidate, EnrichedOrganization } from '../../types/app';
 import { processCoalitions } from '../dataHelpers';
+
+interface ProcessOrganizationsArgs {
+    data: {
+        szervezetek: NVISzervezet[] | null;
+        listakEsJeloltek?: any[] | null;
+    };
+    yesterdayData?: {
+        szervezetek: NVISzervezet[] | null;
+    } | null;
+    candidates: EnrichedCandidate[];
+    orgMap: Record<string, NVISzervezet>;
+    statusMap: Record<string, string>;
+    yesterdayOrgSet: Set<string>;
+}
+
+export interface Alliance {
+    szkod: number;
+    count: number;
+    name: string;
+    abbr: string;
+}
+
+export interface NationalListCandidate extends NVIJelolt {
+    statusName: string;
+    sorsz?: number;
+}
+
+export interface EnrichedOrgWithStats extends EnrichedOrganization {
+    registeredCandidateCount: number;
+    registeredFinalCount: number;
+    registeredPreCount: number;
+    oevkCoverage: number;
+    registeredOevkCoverage: number;
+    registeredCountiesCount: number;
+    registeredFinalOevkCoverage: number;
+    registeredFinalCountiesCount: number;
+    coveragePercent: number;
+    registeredCoveragePercent: number;
+    registeredFinalCoveragePercent: number;
+    alliances: Alliance[];
+    candidateList: EnrichedCandidate[];
+    nationalListStatus: string | null;
+    nationalListCandidates: NationalListCandidate[];
+}
 
 export const processOrganizations = ({
     data,
@@ -7,16 +53,15 @@ export const processOrganizations = ({
     orgMap,
     statusMap,
     yesterdayOrgSet
-}) => {
+}: ProcessOrganizationsArgs): EnrichedOrgWithStats[] => {
     const TOTAL_OEVK = 106;
-    let organizations = (data.szervezetek || [])
-        .sort((a, b) => (a.nev || '').localeCompare(b.nev || '', 'hu')) // Stabil sorrend a koalícióknál
+    let organizations: EnrichedOrgWithStats[] = (data.szervezetek || [])
+        .sort((a, b) => (a.nev || '').localeCompare(b.nev || '', 'hu'))
         .map(org => {
-            const orgCandidates = org.szkod === 0
+            const orgCandidates = parseInt(org.szkod) === 0
                 ? candidates.filter(c => !c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0)
                 : candidates.filter(c => c.jelolo_szervezetek && c.jelolo_szervezetek.includes(org.szkod));
 
-            // Belevesszük a jogerős és a nem jogerős nyilvántartásba vételt is
             const registeredCandidates = orgCandidates.filter(c =>
                 c.statusName.startsWith('Nyilvántartásba véve')
             );
@@ -42,7 +87,7 @@ export const processOrganizations = ({
             const orgId = String(org.szkod);
             const isNew = !!(yesterdayData && orgId && !yesterdayOrgSet.has(orgId));
 
-            const partnerCounts = {};
+            const partnerCounts: Record<string, number> = {};
             orgCandidates.forEach(c => {
                 if (c.jelolo_szervezetek) {
                     c.jelolo_szervezetek.forEach(id => {
@@ -51,7 +96,7 @@ export const processOrganizations = ({
                 }
             });
 
-            const alliances = Object.entries(partnerCounts)
+            const alliances: Alliance[] = Object.entries(partnerCounts)
                 .map(([id, count]) => ({
                     szkod: parseInt(id),
                     count,
@@ -60,18 +105,16 @@ export const processOrganizations = ({
                 }))
                 .sort((a, b) => b.count - a.count);
 
-            // Országos lista ellenőrzés
-            let nationalListStatus = null;
-            let nationalListCandidates = [];
+            let nationalListStatus: string | null = null;
+            let nationalListCandidates: NationalListCandidate[] = [];
             if (data.listakEsJeloltek) {
                 const orgListInfo = data.listakEsJeloltek.find(l => l.jelolo_szervezetek && l.jelolo_szervezetek.includes(org.szkod) && (l.lista_tip === 'O' || l.lista_tip === 'K'));
                 if (orgListInfo) {
                     nationalListStatus = statusMap[orgListInfo.allapot] || 'Bejelentve';
-                    // Sorrendbe rakjuk a jelölteket egyből
-                    nationalListCandidates = (orgListInfo.jeloltek || []).map(c => ({
+                    nationalListCandidates = (orgListInfo.jeloltek || []).map((c: any) => ({
                         ...c,
                         statusName: statusMap[c.allapot] || 'Bejelentve'
-                    })).sort((a, b) => a.sorsz - b.sorsz);
+                    })).sort((a: any, b: any) => (a.sorsz || 0) - (b.sorsz || 0));
                 }
             }
 
@@ -93,7 +136,8 @@ export const processOrganizations = ({
                 alliances,
                 candidateList: orgCandidates,
                 nationalListStatus,
-                nationalListCandidates
+                nationalListCandidates,
+                isCoalitionPartner: false // Will be set by processCoalitions
             };
         }).sort((a, b) => b.candidateCount - a.candidateCount);
 

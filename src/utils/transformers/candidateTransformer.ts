@@ -1,6 +1,8 @@
+import { NVIJelolt, NVISzervezet, NVIOevk } from '../../types/nvi';
+import { EnrichedCandidate, CountyStats } from '../../types/app';
 import { STATUS_MAP } from '../constants';
 
-export const isExcludedStatus = (statusName) => {
+export const isExcludedStatus = (statusName: string | null): boolean => {
     if (!statusName) return false;
     const lower = statusName.toLowerCase();
     return lower.includes('törölve') ||
@@ -12,6 +14,25 @@ export const isExcludedStatus = (statusName) => {
         lower.includes('nem kíván') ||
         lower.includes('megszűnt');
 };
+
+interface ProcessCandidatesArgs {
+    data: {
+        jeloltek: NVIJelolt[] | null;
+    };
+    yesterdayData?: {
+        jeloltek: NVIJelolt[] | null;
+    } | null;
+    statusMap: Record<string, string>;
+    distMap: Record<string, NVIOevk>;
+    countyMap: Record<string, string>;
+    orgMap: Record<string, NVISzervezet>;
+    yesterdayJeloltSet: Set<string>;
+    yesterdayJeloltStatusMap: Record<string, string>;
+    partyCounts: Record<string, number>;
+    countyCounts: Record<string, number>;
+    oevkCandidateCounts: Record<string, number>;
+    countyStatsObj: Record<string, CountyStats>;
+}
 
 export const processCandidates = ({
     data,
@@ -26,9 +47,10 @@ export const processCandidates = ({
     countyCounts,
     oevkCandidateCounts,
     countyStatsObj
-}) => {
-    const processedCandIds = new Set();
-    const allCandidates = (data.jeloltek || []).map(candidate => {
+}: ProcessCandidatesArgs) => {
+    const processedCandIds = new Set<string>();
+    
+    const allCandidates: EnrichedCandidate[] = (data.jeloltek || []).map(candidate => {
         const candId = String(candidate.ej_id || candidate.szj || `${candidate.maz}-${candidate.evk}-${candidate.neve}`);
 
         if (processedCandIds.has(candId)) return null;
@@ -75,24 +97,31 @@ export const processCandidates = ({
             hasStatusChanged,
             isExcluded
         };
-    }).filter(Boolean);
+    }).filter((c): c is EnrichedCandidate => c !== null);
 
     const candidates = allCandidates.filter(c => !c.isExcluded);
 
     // Get removed candidates
     const todayCandIdSet = new Set(allCandidates.map(c => String(c.ej_id || c.szj)));
 
-    const goneCandidates = yesterdayData ? (yesterdayData.jeloltek || []).filter(c => {
+    const goneCandidates: EnrichedCandidate[] = yesterdayData && yesterdayData.jeloltek ? yesterdayData.jeloltek.filter(c => {
         const id = String(c.ej_id || c.szj);
         return !todayCandIdSet.has(id);
     }).map(c => ({
         ...c,
         statusName: yesterdayJeloltStatusMap[String(c.ej_id || c.szj)] || 'Ismeretlen',
         removalReason: 'Eltűnt az adatbázisból',
-        isRemoved: true
+        isRemoved: true,
+        districtName: '', // Fallback for required fields in EnrichedCandidate if missing in raw
+        countyName: '',
+        partyNames: '',
+        isNew: false,
+        oldStatusName: null,
+        hasStatusChanged: false,
+        isExcluded: true
     })) : [];
 
-    const newlyExcludedCandidates = allCandidates.filter(c => {
+    const newlyExcludedCandidates: EnrichedCandidate[] = allCandidates.filter(c => {
         if (!c.isExcluded) return false;
         if (!c.hasStatusChanged) return false;
         const oldStatus = c.oldStatusName;

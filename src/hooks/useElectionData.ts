@@ -1,8 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
 import { getNviUrls, NVI_DATE, NVI_DATE_YESTERDAY, CONFIG_URL } from '../utils/constants';
+import { NVIMegye, NVITelepules, NVIOevk, NVIJelolt, NVISzervezet } from '../types/nvi';
 
-export function useElectionData(showToast, onClearCallback) {
-    const [data, setData] = useState({
+export interface ElectionDataState {
+    megyek: NVIMegye[] | null;
+    telepulesek: NVITelepules[] | null;
+    oevk: NVIOevk[] | null;
+    jeloltek: NVIJelolt[] | null;
+    szervezetek: NVISzervezet[] | null;
+    oevkPoligonok: any | null;
+    listakEsJeloltek: any[] | null;
+}
+
+export interface YesterdayDataState {
+    megyek: any[];
+    telepulesek: any[];
+    oevk: any[];
+    jeloltek: any[];
+    szervezetek: any[];
+    listakEsJeloltek: any[];
+}
+
+export function useElectionData(showToast: (msg: string) => void, onClearCallback?: () => void) {
+    const [data, setData] = useState<ElectionDataState>({
         megyek: null,
         telepulesek: null,
         oevk: null,
@@ -11,10 +31,10 @@ export function useElectionData(showToast, onClearCallback) {
         oevkPoligonok: null,
         listakEsJeloltek: null
     });
-    const [yesterdayData, setYesterdayData] = useState(null);
+    const [yesterdayData, setYesterdayData] = useState<YesterdayDataState | null>(null);
     const [isLoadingWeb, setIsLoadingWeb] = useState(false);
-    const [fetchError, setFetchError] = useState(null);
-    const [lastFetchTime, setLastFetchTime] = useState(null);
+    const [fetchError, setFetchError] = useState<string | null>(null);
+    const [lastFetchTime, setLastFetchTime] = useState<Date | null>(null);
     const [autoRefresh, setAutoRefresh] = useState(() => {
         return localStorage.getItem('valasztas_auto_refresh') === 'true';
     });
@@ -28,11 +48,7 @@ export function useElectionData(showToast, onClearCallback) {
         setFetchError(null);
 
         try {
-            const fetchJson = async (url) => {
-                // Determine the correct URL based on environment (Vite DEV vs Vercel PROD).
-                // In local Vite dev, we need the absolute URL to bypass cors (though local handles it).
-                // Actually, Vite supports proxy rules in vite.config.js, or we can just hope public API allows localhost.
-                // If the app is hosted on Vercel, relative paths hit the vercel.json rewrites.
+            const fetchJson = async (url: string) => {
                 try {
                     const res = await fetch(url);
                     if (res.ok) {
@@ -41,12 +57,11 @@ export function useElectionData(showToast, onClearCallback) {
                     throw new Error(`HTTP error! status: ${res.status} when fetching ${url}`);
                 } catch (e) {
                     console.warn(`Hiba történt a(z) ${url} cím lekérésekor:`, e);
-                    throw e; // Propagate error outwards
+                    throw e;
                 }
             };
 
-            // 1. Fetch current version config
-            let currentVer = NVI_DATE; // Fallback calculated string
+            let currentVer = NVI_DATE;
             try {
                 const configData = await fetchJson(CONFIG_URL);
                 if (configData && configData.ver) {
@@ -66,10 +81,9 @@ export function useElectionData(showToast, onClearCallback) {
                 fetchJson(currentUrls.jeloltek),
                 fetchJson(currentUrls.szervezetek),
                 fetchJson(currentUrls.oevkPoligonok),
-                fetchJson(currentUrls.listakEsJeloltek).catch(() => ({ list: null })) // Opcionális, megnézzük hátha elbukik (404)
+                fetchJson(currentUrls.listakEsJeloltek).catch(() => ({ list: null }))
             ]);
 
-            // Próbáljuk letölteni a tegnapi adatokat is
             let yesterdayMegyek, yesterdayTelepulesek, yesterdayOevk, yesterdayJeloltek, yesterdaySzervezetek, yesterdayListakEsJeloltek;
             try {
                 [yesterdayMegyek, yesterdayTelepulesek, yesterdayOevk, yesterdayJeloltek, yesterdaySzervezetek, yesterdayListakEsJeloltek] = await Promise.all([
@@ -78,7 +92,7 @@ export function useElectionData(showToast, onClearCallback) {
                     fetchJson(yesterdayUrls.oevk),
                     fetchJson(yesterdayUrls.jeloltek),
                     fetchJson(yesterdayUrls.szervezetek),
-                    fetchJson(yesterdayUrls.listakEsJeloltek).catch(() => ({ list: null })) // Opcionális, mivel lehet, hogy hiányzik
+                    fetchJson(yesterdayUrls.listakEsJeloltek).catch(() => ({ list: null }))
                 ]);
                 setYesterdayData({
                     megyek: yesterdayMegyek.list || [],
@@ -102,6 +116,7 @@ export function useElectionData(showToast, onClearCallback) {
                 oevkPoligonok: oevkPoligonok.features ? oevkPoligonok : (oevkPoligonok.list || []),
                 listakEsJeloltek: listakEsJeloltek?.list || []
             });
+            setLastFetchTime(new Date());
             showToast('Élő adatok sikeresen betöltve az NVI szerveréről!');
         } catch (err) {
             console.error("Fetch hiba:", err);
@@ -111,14 +126,15 @@ export function useElectionData(showToast, onClearCallback) {
         }
     };
 
-    const handleFileUpload = (event) => {
-        const files = Array.from(event.target.files);
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(event.target.files || []);
         setFetchError(null);
         files.forEach(file => {
             const reader = new FileReader();
             reader.onload = (e) => {
+                if (!e.target) return;
                 try {
-                    const json = JSON.parse(e.target.result);
+                    const json = JSON.parse(e.target.result as string);
                     const listData = json.list || [];
                     setData(prev => {
                         const newData = { ...prev };
@@ -148,14 +164,11 @@ export function useElectionData(showToast, onClearCallback) {
         });
     };
 
-
-    // Auto-refresh logika: 10 percenként frissíti az adatokat, ha engedélyezve van
-
     useEffect(() => {
-        localStorage.setItem('valasztas_auto_refresh', autoRefresh);
+        localStorage.setItem('valasztas_auto_refresh', String(autoRefresh));
         if (!autoRefresh) return;
 
-        const AUTO_REFRESH_MS = 10 * 60 * 1000; // 10 perc
+        const AUTO_REFRESH_MS = 10 * 60 * 1000;
         const interval = setInterval(() => {
             if (autoRefreshRef.current) {
                 fetchDataFromWeb();
@@ -163,7 +176,6 @@ export function useElectionData(showToast, onClearCallback) {
         }, AUTO_REFRESH_MS);
 
         return () => clearInterval(interval);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [autoRefresh]);
 
     const clearData = () => {

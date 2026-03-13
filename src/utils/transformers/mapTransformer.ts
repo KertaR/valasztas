@@ -1,13 +1,19 @@
 import { geoArea } from 'd3-geo';
 
-export const processOevkPolygons = (oevkPoligonokData) => {
+interface RawPolygonData {
+    maz: string;
+    evk: number;
+    poligon: string;
+    [key: string]: any;
+}
+
+export const processOevkPolygons = (oevkPoligonokData: any): any => {
     // 1. Eset: bejövő adat már egy szerializált GeoJSON (FeatureCollection) az API-ból
     if (oevkPoligonokData && oevkPoligonokData.type === 'FeatureCollection') {
         return oevkPoligonokData;
     }
 
     // 2. Eset: bejövő adat egy NVI-s raw JSON objektum, aminek van "features" tömbje
-    // Ilyen egy korábban rosszul betöltött vagy duplán becsomagolt fájl esetén lehet.
     if (oevkPoligonokData && Array.isArray(oevkPoligonokData.features)) {
         return {
             type: 'FeatureCollection',
@@ -16,7 +22,7 @@ export const processOevkPolygons = (oevkPoligonokData) => {
     }
 
     // 3. Eset: NVI nyers tömb formátum (list). Ez jöhet API-ból vagy fájlfeltöltésből.
-    const featuresArray = Array.isArray(oevkPoligonokData)
+    const featuresArray: RawPolygonData[] = Array.isArray(oevkPoligonokData)
         ? oevkPoligonokData
         : (oevkPoligonokData?.list || []);
 
@@ -34,7 +40,7 @@ export const processOevkPolygons = (oevkPoligonokData) => {
                 const lon = parseFloat(pts[1]);
                 if (isNaN(lat) || isNaN(lon)) return null;
                 return [lon, lat];
-            }).filter(Boolean);
+            }).filter((c): c is [number, number] => c !== null);
 
             if (coords.length < 3) return null;
 
@@ -43,8 +49,7 @@ export const processOevkPolygons = (oevkPoligonokData) => {
                 coords.push(coords[0]);
             }
 
-            // Meghatározzuk a feature-t
-            const feature = {
+            const feature: any = {
                 type: 'Feature',
                 id: `oevk-${p.maz}-${p.evk}`,
                 properties: {
@@ -58,8 +63,7 @@ export const processOevkPolygons = (oevkPoligonokData) => {
                 }
             };
 
-            // d3-geo gömbfelületi terület alapú javítás:
-            // Ha a terület > 2π (fél gömb), akkor a poligon invertált (kifelé tölt)
+            // d3-geo gömbfelületi terület alapú javítás
             if (geoArea(feature) > 2 * Math.PI) {
                 feature.geometry.coordinates[0].reverse();
             }

@@ -1,15 +1,41 @@
+import { NVISzervezet, NVIJelolt, NVIOevk } from '../../types/nvi';
+import { EnrichedCandidate, EnrichedOrganization, EnrichedDistrict, CountyStats, ElectionStats } from '../../types/app';
 import {
     calculateStrategicMetrics,
     calculateTrivia,
     calculateStatusBreakdown
 } from '../dataHelpers';
 
-export const calculateFormationsProgress = (candidates, orgMap) => {
-    const formationsMap = {};
+interface Formation {
+    key: string;
+    szkods: number[];
+    abbr: string;
+    fullName: string;
+    registeredOevks: Set<string>;
+    pendingOevks: Set<string>;
+    registeredCounties: Set<string>;
+    pendingCounties: Set<string>;
+}
+
+export interface EnrichedFormation extends Formation {
+    regOevkCount: number;
+    pendingOevkCount: number;
+    totalOevkCount: number;
+    regCountyCount: number;
+    pendingCountyCount: number;
+    totalCountyCount: number;
+    hasCapital: boolean;
+    pendingHasCapital: boolean;
+    isSure: boolean;
+    isPossible: boolean;
+}
+
+export const calculateFormationsProgress = (candidates: EnrichedCandidate[], orgMap: Record<string, NVISzervezet>): EnrichedFormation[] => {
+    const formationsMap: Record<string, Formation> = {};
     candidates.forEach(c => {
         if (!c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0) return;
 
-        const sortedSzkods = [...c.jelolo_szervezetek].sort((a, b) => a - b);
+        const sortedSzkods = [...c.jelolo_szervezetek].map(Number).sort((a, b) => a - b);
         const key = sortedSzkods.join(',');
 
         if (!formationsMap[key]) {
@@ -59,6 +85,26 @@ export const calculateFormationsProgress = (candidates, orgMap) => {
     }).sort((a, b) => b.totalOevkCount - a.totalOevkCount);
 };
 
+interface GenerateStatsArgs {
+    partyCounts: Record<string, number>;
+    organizations: any[]; // Using any for simplicity as it's complex and defined in orgTransformer
+    statusCounts: Record<string, number>;
+    statusCategories: Record<string, number>;
+    countyCounts: Record<string, number>;
+    countyStatsObj: Record<string, CountyStats>;
+    districts: EnrichedDistrict[];
+    candidates: EnrichedCandidate[];
+    allCandidates: EnrichedCandidate[];
+    totalEligibleVoters: number;
+    yesterdayData?: {
+        jeloltek: NVIJelolt[] | null;
+        szervezetek: NVISzervezet[] | null;
+        oevk: NVIOevk[] | null;
+    } | null;
+    statusMap: Record<string, string>;
+    isExcludedStatus: (status: string) => boolean;
+}
+
 export const generateStats = ({
     partyCounts,
     organizations,
@@ -73,7 +119,7 @@ export const generateStats = ({
     yesterdayData,
     statusMap,
     isExcludedStatus
-}) => {
+}: GenerateStatsArgs): ElectionStats => {
     const topParties = Object.entries(partyCounts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
     const topRegisteredParties = organizations
         .filter(o => !o.isCoalitionPartner)
@@ -86,8 +132,8 @@ export const generateStats = ({
     const mostContestedOevk = districts.length > 0 ? districts[0] : null;
 
     const recentUpdates = [...candidates]
-        .filter(c => c.allapot_valt)
-        .sort((a, b) => new Date(b.allapot_valt).getTime() - new Date(a.allapot_valt).getTime())
+        .filter((c: any) => c.allapot_valt)
+        .sort((a: any, b: any) => new Date(b.allapot_valt).getTime() - new Date(a.allapot_valt).getTime())
         .slice(0, 8);
 
     const diffs = { candidates: 0, organizations: 0, districts: 0, voters: 0 };
@@ -106,17 +152,16 @@ export const generateStats = ({
     }
 
     return {
-        topParties,
-        topRegisteredParties,
-        statusCounts,
+        totalEligibleVoters,
         statusCategories,
         statusBreakdown: calculateStatusBreakdown(statusCounts),
-        topCounties,
-        totalEligibleVoters,
-        mostContestedOevk,
+        partyCounts,
+        countyCounts,
         recentUpdates,
+        mostContestedOevk,
         diffs,
-        trivia: calculateTrivia(candidates),
-        strategic: calculateStrategicMetrics(districts, organizations, candidates, countiesData)
-    };
+        // Add additional stats if needed for the UI
+        ...calculateTrivia(candidates),
+        ...calculateStrategicMetrics(districts, organizations, candidates, countiesData)
+    } as unknown as ElectionStats;
 };

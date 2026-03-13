@@ -6,30 +6,34 @@ import { processOrganizations } from '../utils/transformers/organizationTransfor
 import { processOevkPolygons } from '../utils/transformers/mapTransformer';
 import { calculateFormationsProgress, generateStats } from '../utils/transformers/statsTransformer';
 
-export function useEnrichedData(data, yesterdayData, isAllUploaded) {
+import { ElectionDataState, YesterdayDataState } from './useElectionData';
+import { NVIMegye, NVIOevk, NVISzervezet } from '../types/nvi';
+import { CountyStats, EnrichedDistrict } from '../types/app';
+
+export function useEnrichedData(data: ElectionDataState, yesterdayData: YesterdayDataState | null, isAllUploaded: boolean) {
     return useMemo(() => {
-        if (!isAllUploaded) return { candidates: [], districts: [], organizations: [], countiesData: [], settlements: [], stats: {} };
+        if (!isAllUploaded) return { candidates: [], districts: [], organizations: [], countiesData: [], settlements: [], stats: {} as any };
 
-        const statusMap = STATUS_MAP;
+        const statusMap = STATUS_MAP as Record<string, string>;
 
-        const orgMap = {};
+        const orgMap: Record<string, NVISzervezet> = {};
         if (data.szervezetek) {
             data.szervezetek.forEach(org => orgMap[org.szkod] = org);
         }
 
-        const distMap = {};
-        const countyMap = {};
-        const countyStatsObj = {};
+        const distMap: Record<string, NVIOevk> = {};
+        const countyMap: Record<string, string> = {};
+        const countyStatsObj: Record<string, CountyStats> = {};
         let totalEligibleVoters = 0;
 
         if (data.megyek) {
-            data.megyek.forEach(megye => {
+            data.megyek.forEach((megye: NVIMegye) => {
                 countyMap[megye.leiro.maz] = megye.leiro.nev;
             });
         }
 
         if (data.oevk) {
-            data.oevk.forEach(dist => {
+            data.oevk.forEach((dist: NVIOevk) => {
                 const key = `${dist.maz}-${dist.evk}`;
                 distMap[key] = dist;
                 if (!countyMap[dist.maz] && dist.maz_nev) {
@@ -48,36 +52,33 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
         const yesterdayJeloltSet = new Set(yesterdayData?.jeloltek?.map(c => String(c.ej_id || c.szj)) || []);
         const yesterdayOrgSet = new Set(yesterdayData?.szervezetek?.map(o => String(o.szkod)) || []);
 
-        const yesterdayJeloltStatusMap = {};
+        const yesterdayJeloltStatusMap: Record<string, string> = {};
         if (yesterdayData && yesterdayData.jeloltek) {
             yesterdayData.jeloltek.forEach(c => {
                 yesterdayJeloltStatusMap[String(c.ej_id || c.szj)] = statusMap[c.allapot] || `Ismeretlen kód: ${c.allapot}`;
             });
         }
 
-        const partyCounts = {};
-        const statusCounts = {};
-        const countyCounts = {};
-        const oevkCandidateCounts = {};
+        const partyCounts: Record<string, number> = {};
+        const statusCounts: Record<string, number> = {};
+        const countyCounts: Record<string, number> = {};
+        const oevkCandidateCounts: Record<string, number> = {};
         const statusCategories = {
-            registered: 0,       // Sötétzöld (Final)
-            registered_pre: 0,   // Világoszöld (Non-final)
-            pending: 0,          // Kék (Other pending)
-            not_starting: 0,     // Szürke (Nem kíván indulni)
-            deleted: 0,          // Piros (Törölve/Elutasítva)
-            visszautasitva_pre: 0, // Világospiros
-            visszautasitva_final: 0 // Sötétpiros
+            registered: 0,
+            registered_pre: 0,
+            pending: 0,
+            not_starting: 0,
+            deleted: 0,
+            visszautasitva_pre: 0,
+            visszautasitva_final: 0
         };
 
-        // 0. Update status counts for ALL entries before filtering
         (data.jeloltek || []).forEach(candidate => {
             const statusName = statusMap[candidate.allapot] || `Ismeretlen kód: ${candidate.allapot}`;
             statusCounts[statusName] = (statusCounts[statusName] || 0) + 1;
 
             const lowerStatus = statusName.toLowerCase();
-            if (
-                statusName === 'Nyilvántartásba véve'
-            ) {
+            if (statusName === 'Nyilvántartásba véve') {
                 statusCategories.registered++;
             } else if (lowerStatus.includes('visszautasítva') && lowerStatus.includes('nem jogerős')) {
                 statusCategories.visszautasitva_pre++;
@@ -94,33 +95,34 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             }
         });
 
-        // 1. Processing via transformer modules
         const { allCandidates, candidates, removedCandidates } = processCandidates({
-            data, yesterdayData, statusMap, distMap, countyMap, orgMap,
+            data: { jeloltek: data.jeloltek },
+            yesterdayData: { jeloltek: yesterdayData?.jeloltek || null },
+            statusMap, distMap, countyMap, orgMap,
             yesterdayJeloltSet, yesterdayJeloltStatusMap, partyCounts,
             countyCounts, oevkCandidateCounts, countyStatsObj
         });
 
         const organizations = processOrganizations({
-            data, yesterdayData, candidates, orgMap, statusMap, yesterdayOrgSet
+            data: { szervezetek: data.szervezetek, listakEsJeloltek: data.listakEsJeloltek },
+            yesterdayData: { szervezetek: yesterdayData?.szervezetek || null },
+            candidates, orgMap, statusMap, yesterdayOrgSet
         });
 
-        // 3. Districts processing
-        const yesterdayDistMap = {};
+        const yesterdayDistMap: Record<string, NVIOevk> = {};
         if (yesterdayData && yesterdayData.oevk) {
             yesterdayData.oevk.forEach(dist => {
                 yesterdayDistMap[`${dist.maz}-${dist.evk}`] = dist;
             });
         }
 
-        const districts = (data.oevk || []).map(dist => {
+        const districts: EnrichedDistrict[] = (data.oevk || []).map(dist => {
             const key = `${dist.maz}-${dist.evk}`;
             const yDist = yesterdayDistMap[key];
 
             const kulkep = dist.letszam?.kuvi || dist.letszam?.kulkep || 0;
             const atjel = dist.letszam?.atjel || dist.letszam?.atjelentkezo || 0;
             const atjelInnen = dist.letszam?.atjelInnen || 0;
-            const belfoldi = dist.letszam?.indulo || 0;
 
             let kulkepDiff = 0;
             let atjelDiff = 0;
@@ -147,8 +149,6 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             };
         }).sort((a, b) => b.candidateCount - a.candidateCount);
 
-
-        // 4. Transform Formations Progress & Stats
         const formationsProgress = calculateFormationsProgress(candidates, orgMap);
         const stats = generateStats({
             partyCounts, organizations, statusCounts, statusCategories,
@@ -156,7 +156,6 @@ export function useEnrichedData(data, yesterdayData, isAllUploaded) {
             totalEligibleVoters, yesterdayData, statusMap, isExcludedStatus
         });
 
-        // 5. Transform OEVK Polygons
         const oevkPoligonok = processOevkPolygons(data.oevkPoligonok);
 
         return {
