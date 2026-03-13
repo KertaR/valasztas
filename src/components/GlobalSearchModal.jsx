@@ -1,104 +1,30 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { Search, UserCircle2, Building2, Map, Command, X, ArrowUp, ArrowDown, CornerDownLeft } from 'lucide-react';
+import { Search, UserCircle2, Building2, Map, Command, ArrowUp, ArrowDown, CornerDownLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getImageUrl, getInitials } from '../utils/helpers';
-import { useUIContext, useDataContext } from '../contexts';
+import { useUIContext, useDataContext, useSearch } from '../hooks';
 
 export default function GlobalSearchModal() {
     const { isSearchOpen: isOpen, setIsSearchOpen, setSelectedCandidate, setSelectedOrg, setSelectedOevk } = useUIContext();
     const { enrichedData } = useDataContext();
-    const onClose = () => setIsSearchOpen(false);
-    const onSelectCandidate = setSelectedCandidate;
-    const onSelectOrg = setSelectedOrg;
-    const onSelectOevk = setSelectedOevk;
-    const [search, setSearch] = useState('');
-    const [activeIdx, setActiveIdx] = useState(-1);
-    const inputRef = useRef(null);
-    const activeItemRef = useRef(null);
 
-    // Auto-focus the input whenever the modal opens
-    useEffect(() => {
-        if (isOpen) {
-            setTimeout(() => inputRef.current?.focus(), 100);
-            setSearch('');
-            setActiveIdx(-1);
-        }
-    }, [isOpen]);
-
-    const results = useMemo(() => {
-        if (!search || search.length < 2) return { candidates: [], orgs: [], oevks: [] };
-        const query = search.toLowerCase();
-
-        const cands = enrichedData.candidates?.filter(c =>
-            c.neve.toLowerCase().includes(query) ||
-            c.partyNames.toLowerCase().includes(query) ||
-            c.districtName.toLowerCase().includes(query)
-        ).slice(0, 5) || [];
-
-        const orgs = enrichedData.organizations?.filter(o =>
-            !o.isCoalitionPartner && (
-                (o.nev && o.nev.toLowerCase().includes(query)) ||
-                (o.r_nev && o.r_nev.toLowerCase().includes(query)) ||
-                (o.coalitionFullName && o.coalitionFullName.toLowerCase().includes(query)) ||
-                (o.coalitionAbbr && o.coalitionAbbr.toLowerCase().includes(query))
-            )
-        ).slice(0, 5) || [];
-
-        const oevks = enrichedData.districts?.filter(d =>
-            d.evk_nev.toLowerCase().includes(query) ||
-            d.maz_nev.toLowerCase().includes(query)
-        ).slice(0, 5) || [];
-
-        return { candidates: cands, orgs, oevks };
-    }, [search, enrichedData]);
-
-    // Flat list of all results for keyboard navigation
-    const flatResults = useMemo(() => [
-        ...results.candidates.map(item => ({ type: 'candidate', item })),
-        ...results.orgs.map(item => ({ type: 'org', item })),
-        ...results.oevks.map(item => ({ type: 'oevk', item }))
-    ], [results]);
-
-    const selectResult = useCallback((result) => {
-        if (!result) return;
-        if (result.type === 'candidate') { onSelectCandidate(result.item); onClose(); }
-        else if (result.type === 'org') { onSelectOrg(result.item); onClose(); }
-        else if (result.type === 'oevk') { onSelectOevk(result.item); onClose(); }
-    }, [onSelectCandidate, onSelectOrg, onSelectOevk, onClose]);
-
-    // Keyboard navigation
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (!isOpen) return;
-            if (e.key === 'Escape') { onClose(); return; }
-            if (flatResults.length === 0) return;
-
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                setActiveIdx(prev => (prev < flatResults.length - 1 ? prev + 1 : 0));
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                setActiveIdx(prev => (prev > 0 ? prev - 1 : flatResults.length - 1));
-            } else if (e.key === 'Enter' && activeIdx >= 0) {
-                e.preventDefault();
-                selectResult(flatResults[activeIdx]);
-            }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen, onClose, flatResults, activeIdx, selectResult]);
-
-    // Reset activeIdx when search changes
-    useEffect(() => { setActiveIdx(-1); }, [search]);
-
-    // Scroll active item into view
-    useEffect(() => {
-        activeItemRef.current?.scrollIntoView({ block: 'nearest' });
-    }, [activeIdx]);
+    const {
+        search, setSearch,
+        results, flatResults,
+        activeIdx, setActiveIdx,
+        inputRef, activeItemRef,
+        hasResults, selectResult
+    } = useSearch({
+        isOpen,
+        enrichedData,
+        onSelectCandidate: setSelectedCandidate,
+        onSelectOrg: setSelectedOrg,
+        onSelectOevk: setSelectedOevk,
+        onClose: () => setIsSearchOpen(false)
+    });
 
     if (!isOpen) return null;
 
-    const hasResults = results.candidates.length > 0 || results.orgs.length > 0 || results.oevks.length > 0;
+    const onClose = () => setIsSearchOpen(false);
 
     // Helper to get the flat index for each item
     const getCandIdx = (i) => i;
@@ -186,7 +112,7 @@ export default function GlobalSearchModal() {
                                                 <div
                                                     key={c.szj}
                                                     ref={isActive ? activeItemRef : null}
-                                                    onClick={() => { onSelectCandidate(c); onClose(); }}
+                                                    onClick={() => selectResult(flatResults[idx])}
                                                     onMouseEnter={() => setActiveIdx(idx)}
                                                     className={`flex items-center justify-between p-3 rounded-xl cursor-pointer group transition-colors ${isActive ? 'bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-500/20' : 'hover:bg-blue-50 dark:hover:bg-blue-900/30'}`}
                                                 >
@@ -224,7 +150,7 @@ export default function GlobalSearchModal() {
                                                 <div
                                                     key={o.szkod}
                                                     ref={isActive ? activeItemRef : null}
-                                                    onClick={() => { onSelectOrg(o); onClose(); }}
+                                                    onClick={() => selectResult(flatResults[idx])}
                                                     onMouseEnter={() => setActiveIdx(idx)}
                                                     className={`flex items-center p-3 rounded-xl cursor-pointer group transition-colors ${isActive ? 'bg-emerald-50 dark:bg-emerald-900/30 ring-2 ring-emerald-500/20' : 'hover:bg-emerald-50 dark:hover:bg-emerald-900/30'}`}
                                                 >
@@ -257,7 +183,7 @@ export default function GlobalSearchModal() {
                                                 <div
                                                     key={`${d.maz}-${d.evk}`}
                                                     ref={isActive ? activeItemRef : null}
-                                                    onClick={() => { onSelectOevk(d); onClose(); }}
+                                                    onClick={() => selectResult(flatResults[idx])}
                                                     onMouseEnter={() => setActiveIdx(idx)}
                                                     className={`flex items-center p-3 rounded-xl cursor-pointer group transition-colors ${isActive ? 'bg-amber-50 dark:bg-amber-900/30 ring-2 ring-amber-500/20' : 'hover:bg-amber-50 dark:hover:bg-amber-900/30'}`}
                                                 >
