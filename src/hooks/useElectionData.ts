@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { getNviUrls, NVI_DATE, NVI_DATE_YESTERDAY, CONFIG_URL } from '../utils/constants';
+import { 
+    nviMegyeSchema, nviTelepulesSchema, nviOevkSchema, 
+    nviJeloltSchema, nviSzervezetSchema, nviPoligonResponseSchema,
+    nviListResponseSchema
+} from '../utils/schemas';
 import { NVIMegye, NVITelepules, NVIOevk, NVIJelolt, NVISzervezet } from '../types/nvi';
 
 export interface ElectionDataState {
@@ -74,7 +79,16 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
             const currentUrls = getNviUrls(currentVer);
             const yesterdayUrls = getNviUrls(NVI_DATE_YESTERDAY);
 
-            const [megyek, telepulesek, oevk, jeloltek, szervezetek, oevkPoligonok, listakEsJeloltek] = await Promise.all([
+            const validate = (schema: any, data: any, name: string): any => {
+                const result = schema.safeParse(data);
+                if (!result.success) {
+                    console.error(`Validációs hiba (${name}):`, result.error.format());
+                    throw new Error(`Az NVI szerverről érkező ${name} adatstruktúra megváltozott vagy hibás.`);
+                }
+                return result.data;
+            };
+
+            const [megyekRaw, telepulesekRaw, oevkRaw, jeloltekRaw, szervezetekRaw, oevkPoligonokRaw, listakEsJeloltekRaw] = await Promise.all([
                 fetchJson(currentUrls.megyek),
                 fetchJson(currentUrls.telepulesek),
                 fetchJson(currentUrls.oevk),
@@ -84,9 +98,25 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
                 fetchJson(currentUrls.listakEsJeloltek).catch(() => ({ list: null }))
             ]);
 
-            let yesterdayMegyek, yesterdayTelepulesek, yesterdayOevk, yesterdayJeloltek, yesterdaySzervezetek, yesterdayListakEsJeloltek;
+            // Validálás
+            const megyek = validate(nviListResponseSchema, megyekRaw, 'Megyek');
+            const telepulesek = validate(nviListResponseSchema, telepulesekRaw, 'Települések');
+            const oevk = validate(nviListResponseSchema, oevkRaw, 'OEVK');
+            const jeloltek = validate(nviListResponseSchema, jeloltekRaw, 'Jelöltek');
+            const szervezetek = validate(nviListResponseSchema, szervezetekRaw, 'Szervezetek');
+            const oevkPoligonok = validate(nviPoligonResponseSchema, oevkPoligonokRaw, 'OEVK Poligonok');
+            const listakEsJeloltek = validate(nviListResponseSchema, listakEsJeloltekRaw, 'Listák és Jelöltek');
+
+            // Belső listák típus-ellenőrzése (opcionális, de biztonságosabb)
+            if (megyek.list) megyek.list.forEach((m: any) => nviMegyeSchema.parse(m));
+            if (telepulesek.list) telepulesek.list.forEach((t: any) => nviTelepulesSchema.parse(t));
+            if (oevk.list) oevk.list.forEach((o: any) => nviOevkSchema.parse(o));
+            if (jeloltek.list) jeloltek.list.forEach((j: any) => nviJeloltSchema.parse(j));
+            if (szervezetek.list) szervezetek.list.forEach((s: any) => nviSzervezetSchema.parse(s));
+
+            let yesterdayRaw: any = {};
             try {
-                [yesterdayMegyek, yesterdayTelepulesek, yesterdayOevk, yesterdayJeloltek, yesterdaySzervezetek, yesterdayListakEsJeloltek] = await Promise.all([
+                const results = await Promise.allSettled([
                     fetchJson(yesterdayUrls.megyek),
                     fetchJson(yesterdayUrls.telepulesek),
                     fetchJson(yesterdayUrls.oevk),
@@ -94,16 +124,19 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
                     fetchJson(yesterdayUrls.szervezetek),
                     fetchJson(yesterdayUrls.listakEsJeloltek).catch(() => ({ list: null }))
                 ]);
+                
+                const getRes = (idx: number) => results[idx].status === 'fulfilled' ? (results[idx] as any).value : { list: [] };
+                
                 setYesterdayData({
-                    megyek: yesterdayMegyek.list || [],
-                    telepulesek: yesterdayTelepulesek.list || [],
-                    oevk: yesterdayOevk.list || [],
-                    jeloltek: yesterdayJeloltek.list || [],
-                    szervezetek: yesterdaySzervezetek.list || [],
-                    listakEsJeloltek: yesterdayListakEsJeloltek?.list || []
+                    megyek: getRes(0).list || [],
+                    telepulesek: getRes(1).list || [],
+                    oevk: getRes(2).list || [],
+                    jeloltek: getRes(3).list || [],
+                    szervezetek: getRes(4).list || [],
+                    listakEsJeloltek: getRes(5).list || []
                 });
             } catch (e) {
-                console.warn("Tegnapi adatok nem elérhetőek:", e);
+                console.warn("Tegnapi adatok lekérésekor hiba történt, de a mai adatokkal folytatjuk:", e);
                 setYesterdayData(null);
             }
 
@@ -118,9 +151,9 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
             });
             setLastFetchTime(new Date());
             showToast('Élő adatok sikeresen betöltve az NVI szerveréről!');
-        } catch (err) {
+        } catch (err: any) {
             console.error("Fetch hiba:", err);
-            setFetchError("Nem sikerült letölteni az adatokat a szerverről. Kérlek, használd a manuális fájlfeltöltést (a böngésző CORS beállításai blokkolhatják a kérést).");
+            setFetchError(`Hiba: ${err.message || 'Ismeretlen hiba'}. Ha ez CORS hiba, ellenőrizd, hogy a http://localhost:5173 címen fut-e az app.`);
         } finally {
             setIsLoadingWeb(false);
         }
@@ -135,7 +168,25 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
                 if (!e.target) return;
                 try {
                     const json = JSON.parse(e.target.result as string);
-                    const listData = json.list || [];
+                    let schemaToUse: any = nviListResponseSchema;
+                    let schemaName = "Ismeretlen";
+
+                    if (file.name.includes('Megyek')) { schemaToUse = nviListResponseSchema; schemaName = "Megyek"; }
+                    else if (file.name.includes('Telepulesek')) { schemaToUse = nviListResponseSchema; schemaName = "Települések"; }
+                    else if (file.name.includes('OevkAdatok')) { schemaToUse = nviListResponseSchema; schemaName = "OEVK"; }
+                    else if (file.name.includes('EgyeniJeloltek')) { schemaToUse = nviListResponseSchema; schemaName = "Jelöltek"; }
+                    else if (file.name.includes('Szervezetek')) { schemaToUse = nviListResponseSchema; schemaName = "Szervezetek"; }
+                    else if (file.name.includes('OevkPoligonok')) { schemaToUse = nviPoligonResponseSchema; schemaName = "OEVK Poligonok"; }
+                    else if (file.name.includes('ListakEsJeloltek')) { schemaToUse = nviListResponseSchema; schemaName = "Listák és Jelöltek"; }
+
+                    const validationResult = schemaToUse.safeParse(json);
+                    if (!validationResult.success) {
+                        console.error(`Belső validációs hiba (${schemaName}):`, validationResult.error.format());
+                        showToast(`Hiba: A(z) ${file.name} fájl formátuma nem megfelelő.`);
+                        return;
+                    }
+
+                    const listData = validationResult.data.list || [];
                     setData(prev => {
                         const newData = { ...prev };
                         if (file.name.includes('Megyek')) newData.megyek = listData;
@@ -143,7 +194,7 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
                         else if (file.name.includes('OevkAdatok')) newData.oevk = listData;
                         else if (file.name.includes('EgyeniJeloltek')) newData.jeloltek = listData;
                         else if (file.name.includes('Szervezetek')) newData.szervezetek = listData;
-                        else if (file.name.includes('OevkPoligonok')) newData.oevkPoligonok = json.features ? json : listData;
+                        else if (file.name.includes('OevkPoligonok')) newData.oevkPoligonok = validationResult.data.features ? validationResult.data : listData;
                         else if (file.name.includes('ListakEsJeloltek')) newData.listakEsJeloltek = listData;
 
                         const isNowComplete = Object.values(newData).every(val => val !== null);

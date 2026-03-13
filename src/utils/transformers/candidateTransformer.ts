@@ -25,7 +25,7 @@ interface ProcessCandidatesArgs {
     statusMap: Record<string, string>;
     distMap: Record<string, NVIOevk>;
     countyMap: Record<string, string>;
-    orgMap: Record<string, NVISzervezet>;
+    orgMap: Record<string | number, NVISzervezet>;
     yesterdayJeloltSet: Set<string>;
     yesterdayJeloltStatusMap: Record<string, string>;
     partyCounts: Record<string, number>;

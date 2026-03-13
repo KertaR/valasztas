@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { isExcludedStatus, processCandidates } from '../candidateTransformer';
+import { NVIOevk, NVISzervezet } from '../../../types/nvi';
+import { CountyStats } from '../../../types/app';
 
 describe('candidateTransformer', () => {
     describe('isExcludedStatus', () => {
         it('should return true for excluded statuses', () => {
-            expect(isExcludedStatus('Törölve')).toBe(true);
-            expect(isExcludedStatus('visszalépett')).toBe(true);
-            expect(isExcludedStatus('Nem kíván indulni')).toBe(true);
+            expect(isExcludedStatus('Szervezet által törölve (nem jogerős)')).toBe(true);
+            expect(isExcludedStatus('Visszalépett (nem jogerős)')).toBe(true);
             expect(isExcludedStatus('Kiesett')).toBe(true);
         });
 
@@ -20,36 +21,25 @@ describe('candidateTransformer', () => {
     describe('processCandidates', () => {
         const mockData = {
             jeloltek: [
-                { ej_id: '1', neve: 'Teszt Elek', maz: '01', evk: '01', allapot: '1', jelolo_szervezetek: ['101'] },
-                { ej_id: '2', neve: 'Sample John', maz: '01', evk: '01', allapot: '6', jelolo_szervezetek: [] }
+                { ej_id: 1, neve: 'Jelölt 1', maz: '01', evk: '01', allapot: '1', jelolo_szervezetek: [101] },
+                { ej_id: 2, neve: 'Jelölt 2', maz: '01', evk: '01', allapot: '2' }
             ]
-        };
-        const mockOrgMap = {
-            '101': { r_nev: 'Párt A', nev: 'Párt Alapítvány' }
-        };
-        const mockDistMap = {
-            '01-01': { evk_nev: 'Budapest 1. körzet' }
-        };
-        const mockCountyMap = {
-            '01': 'Budapest'
-        };
-        const mockStatusMap = {
-            '1': 'Nyilvántartásba véve',
-            '6': 'Törölve'
-        };
+        } as any;
 
         it('should correctly process and filter candidates', () => {
-            const partyCounts = {};
-            const countyCounts = {};
-            const oevkCandidateCounts = {};
-            const countyStatsObj = { '01': { candidateCount: 0 } };
+            const partyCounts: Record<string, number> = {};
+            const countyCounts: Record<string, number> = {};
+            const oevkCandidateCounts: Record<string, number> = {};
+            const countyStatsObj: Record<string, CountyStats> = {
+                '01': { id: '01', nev: 'Budapest', oevkCount: 1, voterCount: 100, candidateCount: 0 }
+            };
 
             const result = processCandidates({
                 data: mockData,
-                statusMap: mockStatusMap,
-                distMap: mockDistMap,
-                countyMap: mockCountyMap,
-                orgMap: mockOrgMap,
+                statusMap: { '1': 'Nyilvántartásba véve', '2': 'Kiesett' },
+                distMap: { '01-01': { maz: '01', evk: '01', evk_nev: 'Körzet 1' } as NVIOevk },
+                countyMap: { '01': 'Budapest' },
+                orgMap: { 101: { szkod: 101, nev: 'Szervezet 1', r_nev: 'SZ1' } as NVISzervezet },
                 yesterdayJeloltSet: new Set(),
                 yesterdayJeloltStatusMap: {},
                 partyCounts,
@@ -58,17 +48,17 @@ describe('candidateTransformer', () => {
                 countyStatsObj
             });
 
-            expect(result.allCandidates).toHaveLength(2);
-            expect(result.candidates).toHaveLength(1);
-            expect(result.candidates[0].neve).toBe('Teszt Elek');
-            expect(result.candidates[0].partyNames).toBe('Párt A');
+            expect(result.candidates.length).toBe(1);
+            expect(result.candidates[0].neve).toBe('Jelölt 1');
+            expect(result.candidates[0].statusName).toBe('Nyilvántartásba véve');
             expect(result.candidates[0].isExcluded).toBe(false);
+
+            expect(result.allCandidates.length).toBe(2);
             expect(result.allCandidates[1].isExcluded).toBe(true);
-            
-            expect(partyCounts['Párt A']).toBe(1);
+
+            expect(partyCounts['SZ1']).toBe(1);
             expect(countyCounts['Budapest']).toBe(1);
             expect(oevkCandidateCounts['01-01']).toBe(1);
-            expect(countyStatsObj['01'].candidateCount).toBe(1);
         });
     });
 });

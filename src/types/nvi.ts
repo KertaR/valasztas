@@ -6,14 +6,16 @@ export interface NVIMegye {
 }
 
 export interface NVITelepules {
-    maz: string;
-    tan: string;
-    nev: string;
+    leiro: {
+        maz: string;
+        taz: string;
+        megnev: string;
+    };
 }
 
 export interface NVIOevk {
     maz: string;
-    evk: number;
+    evk: string;
     evk_nev: string;
     maz_nev?: string;
     letszam?: {
@@ -27,22 +29,23 @@ export interface NVIOevk {
 }
 
 export interface NVIJelolt {
-    ej_id?: string;
-    szj?: string;
+    ej_id?: number;
+    szj?: number;
     neve: string;
     maz: string;
     evk: string;
     allapot: string;
-    jelolo_szervezetek?: string[];
+    jelolo_szervezetek?: number[];
     jlcs_nev?: string;
-    fenykep?: string;
+    fenykep?: number;
+    allapot_valt?: string;
 }
 
 export interface NVISzervezet {
-    szkod: string;
+    szkod: number;
     nev: string;
     r_nev: string;
-    emblema?: string;
+    emblema?: number;
 }
 
 export interface NVIListData {

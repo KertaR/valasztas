@@ -16,7 +16,7 @@ export function useEnrichedData(data: ElectionDataState, yesterdayData: Yesterda
 
         const statusMap = STATUS_MAP as Record<string, string>;
 
-        const orgMap: Record<string, NVISzervezet> = {};
+        const orgMap: Record<string | number, NVISzervezet> = {};
         if (data.szervezetek) {
             data.szervezetek.forEach(org => orgMap[org.szkod] = org);
         }

@@ -11,7 +11,7 @@ interface ProcessOrganizationsArgs {
         szervezetek: NVISzervezet[] | null;
     } | null;
     candidates: EnrichedCandidate[];
-    orgMap: Record<string, NVISzervezet>;
+    orgMap: Record<string | number, NVISzervezet>;
     statusMap: Record<string, string>;
     yesterdayOrgSet: Set<string>;
 }
@@ -58,7 +58,7 @@ export const processOrganizations = ({
     let organizations: EnrichedOrgWithStats[] = (data.szervezetek || [])
         .sort((a, b) => (a.nev || '').localeCompare(b.nev || '', 'hu'))
         .map(org => {
-            const orgCandidates = parseInt(org.szkod) === 0
+            const orgCandidates = org.szkod === 0
                 ? candidates.filter(c => !c.jelolo_szervezetek || c.jelolo_szervezetek.length === 0)
                 : candidates.filter(c => c.jelolo_szervezetek && c.jelolo_szervezetek.includes(org.szkod));
 
