@@ -49,9 +49,9 @@ export function useSearch({
 
         const cands = enrichedData.candidates?.filter(c =>
             c.neve.toLowerCase().includes(query) ||
-            c.partyNames.toLowerCase().includes(query) ||
-            c.districtName.toLowerCase().includes(query)
-        ).slice(0, 5) || [];
+            (c.partyNames && c.partyNames.toLowerCase().includes(query)) ||
+            (c.districtName && c.districtName.toLowerCase().includes(query))
+        ) || [];
 
         const orgs = enrichedData.organizations?.filter(o =>
             !o.isCoalitionPartner && (
@@ -60,21 +60,32 @@ export function useSearch({
                 (o.coalitionFullName && o.coalitionFullName.toLowerCase().includes(query)) ||
                 (o.coalitionAbbr && o.coalitionAbbr.toLowerCase().includes(query))
             )
-        ).slice(0, 5) || [];
+        ) || [];
 
         const oevks = enrichedData.districts?.filter(d =>
             d.evk_nev.toLowerCase().includes(query) ||
             (d.maz_nev && d.maz_nev.toLowerCase().includes(query))
-        ).slice(0, 5) || [];
+        ) || [];
 
         return { candidates: cands, orgs, oevks };
     }, [search, enrichedData]);
 
-    const flatResults = useMemo((): FlatSearchResult[] => [
-        ...results.candidates.map(item => ({ type: 'candidate' as const, item })),
-        ...results.orgs.map(item => ({ type: 'org' as const, item })),
-        ...results.oevks.map(item => ({ type: 'oevk' as const, item }))
-    ], [results]);
+    const flatResults = useMemo((): FlatSearchResult[] => {
+        const flat: FlatSearchResult[] = [];
+        if (results.candidates.length > 0) {
+            flat.push({ type: 'header' as any, item: 'Jelöltek' });
+            results.candidates.forEach(item => flat.push({ type: 'candidate', item }));
+        }
+        if (results.orgs.length > 0) {
+            flat.push({ type: 'header' as any, item: 'Szervezetek' });
+            results.orgs.forEach(item => flat.push({ type: 'org', item }));
+        }
+        if (results.oevks.length > 0) {
+            flat.push({ type: 'header' as any, item: 'Választókerületek' });
+            results.oevks.forEach(item => flat.push({ type: 'oevk', item }));
+        }
+        return flat;
+    }, [results]);
 
     const selectResult = useCallback((result: FlatSearchResult) => {
         if (!result) return;
@@ -92,13 +103,22 @@ export function useSearch({
 
             if (e.key === 'ArrowDown') {
                 e.preventDefault();
-                setActiveIdx(prev => (prev < flatResults.length - 1 ? prev + 1 : 0));
+                let next = activeIdx;
+                do {
+                    next = next < flatResults.length - 1 ? next + 1 : 0;
+                } while (flatResults[next].type === 'header' as any && next !== activeIdx);
+                setActiveIdx(next);
             } else if (e.key === 'ArrowUp') {
                 e.preventDefault();
-                setActiveIdx(prev => (prev > 0 ? prev - 1 : flatResults.length - 1));
+                let prev = activeIdx;
+                do {
+                    prev = prev > 0 ? prev - 1 : flatResults.length - 1;
+                } while (flatResults[prev].type === 'header' as any && prev !== activeIdx);
+                setActiveIdx(prev);
             } else if (e.key === 'Enter' && activeIdx >= 0) {
                 e.preventDefault();
-                selectResult(flatResults[activeIdx]);
+                const result = flatResults[activeIdx];
+                if (result.type !== 'header' as any) selectResult(result);
             }
         };
         window.addEventListener('keydown', handleKeyDown);

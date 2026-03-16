@@ -16,6 +16,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",
     "@turf/rewind": "^7.3.4",
+    "@types/react-window": "^1.8.8",
     "clsx": "^2.1.1",
     "d3-geo": "^3.1.1",
     "d3-scale": "^4.0.2",
@@ -31,6 +32,7 @@
     "react-leaflet": "^5.0.0",
     "react-simple-maps": "^3.0.0",
     "react-tooltip": "^5.30.0",
+    "react-window": "^2.2.7",
     "recharts": "^3.7.0",
     "tailwind-merge": "^3.5.0",
     "zod": "^4.3.6"

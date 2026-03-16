@@ -1,20 +1,20 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ResponsiveContainer, PieChart, Pie, Tooltip as RechartsTooltip, Cell, Sector } from 'recharts';
 import { FileText, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function CandidateStatusChart({ statusCategories, statusBreakdown, onStatusClick }) {
-    const totalCount = Object.values(statusCategories).reduce((a, b) => a + b, 0);
+const CandidateStatusChart = React.memo(({ statusCategories, statusBreakdown, onStatusClick }) => {
+    const totalCount = statusCategories ? Object.values(statusCategories).reduce((a, b) => a + b, 0) : 0;
 
-    const pieData = [
-        { name: 'Nyilvántartásba véve', value: statusCategories.registered, color: '#14532d' },
-        { name: 'Nyilvántartásba véve (nem jogerős)', value: statusCategories.registered_pre, color: '#86efac' },
-        { name: 'Folyamatban', value: statusCategories.pending, color: '#60a5fa' },
-        { name: 'Nem kíván indulni', value: statusCategories.not_starting, color: '#94a3b8' },
-        { name: 'Törölve/Elutasítva', value: statusCategories.deleted, color: '#ef4444' },
-        { name: 'Visszautasítva (nem jogerős)', value: statusCategories.visszautasitva_pre, color: '#fca5a5' },
-        { name: 'Visszautasítva', value: statusCategories.visszautasitva_final, color: '#991b1b' }
-    ].filter(d => d.value > 0);
+    const pieData = statusCategories ? [
+        { name: 'Nyilvántartásba véve', value: statusCategories.registered || 0, color: '#14532d' },
+        { name: 'Nyilvántartásba véve (nem jogerős)', value: statusCategories.registered_pre || 0, color: '#86efac' },
+        { name: 'Folyamatban', value: statusCategories.pending || 0, color: '#60a5fa' },
+        { name: 'Nem kíván indulni', value: statusCategories.not_starting || 0, color: '#94a3b8' },
+        { name: 'Törölve/Elutasítva', value: statusCategories.deleted || 0, color: '#ef4444' },
+        { name: 'Visszautasítva (nem jogerős)', value: statusCategories.visszautasitva_pre || 0, color: '#fca5a5' },
+        { name: 'Visszautasítva', value: statusCategories.visszautasitva_final || 0, color: '#991b1b' }
+    ].filter(d => d.value > 0) : [];
 
     const colors = {
         registered: '#14532d',
@@ -137,17 +137,17 @@ export default function CandidateStatusChart({ statusCategories, statusBreakdown
                 <div className="flex flex-col justify-center gap-6">
                     {/* Neon-like segmented progress bar */}
                     <div className="w-full h-4 rounded-full bg-slate-100/50 dark:bg-slate-800/50 flex overflow-hidden shadow-inner flex-shrink-0 p-0.5 gap-0.5 border border-white/20 dark:border-slate-700/30">
-                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_8px_#14532d] z-10" style={{ backgroundColor: '#14532d', width: `${(statusCategories.registered / Math.max(1, totalCount)) * 100}%` }}></div>
-                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_5px_#86efac]" style={{ backgroundColor: '#86efac', width: `${(statusCategories.registered_pre / Math.max(1, totalCount)) * 100}%` }}></div>
-                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_5px_#60a5fa]" style={{ backgroundColor: '#60a5fa', width: `${(statusCategories.pending / Math.max(1, totalCount)) * 100}%` }}></div>
-                        <div className="h-full rounded-sm transition-all duration-1000" style={{ backgroundColor: '#94a3b8', width: `${(statusCategories.not_starting / Math.max(1, totalCount)) * 100}%` }}></div>
-                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_5px_#ef4444]" style={{ backgroundColor: '#ef4444', width: `${(statusCategories.deleted / Math.max(1, totalCount)) * 100}%` }}></div>
-                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_5px_#fca5a5]" style={{ backgroundColor: '#fca5a5', width: `${(statusCategories.visszautasitva_pre / Math.max(1, totalCount)) * 100}%` }}></div>
-                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_8px_#991b1b] z-10" style={{ backgroundColor: '#991b1b', width: `${(statusCategories.visszautasitva_final / Math.max(1, totalCount)) * 100}%` }}></div>
+                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_8px_#14532d] z-10" style={{ backgroundColor: '#14532d', width: `${((statusCategories?.registered || 0) / Math.max(1, totalCount)) * 100}%` }}></div>
+                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_5px_#86efac]" style={{ backgroundColor: '#86efac', width: `${((statusCategories?.registered_pre || 0) / Math.max(1, totalCount)) * 100}%` }}></div>
+                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_5px_#60a5fa]" style={{ backgroundColor: '#60a5fa', width: `${((statusCategories?.pending || 0) / Math.max(1, totalCount)) * 100}%` }}></div>
+                        <div className="h-full rounded-sm transition-all duration-1000" style={{ backgroundColor: '#94a3b8', width: `${((statusCategories?.not_starting || 0) / Math.max(1, totalCount)) * 100}%` }}></div>
+                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_5px_#ef4444]" style={{ backgroundColor: '#ef4444', width: `${((statusCategories?.deleted || 0) / Math.max(1, totalCount)) * 100}%` }}></div>
+                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_5px_#fca5a5]" style={{ backgroundColor: '#fca5a5', width: `${((statusCategories?.visszautasitva_pre || 0) / Math.max(1, totalCount)) * 100}%` }}></div>
+                        <div className="h-full rounded-sm transition-all duration-1000 shadow-[0_0_8px_#991b1b] z-10" style={{ backgroundColor: '#991b1b', width: `${((statusCategories?.visszautasitva_final || 0) / Math.max(1, totalCount)) * 100}%` }}></div>
                     </div>
 
                     <motion.div variants={listVariant} initial="hidden" animate="show" className="flex flex-col gap-2 text-sm p-1">
-                        {statusBreakdown.filter(s => s.count > 0).map((status, idx) => (
+                        {(statusBreakdown || []).filter(s => s.count > 0).map((status, idx) => (
                             <motion.div
                                 variants={itemVariant}
                                 key={idx}
@@ -174,4 +174,6 @@ export default function CandidateStatusChart({ statusCategories, statusBreakdown
             </div>
         </div>
     );
-}
+});
+
+export default CandidateStatusChart;

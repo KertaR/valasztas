@@ -1,17 +1,18 @@
+import React, { useState, useRef } from 'react';
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, LabelList, Cell } from 'recharts';
 import { BarChart, Building2, Users } from 'lucide-react';
-import { useState } from 'react';
 
-export default function TopPartiesChart({ organizations }) {
-    const data = organizations
+const TopPartiesChart = React.memo(({ organizations }) => {
+    const chartRef = useRef(null);
+    const data = (organizations || [])
         .filter(org => !org.isCoalitionPartner)
         .slice(0, 10)
         .map(org => ({
             name: org.coalitionAbbr || org.r_nev || (org.nev.length > 20 ? org.nev.substring(0, 18) + '...' : org.nev),
             registeredFinal: org.registeredFinalCount || 0,
             registeredPre: org.registeredPreCount || 0,
-            pending: org.candidateCount - (org.registeredFinalCount || 0) - (org.registeredPreCount || 0),
-            total: org.candidateCount
+            pending: (org.candidateCount || 0) - (org.registeredFinalCount || 0) - (org.registeredPreCount || 0),
+            total: org.candidateCount || 0
         }));
 
     const [activeIndex, setActiveIndex] = useState(null);
@@ -128,4 +129,6 @@ export default function TopPartiesChart({ organizations }) {
             </div>
         </div>
     );
-}
+});
+
+export default TopPartiesChart;

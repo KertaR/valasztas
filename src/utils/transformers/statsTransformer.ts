@@ -120,15 +120,15 @@ export const generateStats = ({
     statusMap,
     isExcludedStatus
 }: GenerateStatsArgs): ElectionStats => {
-    const topParties = Object.entries(partyCounts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
+    const topParties = Object.entries(partyCounts || {}).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
     const topRegisteredParties = organizations
         .filter(o => !o.isCoalitionPartner)
         .map(org => ({ name: org.coalitionAbbr || org.r_nev || org.nev, count: org.registeredCandidateCount }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 10);
 
-    const topCounties = Object.entries(countyCounts).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
-    const countiesData = Object.values(countyStatsObj).sort((a, b) => b.candidateCount - a.candidateCount);
+    const topCounties = Object.entries(countyCounts || {}).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
+    const countiesData = Object.values(countyStatsObj || {}).sort((a, b) => b.candidateCount - a.candidateCount);
     const mostContestedOevk = districts.length > 0 ? districts[0] : null;
 
     const recentUpdates = [...candidates]

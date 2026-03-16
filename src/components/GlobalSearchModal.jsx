@@ -1,9 +1,112 @@
+import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { Search, UserCircle2, Building2, Map, Command, ArrowUp, ArrowDown, CornerDownLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { List } from 'react-window';
 import { getImageUrl, getInitials } from '../utils/helpers';
-import { useUIContext, useDataContext, useSearch } from '../hooks';
+import { useUIContext, useDataContext } from '../contexts';
+import { useSearch } from '../hooks';
 
-export default function GlobalSearchModal() {
+const SearchResultRow = ({ index, style, data }) => {
+    const { flatResults, activeIdx, setActiveIdx, selectResult, activeItemRef } = data;
+    const result = flatResults[index];
+    const isActive = activeIdx === index;
+    const { type, item } = result;
+
+    if (type === 'header') {
+        return (
+            <div style={style} className="px-4 py-3 text-[11px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] bg-slate-50/50 dark:bg-slate-800/20 flex items-center">
+                <span>{item}</span>
+                <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800 ml-3 opacity-50"></div>
+            </div>
+        );
+    }
+
+    if (type === 'candidate') {
+        const c = item;
+        return (
+            <div
+                style={style}
+                ref={isActive ? activeItemRef : null}
+                onClick={() => selectResult(result)}
+                onMouseEnter={() => setActiveIdx(index)}
+                data-testid="search-result-candidate"
+                className={`flex items-center justify-between p-3 rounded-xl cursor-pointer group transition-colors px-4 ${isActive ? 'bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-500/20' : 'hover:bg-blue-50 dark:hover:bg-blue-900/30'}`}
+            >
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 overflow-hidden border border-slate-200 dark:border-slate-700 text-[10px] font-bold text-slate-500 dark:text-slate-400">
+                        {c.fenykep ? (
+                            <img src={getImageUrl(c.fenykep)} alt={c.neve} crossOrigin="anonymous" className="w-full h-full object-cover"
+                                onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />
+                        ) : null}
+                        <div className={`w-full h-full flex items-center justify-center ${c.fenykep ? 'hidden' : ''}`}>{getInitials(c.neve)}</div>
+                    </div>
+                    <div className="truncate">
+                        <p className="font-bold text-slate-800 dark:text-slate-200 text-sm truncate">{c.neve}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{c.districtName}</p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2 ml-2 flex-shrink-0">
+                    <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/40 px-2 py-1 rounded max-w-[100px] sm:max-w-none truncate">{c.partyNames}</div>
+                    {isActive && <CornerDownLeft className="w-4 h-4 text-blue-400 dark:text-blue-500 flex-shrink-0" />}
+                </div>
+            </div>
+        );
+    }
+
+    if (type === 'org') {
+        const o = item;
+        return (
+            <div
+                style={style}
+                ref={isActive ? activeItemRef : null}
+                onClick={() => selectResult(result)}
+                onMouseEnter={() => setActiveIdx(index)}
+                data-testid="search-result-org"
+                className={`flex items-center p-3 rounded-xl cursor-pointer group transition-colors px-4 ${isActive ? 'bg-emerald-50 dark:bg-emerald-900/30 ring-2 ring-emerald-500/20' : 'hover:bg-emerald-50 dark:hover:bg-emerald-900/30'}`}
+            >
+                <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 mr-3 overflow-hidden border border-slate-200 dark:border-slate-700">
+                    {o.emblema ? (
+                        <img src={getImageUrl(o.emblema)} alt={o.r_nev} crossOrigin="anonymous" className="w-full h-full object-contain p-1"
+                            onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />
+                    ) : null}
+                    <Building2 className={`w-4 h-4 text-slate-500 dark:text-slate-400 ${o.emblema ? 'hidden' : 'block'}`} />
+                </div>
+                <div className="truncate flex-1">
+                    <p className="font-bold text-slate-800 dark:text-slate-200 text-sm truncate">{o.coalitionFullName || o.nev}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{o.coalitionAbbr || o.r_nev || 'Szervezet'}</p>
+                </div>
+                {isActive && <CornerDownLeft className="w-4 h-4 text-emerald-400 dark:text-emerald-500 flex-shrink-0 ml-2" />}
+            </div>
+        );
+    }
+
+    if (type === 'oevk') {
+        const d = item;
+        return (
+            <div
+                style={style}
+                ref={isActive ? activeItemRef : null}
+                onClick={() => selectResult(result)}
+                onMouseEnter={() => setActiveIdx(index)}
+                data-testid="search-result-oevk"
+                className={`flex items-center p-3 rounded-xl cursor-pointer group transition-colors px-4 ${isActive ? 'bg-amber-50 dark:bg-amber-900/30 ring-2 ring-amber-500/20' : 'hover:bg-amber-50 dark:hover:bg-amber-900/30'}`}
+            >
+                <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 mr-3">
+                    <Map className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                </div>
+                <div className="flex-1">
+                    <p className="font-bold text-slate-800 dark:text-slate-200 text-sm">{d.evk_nev}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{d.maz_nev}, OEVK {d.evk}</p>
+                </div>
+                {isActive && <CornerDownLeft className="w-4 h-4 text-amber-400 dark:text-amber-500 flex-shrink-0 ml-2" />}
+            </div>
+        );
+    }
+
+    return <div style={style} />;
+};
+
+const GlobalSearchModal = React.memo(() => {
     const { isSearchOpen: isOpen, setIsSearchOpen, setSelectedCandidate, setSelectedOrg, setSelectedOevk } = useUIContext();
     const { enrichedData } = useDataContext();
 
@@ -22,14 +125,17 @@ export default function GlobalSearchModal() {
         onClose: () => setIsSearchOpen(false)
     });
 
+    const itemData = useMemo(() => ({
+        flatResults,
+        activeIdx,
+        setActiveIdx,
+        selectResult,
+        activeItemRef
+    }), [flatResults, activeIdx, setActiveIdx, selectResult, activeItemRef]);
+
     if (!isOpen) return null;
 
     const onClose = () => setIsSearchOpen(false);
-
-    // Helper to get the flat index for each item
-    const getCandIdx = (i) => i;
-    const getOrgIdx = (i) => results.candidates.length + i;
-    const getOevkIdx = (i) => results.candidates.length + results.orgs.length + i;
 
     return (
         <AnimatePresence>
@@ -72,9 +178,9 @@ export default function GlobalSearchModal() {
                         </div>
                     </div>
 
-                    <div className="overflow-y-auto flex-1 p-2">
+                    <div className="flex-1 min-h-[100px] overflow-hidden">
                         {search.length === 0 ? (
-                            <div className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                            <div className="px-6 py-12 text-center text-slate-500 dark:text-slate-400 overflow-y-auto h-full">
                                 <Command className="w-12 h-12 mx-auto mb-3 opacity-20" />
                                 <p className="font-semibold text-lg">Próbáld ki a globális keresőt!</p>
                                 <p className="text-sm mt-1">Gépelj be egy nevet, pártot vagy megyét (min. 2 betű).</p>
@@ -91,116 +197,25 @@ export default function GlobalSearchModal() {
                                 </div>
                             </div>
                         ) : search.length < 2 ? (
-                            <div className="px-6 py-6 text-center text-slate-500 dark:text-slate-400 text-sm">
+                            <div className="px-6 py-6 text-center text-slate-500 dark:text-slate-400 text-sm h-full">
                                 Gépelj még a kereséshez...
                             </div>
                         ) : !hasResults ? (
-                            <div className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                            <div className="px-6 py-12 text-center text-slate-500 dark:text-slate-400 h-full">
                                 <Search className="w-10 h-10 mx-auto mb-3 opacity-20" />
                                 <p className="font-semibold">Nincs találat a következőre: "{search}"</p>
                             </div>
                         ) : (
-                            <div className="space-y-4 p-2">
-                                {/* JELÖLTEK */}
-                                {results.candidates.length > 0 && (
-                                    <div>
-                                        <div className="px-3 pb-2 text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Jelöltek</div>
-                                        {results.candidates.map((c, i) => {
-                                            const idx = getCandIdx(i);
-                                            const isActive = activeIdx === idx;
-                                            return (
-                                                <div
-                                                    key={c.szj}
-                                                    ref={isActive ? activeItemRef : null}
-                                                    onClick={() => selectResult(flatResults[idx])}
-                                                    onMouseEnter={() => setActiveIdx(idx)}
-                                                    className={`flex items-center justify-between p-3 rounded-xl cursor-pointer group transition-colors ${isActive ? 'bg-blue-50 dark:bg-blue-900/30 ring-2 ring-blue-500/20' : 'hover:bg-blue-50 dark:hover:bg-blue-900/30'}`}
-                                                >
-                                                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                                                        <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 overflow-hidden border border-slate-200 dark:border-slate-700 text-[10px] font-bold text-slate-500 dark:text-slate-400">
-                                                            {c.fenykep ? (
-                                                                <img src={getImageUrl(c.fenykep)} alt={c.neve} crossOrigin="anonymous" className="w-full h-full object-cover"
-                                                                    onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />
-                                                            ) : null}
-                                                            <div className={`w-full h-full flex items-center justify-center ${c.fenykep ? 'hidden' : ''}`}>{getInitials(c.neve)}</div>
-                                                        </div>
-                                                        <div className="truncate">
-                                                            <p className="font-bold text-slate-800 dark:text-slate-200 text-sm truncate">{c.neve}</p>
-                                                            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{c.districtName}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center gap-2 ml-2 flex-shrink-0">
-                                                        <div className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/40 px-2 py-1 rounded max-w-[100px] sm:max-w-none truncate">{c.partyNames}</div>
-                                                        {isActive && <CornerDownLeft className="w-4 h-4 text-blue-400 dark:text-blue-500 flex-shrink-0" />}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-
-                                {/* SZERVEZETEK */}
-                                {results.orgs.length > 0 && (
-                                    <div>
-                                        <div className="px-3 pb-2 text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-4">Szervezetek (Pártok)</div>
-                                        {results.orgs.map((o, i) => {
-                                            const idx = getOrgIdx(i);
-                                            const isActive = activeIdx === idx;
-                                            return (
-                                                <div
-                                                    key={o.szkod}
-                                                    ref={isActive ? activeItemRef : null}
-                                                    onClick={() => selectResult(flatResults[idx])}
-                                                    onMouseEnter={() => setActiveIdx(idx)}
-                                                    className={`flex items-center p-3 rounded-xl cursor-pointer group transition-colors ${isActive ? 'bg-emerald-50 dark:bg-emerald-900/30 ring-2 ring-emerald-500/20' : 'hover:bg-emerald-50 dark:hover:bg-emerald-900/30'}`}
-                                                >
-                                                    <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 mr-3 overflow-hidden border border-slate-200 dark:border-slate-700">
-                                                        {o.emblema ? (
-                                                            <img src={getImageUrl(o.emblema)} alt={o.r_nev} crossOrigin="anonymous" className="w-full h-full object-contain p-1"
-                                                                onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />
-                                                        ) : null}
-                                                        <Building2 className={`w-4 h-4 text-slate-500 dark:text-slate-400 ${o.emblema ? 'hidden' : 'block'}`} />
-                                                    </div>
-                                                    <div className="truncate flex-1">
-                                                        <p className="font-bold text-slate-800 dark:text-slate-200 text-sm truncate">{o.coalitionFullName || o.nev}</p>
-                                                        <p className="text-xs text-slate-500 dark:text-slate-400">{o.coalitionAbbr || o.r_nev || 'Szervezet'}</p>
-                                                    </div>
-                                                    {isActive && <CornerDownLeft className="w-4 h-4 text-emerald-400 dark:text-emerald-500 flex-shrink-0 ml-2" />}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-
-                                {/* OEVK */}
-                                {results.oevks.length > 0 && (
-                                    <div>
-                                        <div className="px-3 pb-2 text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-4">Választókerületek</div>
-                                        {results.oevks.map((d, i) => {
-                                            const idx = getOevkIdx(i);
-                                            const isActive = activeIdx === idx;
-                                            return (
-                                                <div
-                                                    key={`${d.maz}-${d.evk}`}
-                                                    ref={isActive ? activeItemRef : null}
-                                                    onClick={() => selectResult(flatResults[idx])}
-                                                    onMouseEnter={() => setActiveIdx(idx)}
-                                                    className={`flex items-center p-3 rounded-xl cursor-pointer group transition-colors ${isActive ? 'bg-amber-50 dark:bg-amber-900/30 ring-2 ring-amber-500/20' : 'hover:bg-amber-50 dark:hover:bg-amber-900/30'}`}
-                                                >
-                                                    <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center flex-shrink-0 mr-3">
-                                                        <Map className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <p className="font-bold text-slate-800 dark:text-slate-200 text-sm">{d.evk_nev}</p>
-                                                        <p className="text-xs text-slate-500 dark:text-slate-400">{d.maz_nev}, OEVK {d.evk}</p>
-                                                    </div>
-                                                    {isActive && <CornerDownLeft className="w-4 h-4 text-amber-400 dark:text-amber-500 flex-shrink-0 ml-2" />}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
+                            <List
+                                height={400}
+                                itemCount={flatResults.length}
+                                itemSize={64}
+                                width="100%"
+                                itemData={itemData}
+                                className="custom-scrollbar"
+                            >
+                                {SearchResultRow}
+                            </List>
                         )}
                     </div>
 
@@ -220,4 +235,6 @@ export default function GlobalSearchModal() {
             </div>
         </AnimatePresence>
     );
-}
+});
+
+export default GlobalSearchModal;

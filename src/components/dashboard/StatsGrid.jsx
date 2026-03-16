@@ -1,46 +1,48 @@
 import React from 'react';
-import { Users, Building2, Map, UsersRound } from 'lucide-react';
+import { Users, Building2, Map, UsersRound, UserCircle2 } from 'lucide-react';
 import { StatCard } from '../ui';
 
-export default function StatsGrid({
+const StatsGrid = React.memo(({
     candidatesCount,
     organizationsCount,
     districtsCount,
     totalEligibleVoters,
     diffs,
     onCandidatesDiffClick
-}) {
+}) => {
+    const effectiveDiffs = diffs || {};
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             <StatCard
-                icon={<Users className="w-7 h-7 text-blue-600" />}
                 title="Induló Jelöltek"
-                value={candidatesCount}
-                color="bg-blue-100"
-                diff={diffs?.candidates}
-                onClick={onCandidatesDiffClick}
+                value={candidatesCount || 0}
+                diff={effectiveDiffs.candidates}
+                icon={<UserCircle2 className="w-5 h-5 md:w-6 md:h-6 text-blue-600 dark:text-blue-400" />}
+                color="indigo"
             />
             <StatCard
-                icon={<Building2 className="w-7 h-7 text-purple-600" />}
                 title="Jelölő Szervezetek"
-                value={organizationsCount}
-                color="bg-purple-100"
-                diff={diffs?.organizations}
+                value={organizationsCount || 0}
+                diff={effectiveDiffs.organizations}
+                icon={<Building2 className="w-5 h-5 md:w-6 md:h-6 text-emerald-600 dark:text-emerald-400" />}
+                color="emerald"
             />
             <StatCard
-                icon={<Map className="w-7 h-7 text-emerald-600" />}
                 title="Választókerületek"
-                value={districtsCount}
-                color="bg-emerald-100"
-                diff={diffs?.districts}
+                value={districtsCount || 0}
+                icon={<Map className="w-5 h-5 md:w-6 md:h-6 text-amber-600 dark:text-amber-400" />}
+                color="amber"
             />
             <StatCard
-                icon={<UsersRound className="w-7 h-7 text-amber-600" />}
                 title="Szavazásra Jogosultak"
-                value={totalEligibleVoters}
-                color="bg-amber-100"
-                diff={diffs?.voters}
+                value={(totalEligibleVoters || 0).toLocaleString('hu-HU')}
+                diff={effectiveDiffs.voters}
+                icon={<Users className="w-5 h-5 md:w-6 md:h-6 text-rose-600 dark:text-rose-400" />}
+                color="rose"
+                onDiffClick={onCandidatesDiffClick}
             />
         </div>
     );
-}
+});
+
+export default StatsGrid;

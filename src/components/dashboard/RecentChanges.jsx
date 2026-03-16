@@ -35,7 +35,7 @@ export default function RecentChanges({ recentUpdates, setSelectedCandidate }) {
             </h3>
             <motion.div variants={listVariant} initial="hidden" animate="show" className="flex flex-col gap-2 overflow-y-auto pr-1 flex-1 max-h-[340px] custom-scrollbar">
                 <AnimatePresence mode="popLayout">
-                    {recentUpdates.map((update, idx) => {
+                    {(recentUpdates || []).map((update, idx) => {
                         const { dot, bg } = statusColor(update.statusName);
                         const prevStatus = update.oldStatusName;
                         const hasChange = prevStatus && prevStatus !== update.statusName;

@@ -1,5 +1,5 @@
+import React, { useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
-import { useMemo } from 'react';
 import 'leaflet/dist/leaflet.css';
 import MapController from './MapController';
 
@@ -8,7 +8,7 @@ const HUNGARY_BOUNDS = [
     [48.6, 22.9]  // Észak-Kelet sarok
 ];
 
-export default function MapDisplay({
+const MapDisplay = React.memo(({
     oevkPoligonok,
     selectedParty,
     selectedDistrict,
@@ -19,7 +19,7 @@ export default function MapDisplay({
     handlePathMouseMove,
     setSelectedDistrict,
     tooltip
-}) {
+}) => {
     const geoJsonElement = useMemo(() => {
         if (!oevkPoligonok?.features || oevkPoligonok.features.length === 0) return null;
 
@@ -107,4 +107,6 @@ export default function MapDisplay({
 
         </div>
     );
-}
+});
+
+export default MapDisplay;

@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
-import { useElectionData, useEnrichedData } from '../hooks';
+import { useElectionData } from '../hooks/useElectionData';
+import { useEnrichedData } from '../hooks/useEnrichedData';
 import { useUIContext } from './UIContext';
 
 const DataContext = createContext();

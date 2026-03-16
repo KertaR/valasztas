@@ -109,6 +109,7 @@ export const calculateTrivia = (candidates) => {
 };
 
 export const calculateStatusBreakdown = (statusCounts) => {
+    if (!statusCounts) return [];
     return Object.entries(statusCounts).map(([name, count]) => {
         const lowerName = name.toLowerCase();
         let type = 'pending';
