@@ -1,12 +1,13 @@
 import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { Search, UserCircle2, Building2, Map, Command, ArrowUp, ArrowDown, CornerDownLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { List } from 'react-window';
+import { FixedSizeList as List } from 'react-window';
 import { getImageUrl, getInitials } from '../utils/helpers';
 import { useUIContext, useDataContext } from '../contexts';
 import { useSearch } from '../hooks';
 
-const SearchResultRow = ({ index, style, flatResults, activeIdx, setActiveIdx, selectResult, activeItemRef }) => {
+const SearchResultRow = ({ index, style, data }) => {
+    const { flatResults, activeIdx, setActiveIdx, selectResult, activeItemRef } = data;
     const result = flatResults[index];
     const isActive = activeIdx === index;
     const { type, item } = result;
@@ -207,13 +208,14 @@ const GlobalSearchModal = React.memo(() => {
                         ) : (
                             <List
                                 height={400}
-                                rowCount={flatResults.length}
-                                rowHeight={64}
+                                itemCount={flatResults.length}
+                                itemSize={64}
                                 width="100%"
-                                rowProps={itemData}
+                                itemData={itemData}
                                 className="custom-scrollbar"
-                                rowComponent={SearchResultRow}
-                            />
+                            >
+                                {SearchResultRow}
+                            </List>
                         )}
                     </div>
 

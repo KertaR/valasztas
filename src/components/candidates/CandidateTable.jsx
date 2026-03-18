@@ -1,11 +1,12 @@
 import React, { useRef, useMemo } from 'react';
-import { List } from 'react-window';
+import { FixedSizeList as List } from 'react-window';
 import { Zap } from 'lucide-react';
 import Highlighter from 'react-highlight-words';
 import { StatusBadge } from '../ui';
 import { getInitials, getImageUrl } from '../../utils/helpers';
 
-const Row = ({ index, style, candidates, searchTerm, setSelectedCandidate }) => {
+const Row = ({ index, style, data }) => {
+    const { candidates, searchTerm, setSelectedCandidate } = data;
     const jelolt = candidates[index];
 
     return (
@@ -107,14 +108,15 @@ export default function CandidateTable({
             <div className="flex-1">
                 <List
                     height={600} // This will be overridden by CSS or parent resize handler in a real scenario
-                    rowCount={candidates.length}
-                    rowHeight={80} // Approx row height
+                    itemCount={candidates.length}
+                    itemSize={80} // Approx row height
                     width="100%"
-                    rowProps={itemData}
-                    listRef={listRef}
+                    itemData={itemData}
+                    ref={listRef}
                     className="custom-scrollbar"
-                    rowComponent={Row}
-                />
+                >
+                    {Row}
+                </List>
             </div>
         </div>
     );
