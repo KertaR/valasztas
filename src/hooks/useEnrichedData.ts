@@ -160,7 +160,7 @@ export function useEnrichedData(data: ElectionDataState, yesterdayData: Yesterda
 
         return {
             allCandidates, candidates, districts, organizations,
-            countiesData: Object.values(countyStatsObj).sort((a, b) => b.candidateCount - a.candidateCount),
+            countiesData: Object.values(countyStatsObj || {}).sort((a, b) => b.candidateCount - a.candidateCount),
             formationsProgress, removedCandidates,
             settlements: data.telepulesek || [], oevkPoligonok, stats
         };

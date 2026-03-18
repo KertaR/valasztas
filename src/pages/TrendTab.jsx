@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, AreaChart, ReferenceLine } from 'recharts';
 import { TrendingUp, Users, FileCheck2, CalendarClock, Loader2 } from 'lucide-react';
-import { PageLayout, ExportButton } from '../components/ui';
+import { PageLayout, ExportButton, ChartErrorBoundary } from '../components/ui';
 import { useExportImage } from '../hooks/useExportImage';
 import { useDataContext } from '../contexts';
 
@@ -246,27 +246,29 @@ export default function TrendTab() {
                 <div className="bg-white dark:bg-slate-900 p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
                     <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6">Általános Jelölti Trendek (Feldolgozottság)</h3>
                     <div className="h-[400px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
-                                <defs>
-                                    <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
-                                    </linearGradient>
-                                    <linearGradient id="colorRegistered" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.15} />
-                                <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor="end" />
-                                <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
-                                <Area type="monotone" dataKey="total" name="Összes Bejelentett" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" activeDot={{ r: 6, strokeWidth: 0, fill: '#3b82f6' }} />
-                                <Area type="monotone" dataKey="registered" name="Nyilvántartásba Vettek" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorRegistered)" activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }} />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                        <ChartErrorBoundary>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <AreaChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
+                                    <defs>
+                                        <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                        </linearGradient>
+                                        <linearGradient id="colorRegistered" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                        </linearGradient>
+                                    </defs>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.15} />
+                                    <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor="end" />
+                                    <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
+                                    <Area type="monotone" dataKey="total" name="Összes Bejelentett" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorTotal)" activeDot={{ r: 6, strokeWidth: 0, fill: '#3b82f6' }} />
+                                    <Area type="monotone" dataKey="registered" name="Nyilvántartásba Vettek" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#colorRegistered)" activeDot={{ r: 6, strokeWidth: 0, fill: '#10b981' }} />
+                                </AreaChart>
+                            </ResponsiveContainer>
+                        </ChartErrorBoundary>
                     </div>
                 </div>
             )}
@@ -289,19 +291,21 @@ export default function TrendTab() {
                         </div>
                     </div>
                     <div className="h-[400px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.15} />
-                                <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor="end" />
-                                <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
-                                <Line type="monotone" dataKey={`fidesz_${partyStatusFilter}`} name="FIDESZ-KDNP" stroke="#f97316" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
-                                <Line type="monotone" dataKey={`tisza_${partyStatusFilter}`} name="TISZA" stroke="#06b6d4" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
-                                <Line type="monotone" dataKey={`dk_${partyStatusFilter}`} name="Demokratikus Koalíció" stroke="#3b82f6" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
-                                <Line type="monotone" dataKey={`mhm_${partyStatusFilter}`} name="Mi Hazánk" stroke="#10b981" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
-                            </LineChart>
-                        </ResponsiveContainer>
+                        <ChartErrorBoundary>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={trendData} margin={{ top: 10, right: 30, left: 0, bottom: 30 }}>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" strokeOpacity={0.15} />
+                                    <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={15} angle={-45} textAnchor="end" />
+                                    <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} tickMargin={10} axisLine={false} tickLine={false} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '13px', fontWeight: 'bold' }} />
+                                    <Line type="monotone" dataKey={`fidesz_${partyStatusFilter}`} name="FIDESZ-KDNP" stroke="#f97316" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
+                                    <Line type="monotone" dataKey={`tisza_${partyStatusFilter}`} name="TISZA" stroke="#06b6d4" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
+                                    <Line type="monotone" dataKey={`dk_${partyStatusFilter}`} name="Demokratikus Koalíció" stroke="#3b82f6" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
+                                    <Line type="monotone" dataKey={`mhm_${partyStatusFilter}`} name="Mi Hazánk" stroke="#10b981" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0 }} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </ChartErrorBoundary>
                     </div>
                 </div>
             )}

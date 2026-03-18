@@ -35,7 +35,7 @@ export function useSeatCalculator(votes, fractionalBonus) {
                 }
             });
             // Korrekció, ha véletlen túlléptük vagy alulmaradtunk az 106-on kerekítés miatt
-            const exactOevk = Object.values(oevkSeats).reduce((a, b) => a + b, 0);
+            const exactOevk = Object.values(oevkSeats || {}).reduce((a, b) => a + b, 0);
             if (exactOevk !== 106 && sortedForOevk.length > 0) {
                 oevkSeats[sortedForOevk[0].id] += (106 - exactOevk);
             }

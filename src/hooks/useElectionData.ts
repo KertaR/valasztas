@@ -46,7 +46,7 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
     const autoRefreshRef = useRef(autoRefresh);
     autoRefreshRef.current = autoRefresh;
 
-    const isAllUploaded = Object.values(data).every(val => val !== null);
+    const isAllUploaded = Object.values(data || {}).every(val => val !== null);
 
     const fetchDataFromWeb = async () => {
         setIsLoadingWeb(true);
@@ -197,8 +197,8 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
                         else if (file.name.includes('OevkPoligonok')) newData.oevkPoligonok = validationResult.data.features ? validationResult.data : listData;
                         else if (file.name.includes('ListakEsJeloltek')) newData.listakEsJeloltek = listData;
 
-                        const isNowComplete = Object.values(newData).every(val => val !== null);
-                        const wasCompleteBefore = Object.values(prev).every(val => val !== null);
+                        const isNowComplete = Object.values(newData || {}).every(val => val !== null);
+                        const wasCompleteBefore = Object.values(prev || {}).every(val => val !== null);
 
                         if (isNowComplete && !wasCompleteBefore) {
                             showToast('Minden fájl sikeresen feldolgozva!');

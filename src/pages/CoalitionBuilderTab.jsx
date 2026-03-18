@@ -99,6 +99,9 @@ export default function CoalitionBuilderTab() {
         });
 
         // Csak azokat tartjuk meg ütközésnek, ahol több KÜLÖNBÖZŐ személy indul (ha ugyanazt jelölik közösen, az nem ütközés - bár a NVI struktúrában ők eleve 1 arrayben lennének, de jobb biztosra menni)
+        const totalCoalitionWeight = typeof coalitionWeights !== 'undefined' && coalitionWeights 
+            ? Object.values(coalitionWeights).reduce((a, b) => (Number(a) || 0) + (Number(b) || 0), 0) 
+            : 0;
         const realConflicts = Object.entries(oevkConflicts)
             .filter(([key, candidatesInSeat]) => {
                 const uniquePeople = new Set(candidatesInSeat.map(c => c.szj || c.neve));

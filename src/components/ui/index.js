@@ -1,3 +1,4 @@
+export { default as Card } from './Card';
 export { default as NavItem } from './NavItem';
 export { default as StatCard } from './StatCard';
 export { default as StatusBadge } from './StatusBadge';
@@ -10,4 +11,5 @@ export { default as FilterSelect } from './FilterSelect';
 export { default as EmptyState } from './EmptyState';
 export { default as DataTable } from './DataTable';
 export { default as PageLayout } from './PageLayout';
+export { default as ChartErrorBoundary } from './ChartErrorBoundary';
 export { default as ExportButton } from './ExportButton';

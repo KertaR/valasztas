@@ -6,8 +6,7 @@ import { getImageUrl, getInitials } from '../utils/helpers';
 import { useUIContext, useDataContext } from '../contexts';
 import { useSearch } from '../hooks';
 
-const SearchResultRow = ({ index, style, data }) => {
-    const { flatResults, activeIdx, setActiveIdx, selectResult, activeItemRef } = data;
+const SearchResultRow = ({ index, style, flatResults, activeIdx, setActiveIdx, selectResult, activeItemRef }) => {
     const result = flatResults[index];
     const isActive = activeIdx === index;
     const { type, item } = result;
@@ -208,14 +207,13 @@ const GlobalSearchModal = React.memo(() => {
                         ) : (
                             <List
                                 height={400}
-                                itemCount={flatResults.length}
-                                itemSize={64}
+                                rowCount={flatResults.length}
+                                rowHeight={64}
                                 width="100%"
-                                itemData={itemData}
+                                rowProps={itemData}
                                 className="custom-scrollbar"
-                            >
-                                {SearchResultRow}
-                            </List>
+                                rowComponent={SearchResultRow}
+                            />
                         )}
                     </div>
 

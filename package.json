@@ -1,7 +1,7 @@
 {
   "name": "valasztas-app",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -32,8 +32,8 @@
     "react-leaflet": "^5.0.0",
     "react-simple-maps": "^3.0.0",
     "react-tooltip": "^5.30.0",
-    "react-window": "^2.2.7",
-    "recharts": "^3.7.0",
+    "react-window": "^1.8.10",
+    "recharts": "^2.15.0",
     "tailwind-merge": "^3.5.0",
     "zod": "^4.3.6"
   },

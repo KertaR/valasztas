@@ -62,7 +62,7 @@ export const calculateFormationsProgress = (candidates: EnrichedCandidate[], org
         }
     });
 
-    return Object.values(formationsMap).map(f => {
+    return Object.values(formationsMap || {}).map(f => {
         const hasCapital = f.registeredCounties.has('01');
         const pendingHasCapital = f.pendingCounties.has('01') || hasCapital;
 

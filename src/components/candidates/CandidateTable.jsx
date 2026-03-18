@@ -5,13 +5,12 @@ import Highlighter from 'react-highlight-words';
 import { StatusBadge } from '../ui';
 import { getInitials, getImageUrl } from '../../utils/helpers';
 
-const Row = ({ index, style, data }) => {
-    const { candidates, searchTerm, setSelectedCandidate } = data;
+const Row = ({ index, style, candidates, searchTerm, setSelectedCandidate }) => {
     const jelolt = candidates[index];
-    
+
     return (
-        <div 
-            style={style} 
+        <div
+            style={style}
             onClick={() => setSelectedCandidate(jelolt)}
             data-testid="candidate-row"
             className="flex items-center hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-all duration-300 cursor-pointer group border-b border-slate-200/30 dark:divide-slate-800/40"
@@ -44,7 +43,7 @@ const Row = ({ index, style, data }) => {
                     </div>
                 </div>
             </div>
-            
+
             <div className="hidden md:flex flex-col flex-1 p-4">
                 <div className="font-semibold text-slate-700 dark:text-slate-300 text-sm mb-0.5">
                     <Highlighter searchWords={[searchTerm]} autoEscape={true} textToHighlight={jelolt.countyName} highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 text-yellow-900 dark:text-yellow-200 px-0.5 rounded" />
@@ -53,13 +52,13 @@ const Row = ({ index, style, data }) => {
                     <Highlighter searchWords={[searchTerm]} autoEscape={true} textToHighlight={jelolt.districtName} highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 text-yellow-900 dark:text-yellow-200 px-0.5 rounded" />
                 </div>
             </div>
-            
+
             <div className="hidden sm:flex flex-1 p-4 items-center">
                 <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50 truncate shadow-sm">
                     <Highlighter searchWords={[searchTerm]} autoEscape={true} textToHighlight={jelolt.partyNames} highlightClassName="bg-yellow-200 dark:bg-yellow-500/30 text-yellow-900 dark:text-yellow-200 px-0.5 rounded" />
                 </span>
             </div>
-            
+
             <div className="w-[140px] md:w-[180px] p-4 flex flex-col gap-1.5 items-start justify-center flex-shrink-0">
                 <StatusBadge status={jelolt.statusName} />
                 <span className="text-[10px] md:text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">{jelolt.allapot_valt ? new Date(jelolt.allapot_valt).toLocaleDateString('hu-HU') : ''}</span>
@@ -86,7 +85,7 @@ export default function CandidateTable({
     return (
         <div className="w-full flex flex-col h-full min-w-[600px]">
             {/* Header */}
-            <div 
+            <div
                 data-testid="candidate-table-header"
                 className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-md text-slate-500 dark:text-slate-400 z-10 text-xs uppercase tracking-widest font-black transition-colors shadow-[0_4px_20px_-10px_rgba(0,0,0,0.1)] flex border-b border-slate-200/50 dark:border-slate-700/50"
             >
@@ -103,20 +102,19 @@ export default function CandidateTable({
                     <div className="flex items-center gap-1 md:gap-2">Változás {getSortIcon('allapot_valt')}</div>
                 </div>
             </div>
-            
+
             {/* Body */}
             <div className="flex-1">
                 <List
                     height={600} // This will be overridden by CSS or parent resize handler in a real scenario
-                    itemCount={candidates.length}
-                    itemSize={80} // Approx row height
+                    rowCount={candidates.length}
+                    rowHeight={80} // Approx row height
                     width="100%"
-                    itemData={itemData}
-                    ref={listRef}
+                    rowProps={itemData}
+                    listRef={listRef}
                     className="custom-scrollbar"
-                >
-                    {Row}
-                </List>
+                    rowComponent={Row}
+                />
             </div>
         </div>
     );
