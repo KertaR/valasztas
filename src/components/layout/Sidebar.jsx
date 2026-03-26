@@ -77,6 +77,9 @@ export default function Sidebar() {
                 </nav>
 
                 <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-2">
+                    <button onClick={() => { setIsMobileMenuOpen(false); switchTab('jogi'); }} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent rounded-lg transition-colors font-semibold">
+                        <Scale className="w-4 h-4" /> Jogi nyilatkozatok
+                    </button>
                     <button onClick={toggleDarkMode} className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm text-indigo-600 dark:text-amber-400 bg-indigo-50 dark:bg-amber-400/10 hover:bg-indigo-100 dark:hover:bg-amber-400/20 border border-transparent rounded-lg transition-colors font-semibold shadow-sm">
                         {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                         {isDarkMode ? 'Világos Mód' : 'Sötét Mód'}

@@ -12,7 +12,7 @@ export default function CandidateGrid({
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6 p-2 pb-6">
             <AnimatePresence mode="popLayout">
-                {candidates.map((jelolt, idx) => (
+                {candidates.map(/** @param {import('../../types/app').EnrichedCandidate} jelolt */ (jelolt, idx) => (
                     <motion.div
                         layout
                         initial={{ opacity: 0, scale: 0.95 }}

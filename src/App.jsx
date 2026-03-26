@@ -3,13 +3,13 @@ import { Moon, Sun, X, Menu, Globe } from 'lucide-react';
 
 import {
     DashboardTab, CandidatesTab, CompareTab,
-    OrganizationsTab, OevkTab, CountiesTab, TransfersTab, SeatCalculatorTab, ChangelogTab, TrendTab, OevkMapTab, ErrorBoundary, NationalListsTab, CoalitionBuilderTab
+    OrganizationsTab, OevkTab, CountiesTab, TransfersTab, SeatCalculatorTab, ChangelogTab, TrendTab, OevkMapTab, ErrorBoundary, NationalListsTab, CoalitionBuilderTab, LegalTab
 } from './pages';
 
 import {
     Sidebar, GlobalSearchModal, ToastContainer,
     CandidateModal, OevkModal, OrgModal, CountyModal, CandidatesDiffModal,
-    UploadScreen
+    UploadScreen, CookieBanner
 } from './components';
 
 import { UIProvider, DataProvider, FilterProvider, useUIContext, useDataContext } from './contexts';
@@ -92,6 +92,7 @@ function AppContent() {
                             <OevkMapTab />
                         </ErrorBoundary>
                     )}
+                    {activeTab === 'jogi' && <LegalTab />}
 
                     {/* Lábjegyzet / Forrásmegjelölés */}
                     <footer className="mt-16 pt-6 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
@@ -100,6 +101,7 @@ function AppContent() {
                     </footer>
                 </div>
             </main>
+            <CookieBanner />
             <ToastContainer toast={toast} />
         </div>
     );

@@ -4,13 +4,16 @@ import { Card, ChartErrorBoundary } from '../ui';
 import { Trophy } from 'lucide-react';
 
 const TopPartiesChart = React.memo(({ organizations }) => {
+    /** @type {React.MutableRefObject<HTMLDivElement | null>} */
     const chartRef = useRef(null);
+    /** @type {[number | null, React.Dispatch<React.SetStateAction<number | null>>]} */
     const [activeIndex, setActiveIndex] = useState(null);
 
+    /** @type {Array<{name: string, registeredFinal: number, registeredPre: number, pending: number, total: number}>} */
     const data = useMemo(() => (organizations || [])
-        .filter(org => !org.isCoalitionPartner)
+        .filter(/** @param {import('../../types/app').EnrichedOrganization} org */ org => !org.isCoalitionPartner)
         .slice(0, 10)
-        .map(org => ({
+        .map(/** @param {import('../../types/app').EnrichedOrganization} org */ org => ({
             name: org.coalitionAbbr || org.r_nev || (org.nev.length > 20 ? org.nev.substring(0, 18) + '...' : org.nev),
             registeredFinal: org.registeredFinalCount || 0,
             registeredPre: org.registeredPreCount || 0,

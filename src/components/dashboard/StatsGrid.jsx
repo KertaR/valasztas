@@ -19,6 +19,7 @@ const StatsGrid = React.memo(({
                 diff={effectiveDiffs.candidates}
                 icon={<UserCircle2 className="w-5 h-5 md:w-6 md:h-6 text-blue-600 dark:text-blue-400" />}
                 color="indigo"
+                onClick={onCandidatesDiffClick}
             />
             <StatCard
                 title="Jelölő Szervezetek"
@@ -35,11 +36,10 @@ const StatsGrid = React.memo(({
             />
             <StatCard
                 title="Szavazásra Jogosultak"
-                value={(totalEligibleVoters || 0).toLocaleString('hu-HU')}
+                value={totalEligibleVoters || 0}
                 diff={effectiveDiffs.voters}
                 icon={<Users className="w-5 h-5 md:w-6 md:h-6 text-rose-600 dark:text-rose-400" />}
                 color="rose"
-                onDiffClick={onCandidatesDiffClick}
             />
         </div>
     );

@@ -12,3 +12,4 @@ export { default as OevkMapTab } from './OevkMapTab';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as NationalListsTab } from './NationalListsTab';
 export { default as CoalitionBuilderTab } from './CoalitionBuilderTab';
+export { default as LegalTab } from './LegalTab';

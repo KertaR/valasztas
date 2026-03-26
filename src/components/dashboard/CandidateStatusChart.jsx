@@ -4,6 +4,12 @@ import { Card, ChartErrorBoundary } from '../ui';
 import { PieChart as PieChartIcon, ChevronRight } from 'lucide-react'; // Assuming PieChartIcon is from lucide-react
 import { motion } from 'framer-motion';
 
+/**
+ * @param {Object} props
+ * @param {Record<string, number>} props.statusCategories
+ * @param {Record<string, number>} props.statusBreakdown
+ * @param {(status: string) => void} props.onStatusClick
+ */
 const CandidateStatusChart = React.memo(({ statusCategories, statusBreakdown, onStatusClick }) => {
     const totalCount = (statusCategories && typeof statusCategories === 'object') 
         ? Object.values(statusCategories).reduce((a, b) => (Number(a) || 0) + (Number(b) || 0), 0) 
@@ -41,6 +47,7 @@ const CandidateStatusChart = React.memo(({ statusCategories, statusBreakdown, on
         visszautasitva_final: 'text-red-800 dark:text-red-600'
     };
 
+    /** @type {[number | null, React.Dispatch<React.SetStateAction<number | null>>]} */
     const [activeIndex, setActiveIndex] = useState(null);
 
     const onPieEnter = (_, index) => {

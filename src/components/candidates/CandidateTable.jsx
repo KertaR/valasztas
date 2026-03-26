@@ -5,8 +5,18 @@ import Highlighter from 'react-highlight-words';
 import { StatusBadge } from '../ui';
 import { getInitials, getImageUrl } from '../../utils/helpers';
 
+/**
+ * @param {Object} props
+ * @param {number} props.index
+ * @param {React.CSSProperties} props.style
+ * @param {Object} props.data
+ * @param {import('../../types/app').EnrichedCandidate[]} props.data.candidates
+ * @param {string} props.data.searchTerm
+ * @param {(c: import('../../types/app').EnrichedCandidate) => void} props.data.setSelectedCandidate
+ */
 const Row = ({ index, style, data }) => {
     const { candidates, searchTerm, setSelectedCandidate } = data;
+    /** @type {import('../../types/app').EnrichedCandidate} */
     const jelolt = candidates[index];
 
     return (

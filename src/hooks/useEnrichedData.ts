@@ -11,6 +11,12 @@ import { NVIMegye, NVIOevk, NVISzervezet } from '../types/nvi';
 import { CountyStats, EnrichedDistrict } from '../types/app';
 
 export function useEnrichedData(data: ElectionDataState, yesterdayData: YesterdayDataState | null, isAllUploaded: boolean) {
+    const parseSafeNumber = (val: any) => {
+        if (typeof val === 'number') return val;
+        if (!val) return 0;
+        return parseInt(String(val).replace(/\s/g, ''), 10) || 0;
+    };
+
     return useMemo(() => {
         if (!isAllUploaded) return { candidates: [], districts: [], organizations: [], countiesData: [], settlements: [], stats: {} as any };
 
@@ -39,13 +45,13 @@ export function useEnrichedData(data: ElectionDataState, yesterdayData: Yesterda
                 if (!countyMap[dist.maz] && dist.maz_nev) {
                     countyMap[dist.maz] = dist.maz_nev;
                 }
-                totalEligibleVoters += (dist.letszam?.indulo || 0);
+                totalEligibleVoters += parseSafeNumber(dist.letszam?.indulo);
 
                 if (!countyStatsObj[dist.maz]) {
                     countyStatsObj[dist.maz] = { id: dist.maz, nev: countyMap[dist.maz] || `Megye (${dist.maz})`, oevkCount: 0, voterCount: 0, candidateCount: 0 };
                 }
                 countyStatsObj[dist.maz].oevkCount++;
-                countyStatsObj[dist.maz].voterCount += (dist.letszam?.indulo || 0);
+                countyStatsObj[dist.maz].voterCount += parseSafeNumber(dist.letszam?.indulo);
             });
         }
 
@@ -120,9 +126,9 @@ export function useEnrichedData(data: ElectionDataState, yesterdayData: Yesterda
             const key = `${dist.maz}-${dist.evk}`;
             const yDist = yesterdayDistMap[key];
 
-            const kulkep = dist.letszam?.kuvi || dist.letszam?.kulkep || 0;
-            const atjel = dist.letszam?.atjel || dist.letszam?.atjelentkezo || 0;
-            const atjelInnen = dist.letszam?.atjelInnen || 0;
+            const kulkep = parseSafeNumber(dist.letszam?.kuvi || dist.letszam?.kulkep);
+            const atjel = parseSafeNumber(dist.letszam?.atjel || dist.letszam?.atjelentkezo);
+            const atjelInnen = parseSafeNumber(dist.letszam?.atjelInnen);
 
             let kulkepDiff = 0;
             let atjelDiff = 0;
@@ -130,9 +136,9 @@ export function useEnrichedData(data: ElectionDataState, yesterdayData: Yesterda
             let totalDiff = 0;
 
             if (yDist) {
-                const yKulkep = yDist.letszam?.kuvi || yDist.letszam?.kulkep || 0;
-                const yAtjel = yDist.letszam?.atjel || yDist.letszam?.atjelentkezo || 0;
-                const yAtjelInnen = yDist.letszam?.atjelInnen || 0;
+                const yKulkep = parseSafeNumber(yDist.letszam?.kuvi || yDist.letszam?.kulkep);
+                const yAtjel = parseSafeNumber(yDist.letszam?.atjel || yDist.letszam?.atjelentkezo);
+                const yAtjelInnen = parseSafeNumber(yDist.letszam?.atjelInnen);
                 kulkepDiff = kulkep - yKulkep;
                 atjelDiff = atjel - yAtjel;
                 atjelInnenDiff = atjelInnen - yAtjelInnen;

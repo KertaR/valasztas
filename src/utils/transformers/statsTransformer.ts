@@ -146,9 +146,15 @@ export const generateStats = ({
         diffs.organizations = organizations.length - (yesterdayData.szervezetek?.length || 0);
         diffs.districts = districts.length - (yesterdayData.oevk?.length || 0);
 
+        const parseSafeNumber = (val: any) => {
+            if (typeof val === 'number') return val;
+            if (!val) return 0;
+            return parseInt(String(val).replace(/\s/g, ''), 10) || 0;
+        };
+
         let yesterdayTotalVoters = 0;
-        if (yesterdayData.oevk) yesterdayData.oevk.forEach(d => { yesterdayTotalVoters += (d.letszam?.indulo || 0); });
-        diffs.voters = totalEligibleVoters - yesterdayTotalVoters;
+        if (yesterdayData.oevk) yesterdayData.oevk.forEach(d => { yesterdayTotalVoters += parseSafeNumber(d.letszam?.indulo); });
+        diffs.voters = parseSafeNumber(totalEligibleVoters) - yesterdayTotalVoters;
     }
 
     return {

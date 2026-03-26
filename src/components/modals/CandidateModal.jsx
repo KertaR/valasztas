@@ -6,7 +6,7 @@ import { useUIContext } from '../../contexts';
 import { useExportImage, useShare } from '../../hooks';
 
 export default function CandidateModal() {
-    const { selectedCandidate: candidate, setSelectedCandidate } = useUIContext();
+    const { selectedCandidate: candidate, setSelectedCandidate } = /** @type {{ selectedCandidate: import('../../types/app').EnrichedCandidate | null, setSelectedCandidate: Function }} */ (useUIContext());
     const onClose = () => setSelectedCandidate(null);
     const cardRef = useRef(null);
     const { exportImage, isExporting } = useExportImage(cardRef, candidate ? `jelolt_adatlap_${candidate.neve.replace(/\s+/g, '_').toLowerCase()}` : 'jelolt_adatlap');

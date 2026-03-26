@@ -63,44 +63,55 @@ export default function DashboardTab() {
                 isExporting={isExporting}
             />
 
-            <div ref={dashboardRef} className="space-y-6 bg-slate-100 dark:bg-slate-950 pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 transition-colors">
+            <div ref={dashboardRef} className="space-y-8 bg-slate-100 dark:bg-slate-950 pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 transition-colors">
                 
-                <StatsGrid 
-                    candidatesCount={enrichedData.candidates.length}
-                    organizationsCount={data.szervezetek.length}
-                    districtsCount={enrichedData.districts.length}
-                    totalEligibleVoters={enrichedData.stats.totalEligibleVoters}
-                    diffs={enrichedData.stats.diffs}
-                    onCandidatesDiffClick={onCandidatesDiffClick}
-                />
+                {/* 1. Szakasz: Áttekintés és Fő mutatók */}
+                <section>
+                    <StatsGrid 
+                        candidatesCount={enrichedData.candidates.length}
+                        organizationsCount={data.szervezetek.length}
+                        districtsCount={enrichedData.districts.length}
+                        totalEligibleVoters={enrichedData.stats.totalEligibleVoters}
+                        diffs={enrichedData.stats.diffs}
+                        onCandidatesDiffClick={onCandidatesDiffClick}
+                    />
+                </section>
 
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-
-                    {/* Bal Oszlop: Top Pártok és Vizuális Státusz */}
-                    <div className="xl:col-span-2 space-y-6">
-
-                        {/* Vizuális Státusz és Kördiagram */}
+                {/* 2. Szakasz: Mandátumok és Jelöltek Állapota */}
+                <section className="space-y-4">
+                    <div className="flex items-center gap-4 px-1">
+                        <h2 className="text-xl font-bold text-slate-800 dark:text-white">Mandátumok és Jelöltek Állapota</h2>
+                        <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
+                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
                         <CandidateStatusChart
                             candidatesCount={enrichedData.candidates.length}
                             statusCategories={enrichedData.stats.statusCategories}
                             statusBreakdown={enrichedData.stats.statusBreakdown}
                             onStatusClick={onStatusClick}
                         />
-
-                        {/* Top Pártok Chart */}
                         <TopPartiesChart organizations={enrichedData.organizations} />
                     </div>
+                </section>
 
-                    {/* Jobb Oszlop: Hírfolyam és Kiemelés */}
-                    <div className="flex flex-col gap-6">
-
-                        {/* Legkiélezettebb Körzet Kiemelés */}
-                        <ContestedDistrict district={enrichedData.stats.mostContestedOevk} onClick={setSelectedOevk} />
-
-                        <ListProgress formations={enrichedData.formationsProgress || []} />
-                        <RecentChanges recentUpdates={enrichedData.stats.recentUpdates} setSelectedCandidate={setSelectedCandidate} />
+                {/* 3. Szakasz: Aktuális Kiemelések és Hírek */}
+                <section className="space-y-4">
+                    <div className="flex items-center gap-4 px-1">
+                        <h2 className="text-xl font-bold text-slate-800 dark:text-white">Aktuális Kiemelések és Hírek</h2>
+                        <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1"></div>
                     </div>
-                </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                        <div className="lg:col-span-1">
+                            <ListProgress formations={enrichedData.formationsProgress || []} />
+                        </div>
+                        <div className="lg:col-span-1">
+                            <ContestedDistrict district={enrichedData.stats.mostContestedOevk} onClick={setSelectedOevk} />
+                        </div>
+                        <div className="lg:col-span-1">
+                            <RecentChanges recentUpdates={enrichedData.stats.recentUpdates} setSelectedCandidate={setSelectedCandidate} />
+                        </div>
+                    </div>
+                </section>
             </div>
         </motion.div>
     );

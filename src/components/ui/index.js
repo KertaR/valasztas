@@ -13,3 +13,4 @@ export { default as DataTable } from './DataTable';
 export { default as PageLayout } from './PageLayout';
 export { default as ChartErrorBoundary } from './ChartErrorBoundary';
 export { default as ExportButton } from './ExportButton';
+export { default as CookieBanner } from './CookieBanner';

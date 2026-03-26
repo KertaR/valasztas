@@ -6,8 +6,20 @@ import { getImageUrl, getInitials } from '../utils/helpers';
 import { useUIContext, useDataContext } from '../contexts';
 import { useSearch } from '../hooks';
 
+/**
+ * @param {Object} props
+ * @param {number} props.index
+ * @param {React.CSSProperties} props.style
+ * @param {Object} props.data
+ * @param {Array<{type: 'candidate'|'organization'|'oevk', item: any}>} props.data.flatResults
+ * @param {number} props.data.activeIdx
+ * @param {(idx: number) => void} props.data.setActiveIdx
+ * @param {(res: any) => void} props.data.selectResult
+ * @param {React.MutableRefObject<any>} props.data.activeItemRef
+ */
 const SearchResultRow = ({ index, style, data }) => {
     const { flatResults, activeIdx, setActiveIdx, selectResult, activeItemRef } = data;
+    /** @type {{type: 'candidate'|'organization'|'oevk', item: any}} */
     const result = flatResults[index];
     const isActive = activeIdx === index;
     const { type, item } = result;
