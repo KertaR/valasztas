@@ -1,4 +1,5 @@
-import { Users, Crosshair, ShieldAlert, X } from 'lucide-react';
+import { Users, Crosshair, ShieldAlert, X, FileText, ChevronRight } from 'lucide-react';
+import { useUIContext } from '../../contexts';
 
 export default function MapSidebarInfo({
     selectedDistrict,
@@ -7,6 +8,8 @@ export default function MapSidebarInfo({
     organizations,
     onClose
 }) {
+    const { setSelectedOevk } = useUIContext();
+
     if (!selectedDistrict || !districtData[selectedDistrict]) return null;
 
     const data = districtData[selectedDistrict];
@@ -77,6 +80,19 @@ export default function MapSidebarInfo({
                     })()}
                 </div>
             )}
+            
+            <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
+                <button
+                    onClick={() => setSelectedOevk(data.districtInfo)}
+                    className="w-full flex items-center justify-between bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-400 px-4 py-3 rounded-xl border border-blue-200 dark:border-blue-800/50 transition-colors group shadow-sm font-bold text-sm"
+                >
+                    <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4" />
+                        <span>Részletes adatlap és Szavazókörök</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+            </div>
         </div>
     );
 }

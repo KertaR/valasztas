@@ -1,0 +1,383 @@
+{
+    "PvOnHeader": {
+        "generated": "2026-03-26T13:00:00.230531755+01:00",
+        "val_dat": "2026-04-12T00:00:00+02:00",
+        "vl_id": 467,
+        "nvv_id": 542
+    },
+    "data": {
+        "maz": "01",
+        "taz": "001",
+        "tel_nev": "Budapest 01. kerület",
+        "szavazokorok": [
+            {
+                "leiro": {
+                    "sorszam": "001",
+                    "szk_nev": "Budapest 01. kerület, 001. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 001. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 01",
+                    "kozter": "Úri utca 38. (Önkormányzat Intézménye)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1275,
+                    "honos": 1192,
+                    "atjel": 0,
+                    "atjelInnen": 75,
+                    "osszesen": 1192
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "002",
+                    "szk_nev": "Budapest 01. kerület, 002. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 002. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1014 Budapest 01",
+                    "kozter": "Tárnok utca 9-11. (Budavári Általános Iskola)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1327,
+                    "honos": 1232,
+                    "atjel": 0,
+                    "atjelInnen": 85,
+                    "osszesen": 1232
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "003",
+                    "szk_nev": "Budapest 01. kerület, 003. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 003. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1015 Budapest 01",
+                    "kozter": "Donáti utca 28.(Toldy Ferenc Gimnázium tornaterme)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "I",
+                    "telepSzintu": "I"
+                },
+                "letszam": {
+                    "indulo": 1050,
+                    "honos": 983,
+                    "atjel": 1076,
+                    "atjelInnen": 62,
+                    "osszesen": 2059
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "004",
+                    "szk_nev": "Budapest 01. kerület, 004. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 004. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1011 Budapest 01",
+                    "kozter": "Fő utca 31. (III. sz. Idősek Klubja)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 958,
+                    "honos": 840,
+                    "atjel": 0,
+                    "atjelInnen": 31,
+                    "osszesen": 840
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "005",
+                    "szk_nev": "Budapest 01. kerület, 005. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 005. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1015 Budapest 01",
+                    "kozter": "Batthyány u. 8. (Batthyány Lajos Általános Iskola)",
+                    "akadaly": "N",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1421,
+                    "honos": 1349,
+                    "atjel": 0,
+                    "atjelInnen": 70,
+                    "osszesen": 1349
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "006",
+                    "szk_nev": "Budapest 01. kerület, 006. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 006. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1015 Budapest 01",
+                    "kozter": "Toldy Ferenc utca 66. (Vízivárosi Óvoda)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1227,
+                    "honos": 1130,
+                    "atjel": 0,
+                    "atjelInnen": 86,
+                    "osszesen": 1130
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "007",
+                    "szk_nev": "Budapest 01. kerület, 007. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 007. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1015 Budapest 01",
+                    "kozter": "Hattyú utca 16. (I. sz. Idősek Klubja)",
+                    "akadaly": "N",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1163,
+                    "honos": 1104,
+                    "atjel": 0,
+                    "atjelInnen": 61,
+                    "osszesen": 1104
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "008",
+                    "szk_nev": "Budapest 01. kerület, 008. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 008. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1012 Budapest 01",
+                    "kozter": "Attila út 135-137. (Kosztolányi Dezső Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1259,
+                    "honos": 1186,
+                    "atjel": 0,
+                    "atjelInnen": 67,
+                    "osszesen": 1186
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "009",
+                    "szk_nev": "Budapest 01. kerület, 009. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 009. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1012 Budapest 01",
+                    "kozter": "Attila út 89. (Szociális Szolgáltatási Központ)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1172,
+                    "honos": 1083,
+                    "atjel": 0,
+                    "atjelInnen": 86,
+                    "osszesen": 1083
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "010",
+                    "szk_nev": "Budapest 01. kerület, 010. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 010. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1013 Budapest 01",
+                    "kozter": "Attila út 43. (Petőfi Sándor Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1263,
+                    "honos": 1196,
+                    "atjel": 0,
+                    "atjelInnen": 68,
+                    "osszesen": 1196
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "011",
+                    "szk_nev": "Budapest 01. kerület, 011. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 011. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1016 Budapest 01",
+                    "kozter": "Mészáros utca 5-7. (Szilágyi Erzsébet Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1318,
+                    "honos": 1252,
+                    "atjel": 0,
+                    "atjelInnen": 63,
+                    "osszesen": 1252
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "012",
+                    "szk_nev": "Budapest 01. kerület, 012. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 012. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1016 Budapest 01",
+                    "kozter": "Nyárs utca 2-4. (Nyárs utcai Óvoda)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1159,
+                    "honos": 1106,
+                    "atjel": 0,
+                    "atjelInnen": 47,
+                    "osszesen": 1106
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "013",
+                    "szk_nev": "Budapest 01. kerület, 013. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 013. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1016 Budapest 01",
+                    "kozter": "Mészáros utca 5-7. (Szilágyi Erzsébet Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1343,
+                    "honos": 1244,
+                    "atjel": 0,
+                    "atjelInnen": 99,
+                    "osszesen": 1244
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "014",
+                    "szk_nev": "Budapest 01. kerület, 014. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 014. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1013 Budapest 01",
+                    "kozter": "Attila út 43. (Petőfi Sándor Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1253,
+                    "honos": 1191,
+                    "atjel": 0,
+                    "atjelInnen": 56,
+                    "osszesen": 1191
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "015",
+                    "szk_nev": "Budapest 01. kerület, 015. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 015. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1016 Budapest 01",
+                    "kozter": "Lisznyai utca 40-42. (Lisznyai utcai Ált. Isk.)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1302,
+                    "honos": 1236,
+                    "atjel": 0,
+                    "atjelInnen": 55,
+                    "osszesen": 1236
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "016",
+                    "szk_nev": "Budapest 01. kerület, 016. számú szavazókör",
+                    "szk_nev_en": "Budapest 1st district, 016. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1016 Budapest 01",
+                    "kozter": "Tigris utca 58-60. (Tigris utcai Óvoda)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1196,
+                    "honos": 1123,
+                    "atjel": 0,
+                    "atjelInnen": 65,
+                    "osszesen": 1123
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,475 @@
+{
+    "PvOnHeader": {
+        "generated": "2026-03-26T13:00:00.230531755+01:00",
+        "val_dat": "2026-04-12T00:00:00+02:00",
+        "vl_id": 467,
+        "nvv_id": 542
+    },
+    "data": {
+        "maz": "01",
+        "taz": "005",
+        "tel_nev": "Budapest 05. kerület",
+        "szavazokorok": [
+            {
+                "leiro": {
+                    "sorszam": "001",
+                    "szk_nev": "Budapest 05. kerület, 001. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 001. no. polling station",
+                    "evk": "02",
+                    "evk_nev": "Budapest főváros, 02. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 02. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Belgrád rakpart 27 / (Idősek Klubja)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 836,
+                    "honos": 801,
+                    "atjel": 0,
+                    "atjelInnen": 39,
+                    "osszesen": 801
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "002",
+                    "szk_nev": "Budapest 05. kerület, 002. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 002. no. polling station",
+                    "evk": "02",
+                    "evk_nev": "Budapest főváros, 02. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 02. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Váci u. 43. (Ének-zenei Általános Iskola)",
+                    "akadaly": "N",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 566,
+                    "honos": 521,
+                    "atjel": 0,
+                    "atjelInnen": 39,
+                    "osszesen": 521
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "003",
+                    "szk_nev": "Budapest 05. kerület, 003. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 003. no. polling station",
+                    "evk": "02",
+                    "evk_nev": "Budapest főváros, 02. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 02. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Veres Pálné u. 38. (Veres Pálné Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 889,
+                    "honos": 828,
+                    "atjel": 0,
+                    "atjelInnen": 56,
+                    "osszesen": 828
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "004",
+                    "szk_nev": "Budapest 05. kerület, 004. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 004. no. polling station",
+                    "evk": "02",
+                    "evk_nev": "Budapest főváros, 02. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 02. no. constituency",
+                    "cim": "1053 Budapest 05",
+                    "kozter": "Kecskeméti u.9 / (Gyermek fogászati rendelő)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 730,
+                    "honos": 685,
+                    "atjel": 0,
+                    "atjelInnen": 36,
+                    "osszesen": 685
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "005",
+                    "szk_nev": "Budapest 05. kerület, 005. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 005. no. polling station",
+                    "evk": "02",
+                    "evk_nev": "Budapest főváros, 02. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 02. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Váci u. 43. (Ének-zenei Általános Iskola)",
+                    "akadaly": "N",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1027,
+                    "honos": 943,
+                    "atjel": 0,
+                    "atjelInnen": 80,
+                    "osszesen": 943
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "006",
+                    "szk_nev": "Budapest 05. kerület, 006. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 006. no. polling station",
+                    "evk": "02",
+                    "evk_nev": "Budapest főváros, 02. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 02. no. constituency",
+                    "cim": "1053 Budapest 05",
+                    "kozter": "Szép utca 1/b./(Széphárom közösségi tér)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 547,
+                    "honos": 510,
+                    "atjel": 0,
+                    "atjelInnen": 30,
+                    "osszesen": 510
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "007",
+                    "szk_nev": "Budapest 05. kerület, 007. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 007. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1052 Budapest 05",
+                    "kozter": " Sütő utca 1. / (Deák téri Evangélikus Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 378,
+                    "honos": 348,
+                    "atjel": 0,
+                    "atjelInnen": 27,
+                    "osszesen": 348
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "008",
+                    "szk_nev": "Budapest 05. kerület, 008. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 008. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1052 Budapest 05",
+                    "kozter": " Sütő utca 1. / (Deák téri Evangélikus Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 475,
+                    "honos": 445,
+                    "atjel": 0,
+                    "atjelInnen": 28,
+                    "osszesen": 445
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "009",
+                    "szk_nev": "Budapest 05. kerület, 009. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 009. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "1052 Budapest 05",
+                    "kozter": "Sütő utca 1. / (Deák téri Evangélikus Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 526,
+                    "honos": 485,
+                    "atjel": 0,
+                    "atjelInnen": 30,
+                    "osszesen": 485
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "010",
+                    "szk_nev": "Budapest 05. kerület, 010. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 010. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Vármegye u. 9. (Szabolcsi Bence Zeneiskola)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 800,
+                    "honos": 747,
+                    "atjel": 0,
+                    "atjelInnen": 46,
+                    "osszesen": 747
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "011",
+                    "szk_nev": "Budapest 05. kerület, 011. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 011. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Erzsébet tér 4. (Polgármesteri Hivatal)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "I"
+                },
+                "letszam": {
+                    "indulo": 1181,
+                    "honos": 1105,
+                    "atjel": 0,
+                    "atjelInnen": 67,
+                    "osszesen": 1105
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "012",
+                    "szk_nev": "Budapest 05. kerület, 012. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 012. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Nádor u. 12. (Hild József Általános Iskola)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 944,
+                    "honos": 875,
+                    "atjel": 0,
+                    "atjelInnen": 55,
+                    "osszesen": 875
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "013",
+                    "szk_nev": "Budapest 05. kerület, 013. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 013. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Arany János u. 10. (Aranytíz Kultúrház)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1213,
+                    "honos": 1142,
+                    "atjel": 0,
+                    "atjelInnen": 65,
+                    "osszesen": 1142
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "014",
+                    "szk_nev": "Budapest 05. kerület, 014. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 014. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Vadász u. 11-13. (Idősek Klubja)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1184,
+                    "honos": 1110,
+                    "atjel": 0,
+                    "atjelInnen": 66,
+                    "osszesen": 1110
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "015",
+                    "szk_nev": "Budapest 05. kerület, 015. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 015. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Vadász u. 11-13. (Idősek Klubja)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "I",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 973,
+                    "honos": 917,
+                    "atjel": 0,
+                    "atjelInnen": 56,
+                    "osszesen": 917
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "016",
+                    "szk_nev": "Budapest 05. kerület, 016. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 016. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Balassi Bálint u. 9-11. (Idősek Klubja)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 935,
+                    "honos": 874,
+                    "atjel": 0,
+                    "atjelInnen": 50,
+                    "osszesen": 874
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "017",
+                    "szk_nev": "Budapest 05. kerület, 017. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 017. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Balassi Bálint u. 9-11. (Idősek Klubja)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1129,
+                    "honos": 1072,
+                    "atjel": 0,
+                    "atjelInnen": 52,
+                    "osszesen": 1072
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "018",
+                    "szk_nev": "Budapest 05. kerület, 018. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 018. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Szemere u. 3. (Szent István Általános Iskola)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1097,
+                    "honos": 1027,
+                    "atjel": 0,
+                    "atjelInnen": 64,
+                    "osszesen": 1027
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "019",
+                    "szk_nev": "Budapest 05. kerület, 019. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 019. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Markó u. 18-20. (Xántus János Gimnázium)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1065,
+                    "honos": 1020,
+                    "atjel": 0,
+                    "atjelInnen": 50,
+                    "osszesen": 1020
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "020",
+                    "szk_nev": "Budapest 05. kerület, 020. számú szavazókör",
+                    "szk_nev_en": "Budapest 5th district, 020. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Budapest főváros, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Budapest Capital , 01. no. constituency",
+                    "cim": "Budapest 05",
+                    "kozter": "Erzsébet tér 4. (Polgármesteri Hivatal)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "I",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 0,
+                    "honos": 1,
+                    "atjel": 1293,
+                    "atjelInnen": 0,
+                    "osszesen": 1294
+                }
+            }
+        ]
+    }
+}

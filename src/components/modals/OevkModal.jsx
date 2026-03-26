@@ -1,6 +1,7 @@
 import { useRef, useState, useMemo, useEffect } from 'react';
-import { Users, Map, Download, Loader2, TrendingUp, Shield, Share2, Check } from 'lucide-react';
+import { Users, Map, Download, Loader2, TrendingUp, Shield, Share2, Check, Building } from 'lucide-react';
 import { StatusBadge, Modal } from '../ui';
+import { PollingStationsViewer } from '../oevk';
 import { getInitials, getImageUrl } from '../../utils/helpers';
 import { useUIContext, useDataContext } from '../../contexts';
 import { useExportImage, useShare } from '../../hooks';
@@ -36,6 +37,7 @@ export default function OevkModal() {
     const { enrichedData } = useDataContext();
     const onClose = () => setSelectedOevk(null);
     const cardRef = useRef(null);
+    const [activeTab, setActiveTab] = useState('candidates'); // 'candidates' or 'stations'
 
     // *** Minden hook UNCONDITIONALLY, early return ELŐTT ***
     const districtCandidates = useMemo(() => {
@@ -125,80 +127,102 @@ export default function OevkModal() {
                 )}
             </div>
 
-            {/* Jelöltek lista fejléce */}
-            <div className="p-4 sm:px-6 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 dark:border-slate-800 gap-3 bg-white dark:bg-slate-900 flex-shrink-0">
-                <h3 className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 text-lg transition-colors">
-                    <Users className="w-5 h-5 text-blue-600 dark:text-blue-400 transition-colors" />
-                    Induló jelöltek ({totalCount} fő)
-                    {registeredCount > 0 && (
-                        <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full border border-emerald-200 dark:border-emerald-800/50 flex items-center gap-1">
-                            <Shield className="w-3 h-3" /> {registeredCount} nyilvántartva
-                        </span>
-                    )}
-                </h3>
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+            {/* Tartalom Tabs vezérlővel */}
+            <div className="p-2 sm:px-6 sm:py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 dark:border-slate-800 gap-3 bg-slate-50 dark:bg-slate-900 flex-shrink-0">
+                <div className="flex bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700 w-full sm:w-auto">
+                    <button
+                        onClick={() => setActiveTab('candidates')}
+                        className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'candidates' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}
+                    >
+                        <Users className="w-4 h-4" />
+                        Jelöltek
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('stations')}
+                        className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'stations' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'}`}
+                    >
+                        <Building className="w-4 h-4" />
+                        Szavazókörök
+                    </button>
+                </div>
+                
+                <div className="flex items-center gap-2 w-full sm:w-auto mt-2 sm:mt-0">
                     <button
                         onClick={handleShare}
-                        className="flex items-center justify-center gap-2 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-3 py-2 rounded-xl text-sm font-bold shadow-sm transition-all"
                         title="Megosztás"
                     >
                         {isCopied ? <Check className="w-4 h-4 text-emerald-500" /> : <Share2 className="w-4 h-4" />}
-                        <span>{isCopied ? 'Másolva!' : 'Megosztás'}</span>
+                        <span className="hidden sm:inline">{isCopied ? 'Másolva!' : 'Megosztás'}</span>
                     </button>
                     <button
                         onClick={exportImage}
                         disabled={isExporting}
-                        className="flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50 px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-all disabled:opacity-75 disabled:cursor-wait focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50 px-3 py-2 rounded-xl text-sm font-bold shadow-sm transition-all disabled:opacity-75 disabled:cursor-wait"
                     >
                         {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-                        {isExporting ? 'Készül...' : 'Képként mentés az adatokról'}
+                        <span className="hidden sm:inline">{isExporting ? 'Készül...' : 'Mentés'}</span>
                     </button>
                 </div>
             </div>
 
-            {/* Jelöltek táblázat */}
-            <div className="overflow-y-auto flex-1 bg-white dark:bg-slate-900 transition-colors">
-                <table className="w-full text-left border-collapse transition-colors">
-                    <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-slate-700 text-xs sm:text-sm transition-colors sticky top-0">
-                        <tr>
-                            <th className="p-3 sm:p-4 font-semibold">Jelölt neve</th>
-                            <th className="p-3 sm:p-4 font-semibold hidden md:table-cell">Jelölő Szervezet</th>
-                            <th className="p-3 sm:p-4 font-semibold">Státusz</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 dark:divide-slate-800 transition-colors">
-                        {districtCandidates.map((jelolt, idx) => {
-                            const partyColor = getPartyColor(jelolt.partyNames);
-                            return (
-                                <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors">
-                                    <td className="p-3 sm:p-4">
-                                        <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 transition-colors">
-                                            {/* Pártszín csík */}
-                                            <div className="w-1 h-8 rounded-full flex-shrink-0" style={{ backgroundColor: partyColor }} />
-                                            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden flex items-center justify-center font-bold text-[10px] sm:text-xs shadow-sm border-2 flex-shrink-0 transition-colors relative"
-                                                style={{ borderColor: partyColor + '40', backgroundColor: partyColor + '15', color: partyColor }}>
-                                                {jelolt.fenykep ? (
-                                                    <img src={getImageUrl(jelolt.fenykep)} alt={jelolt.neve} crossOrigin="anonymous" className="w-full h-full object-cover"
-                                                        onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />
-                                                ) : null}
-                                                <div className={`w-full h-full flex items-center justify-center ${jelolt.fenykep ? 'hidden' : ''}`}>{getInitials(jelolt.neve)}</div>
-                                            </div>
-                                            {jelolt.neve}
-                                        </div>
-                                        <div className="md:hidden mt-1 ml-5 text-xs font-semibold truncate max-w-[200px] transition-colors" style={{ color: partyColor }}>{jelolt.partyNames}</div>
-                                    </td>
-                                    <td className="p-3 sm:p-4 hidden md:table-cell">
-                                        <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold text-white shadow-sm"
-                                            style={{ backgroundColor: partyColor }}>
-                                            {jelolt.partyNames}
-                                        </span>
-                                    </td>
-                                    <td className="p-3 sm:p-4"><StatusBadge status={jelolt.statusName} /></td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+            {/* Dinamikus Tartalom */}
+            <div className="flex-1 flex flex-col overflow-hidden bg-white dark:bg-slate-900 transition-colors h-[400px] sm:h-auto">
+                {activeTab === 'candidates' ? (
+                    <div className="overflow-y-auto w-full h-full pb-4">
+                        {districtCandidates.length === 0 ? (
+                            <div className="p-8 text-center text-slate-500 font-bold flex flex-col items-center justify-center h-full">
+                                <Users className="w-12 h-12 text-slate-300 dark:text-slate-700 mb-4" />
+                                Még nincsenek feltöltött jelöltek ebben a választókerületben.
+                            </div>
+                        ) : (
+                            <table className="w-full text-left border-collapse transition-colors">
+                                <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 border-b border-slate-200 dark:border-slate-700 text-xs sm:text-sm transition-colors sticky top-0 z-10">
+                                    <tr>
+                                        <th className="p-3 sm:p-4 font-semibold">Jelölt neve</th>
+                                        <th className="p-3 sm:p-4 font-semibold hidden md:table-cell">Jelölő Szervezet</th>
+                                        <th className="p-3 sm:p-4 font-semibold">Státusz</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 transition-colors">
+                                    {districtCandidates.map((jelolt, idx) => {
+                                        const partyColor = getPartyColor(jelolt.partyNames);
+                                        return (
+                                            <tr key={idx} className="hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors">
+                                                <td className="p-3 sm:p-4">
+                                                    <div className="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2 transition-colors">
+                                                        <div className="w-1 h-8 rounded-full flex-shrink-0" style={{ backgroundColor: partyColor }} />
+                                                        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden flex items-center justify-center font-bold text-[10px] sm:text-xs shadow-sm border-2 flex-shrink-0 transition-colors relative"
+                                                            style={{ borderColor: partyColor + '40', backgroundColor: partyColor + '15', color: partyColor }}>
+                                                            {jelolt.fenykep ? (
+                                                                <img src={getImageUrl(jelolt.fenykep)} alt={jelolt.neve} crossOrigin="anonymous" className="w-full h-full object-cover"
+                                                                    onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'flex'; }} />
+                                                            ) : null}
+                                                            <div className={`w-full h-full flex items-center justify-center ${jelolt.fenykep ? 'hidden' : ''}`}>{getInitials(jelolt.neve)}</div>
+                                                        </div>
+                                                        {jelolt.neve}
+                                                    </div>
+                                                    <div className="md:hidden mt-1 ml-5 text-xs font-semibold truncate max-w-[200px] transition-colors" style={{ color: partyColor }}>{jelolt.partyNames}</div>
+                                                </td>
+                                                <td className="p-3 sm:p-4 hidden md:table-cell">
+                                                    <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold text-white shadow-sm"
+                                                        style={{ backgroundColor: partyColor }}>
+                                                        {jelolt.partyNames}
+                                                    </span>
+                                                </td>
+                                                <td className="p-3 sm:p-4"><StatusBadge status={jelolt.statusName} /></td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+                ) : (
+                    <div className="w-full h-full flex flex-col overflow-hidden">
+                        <PollingStationsViewer selectedOevk={selectedOevk} settlements={enrichedData.settlements} />
+                    </div>
+                )}
             </div>
         </Modal>
     );

@@ -40,6 +40,7 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
     const [isLoadingWeb, setIsLoadingWeb] = useState(false);
     const [fetchError, setFetchError] = useState<string | null>(null);
     const [lastFetchTime, setLastFetchTime] = useState<Date | null>(null);
+    const [nviVer, setNviVer] = useState<string>(NVI_DATE);
     const [autoRefresh, setAutoRefresh] = useState(() => {
         return localStorage.getItem('valasztas_auto_refresh') === 'true';
     });
@@ -71,6 +72,7 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
                 const configData = await fetchJson(CONFIG_URL);
                 if (configData && configData.ver) {
                     currentVer = configData.ver;
+                    setNviVer(currentVer);
                 }
             } catch (e) {
                 console.warn("Nem sikerült letölteni a config.json-t, használjuk az alapértelmezett dátumot:", e);
@@ -247,6 +249,7 @@ export function useElectionData(showToast: (msg: string) => void, onClearCallbac
         clearData,
         lastFetchTime,
         autoRefresh,
-        setAutoRefresh
+        setAutoRefresh,
+        nviVer
     };
 }

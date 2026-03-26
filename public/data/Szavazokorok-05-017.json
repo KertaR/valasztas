@@ -1,0 +1,130 @@
+{
+    "PvOnHeader": {
+        "generated": "2026-03-26T13:00:00.230531755+01:00",
+        "val_dat": "2026-04-12T00:00:00+02:00",
+        "vl_id": 467,
+        "nvv_id": 542
+    },
+    "data": {
+        "maz": "05",
+        "taz": "017",
+        "tel_nev": "Alsózsolca",
+        "szavazokorok": [
+            {
+                "leiro": {
+                    "sorszam": "001",
+                    "szk_nev": "Alsózsolca, 001. számú szavazókör",
+                    "szk_nev_en": "Alsózsolca, 001. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Borsod-Abaúj-Zemplén vármegye, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Borsod-Abaúj-Zemplén County, 01. no. constituency",
+                    "cim": "Alsózsolca",
+                    "kozter": "Fekete István utca 7. (Óvoda)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "I",
+                    "telepSzintu": "I"
+                },
+                "letszam": {
+                    "indulo": 721,
+                    "honos": 699,
+                    "atjel": 24,
+                    "atjelInnen": 28,
+                    "osszesen": 723
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "002",
+                    "szk_nev": "Alsózsolca, 002. számú szavazókör",
+                    "szk_nev_en": "Alsózsolca, 002. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Borsod-Abaúj-Zemplén vármegye, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Borsod-Abaúj-Zemplén County, 01. no. constituency",
+                    "cim": "Alsózsolca",
+                    "kozter": "Kassai út 23. (Iskola)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 735,
+                    "honos": 714,
+                    "atjel": 0,
+                    "atjelInnen": 17,
+                    "osszesen": 714
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "003",
+                    "szk_nev": "Alsózsolca, 003. számú szavazókör",
+                    "szk_nev_en": "Alsózsolca, 003. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Borsod-Abaúj-Zemplén vármegye, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Borsod-Abaúj-Zemplén County, 01. no. constituency",
+                    "cim": "Alsózsolca",
+                    "kozter": "Görgey Artúr út 1. (Közösségi Ház)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 956,
+                    "honos": 933,
+                    "atjel": 0,
+                    "atjelInnen": 15,
+                    "osszesen": 933
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "004",
+                    "szk_nev": "Alsózsolca, 004. számú szavazókör",
+                    "szk_nev_en": "Alsózsolca, 004. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Borsod-Abaúj-Zemplén vármegye, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Borsod-Abaúj-Zemplén County, 01. no. constituency",
+                    "cim": "Alsózsolca",
+                    "kozter": "Görgey Artúr út 1. (Közösségi Ház)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 815,
+                    "honos": 797,
+                    "atjel": 0,
+                    "atjelInnen": 12,
+                    "osszesen": 797
+                }
+            },
+            {
+                "leiro": {
+                    "sorszam": "005",
+                    "szk_nev": "Alsózsolca, 005. számú szavazókör",
+                    "szk_nev_en": "Alsózsolca, 005. no. polling station",
+                    "evk": "01",
+                    "evk_nev": "Borsod-Abaúj-Zemplén vármegye, 01. számú egyéni választókerület",
+                    "evk_nev_en": "Borsod-Abaúj-Zemplén County, 01. no. constituency",
+                    "cim": "Alsózsolca",
+                    "kozter": "Kossuth Lajos út 168-170 (volt 3-as Iskola)",
+                    "akadaly": "I",
+                    "szamlKijelolt": "N",
+                    "atjKijelolt": "N",
+                    "telepSzintu": "N"
+                },
+                "letszam": {
+                    "indulo": 1001,
+                    "honos": 988,
+                    "atjel": 0,
+                    "atjelInnen": 9,
+                    "osszesen": 988
+                }
+            }
+        ]
+    }
+}
