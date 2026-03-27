@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from "@vercel/analytics/react";
 import { Moon, Sun, X, Menu, Globe } from 'lucide-react';
 
 import {
@@ -104,6 +105,7 @@ function AppContent() {
             </main>
             <CookieBanner />
             <ToastContainer toast={toast} />
+            <Analytics />
         </div>
     );
 }
