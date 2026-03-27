@@ -252,9 +252,9 @@ export default function OevkMapTab() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 relative">
                 {/* Térkép Container */}
-                <div className="xl:col-span-3 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-800/50 p-2 select-none relative h-[500px] md:h-[650px]">
+                <div className="xl:col-span-3 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-slate-200/50 dark:border-slate-800/50 p-2 select-none relative h-[500px] md:h-[650px] overflow-hidden">
                     <MapDisplay
                         oevkPoligonok={oevkPoligonok}
                         selectedParty={selectedParty}
@@ -267,18 +267,33 @@ export default function OevkMapTab() {
                         setSelectedDistrict={setSelectedDistrict}
                         tooltip={tooltipContent}
                     />
+
+                    {/* Mobile Overlay for MapInfo */}
+                    {selectedDistrict && (
+                        <div className="xl:hidden absolute bottom-4 left-4 right-4 z-10 shadow-2xl rounded-3xl max-h-[60vh] overflow-y-auto custom-scrollbar">
+                            <MapSidebarInfo
+                                selectedDistrict={selectedDistrict}
+                                districtData={districtData}
+                                selectedParty={selectedParty}
+                                organizations={organizations}
+                                onClose={() => setSelectedDistrict(null)}
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {/* Oldalsáv és Jelmagyarázat */}
                 <div className="xl:col-span-1 flex flex-col gap-6">
                     {selectedDistrict && (
-                        <MapSidebarInfo
-                            selectedDistrict={selectedDistrict}
-                            districtData={districtData}
-                            selectedParty={selectedParty}
-                            organizations={organizations}
-                            onClose={() => setSelectedDistrict(null)}
-                        />
+                        <div className="hidden xl:block">
+                            <MapSidebarInfo
+                                selectedDistrict={selectedDistrict}
+                                districtData={districtData}
+                                selectedParty={selectedParty}
+                                organizations={organizations}
+                                onClose={() => setSelectedDistrict(null)}
+                            />
+                        </div>
                     )}
                     
                     <MapLegend selectedParty={selectedParty} />
@@ -289,7 +304,7 @@ export default function OevkMapTab() {
             {tooltipContent && createPortal(
                 <div
                     ref={tooltipRef}
-                    className="pointer-events-none fixed z-[9999] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 text-slate-800 dark:text-slate-200 text-sm px-4 py-3 rounded-2xl shadow-2xl max-w-[250px]"
+                    className="pointer-events-none hidden md:block fixed z-[9999] bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 text-slate-800 dark:text-slate-200 text-sm px-4 py-3 rounded-2xl shadow-2xl max-w-[250px]"
                     style={{
                         left: tooltipContent.x + 15,
                         top: Math.max(tooltipContent.y + 15, 8),

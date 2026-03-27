@@ -174,8 +174,20 @@ export default function PollingStationsViewer({ selectedOevk, settlements }) {
                                             </div>
                                             <div>
                                                 <div className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Jogosultak</div>
-                                                <div className="font-black text-slate-800 dark:text-slate-200 leading-none">
-                                                    {(szk.letszam.indulo || szk.letszam.osszesen).toLocaleString('hu-HU')} <span className="text-xs font-semibold text-slate-400">fő</span>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="font-black text-slate-800 dark:text-slate-200 leading-none">
+                                                        {(szk.letszam.indulo || szk.letszam.osszesen).toLocaleString('hu-HU')} <span className="text-xs font-semibold text-slate-400">fő</span>
+                                                    </div>
+                                                    {(() => {
+                                                        const totalVoters = szk.letszam.indulo || szk.letszam.osszesen;
+                                                        if (!totalVoters) return null;
+                                                        const perMin = totalVoters / 780;
+                                                        return (
+                                                            <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-1.5 py-0.5 rounded border border-emerald-100 dark:border-emerald-800/50 shrink-0" title="Átlagos érkezési sebesség (6:00 - 19:00)">
+                                                                {perMin >= 1 ? `${perMin.toFixed(1)} fő/perc` : `${(totalVoters / 13).toFixed(1)} fő/óra`}
+                                                            </span>
+                                                        );
+                                                    })()}
                                                 </div>
                                             </div>
                                         </div>

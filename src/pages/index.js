@@ -13,3 +13,4 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as NationalListsTab } from './NationalListsTab';
 export { default as CoalitionBuilderTab } from './CoalitionBuilderTab';
 export { default as LegalTab } from './LegalTab';
+export { default as EvkTrafficTab } from './EvkTrafficTab';

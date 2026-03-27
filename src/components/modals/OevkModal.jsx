@@ -89,9 +89,17 @@ export default function OevkModal() {
                         <div className="bg-white/60 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg px-4 py-2 border border-white/50 dark:border-slate-700/50 shadow-sm leading-none flex gap-2 items-center transition-colors">
                             <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 transition-colors">Székhely: </span> {selectedOevk.szekhely}
                         </div>
-                        <div className="bg-white/60 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-sm font-black rounded-lg px-4 py-2 border border-white/50 dark:border-slate-700/50 shadow-sm leading-none flex gap-2 items-center transition-colors">
+                        <div className="bg-white/60 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 text-sm font-black rounded-lg px-4 py-2 border border-white/50 dark:border-slate-700/50 shadow-sm leading-none flex gap-2 items-center transition-colors flex-wrap">
                             <span className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 transition-colors">Választók: </span>
                             <span className="text-blue-700 dark:text-blue-400 transition-colors">{selectedOevk.letszam?.indulo?.toLocaleString('hu-HU')} fő</span>
+                            {selectedOevk.letszam?.indulo && (() => {
+                                const perMin = selectedOevk.letszam.indulo / 780;
+                                return (
+                                    <span className="ml-0 sm:ml-2 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/40 px-2 py-1 rounded transition-colors uppercase border border-emerald-200 dark:border-emerald-800/50">
+                                        Átlag: {perMin >= 1 ? `${perMin.toFixed(1)} fő/perc` : `${(selectedOevk.letszam.indulo / 13).toFixed(1)} fő/óra`}
+                                    </span>
+                                );
+                            })()}
                         </div>
                         {/* Kompetitivitás badge */}
                         {competitiveness && (

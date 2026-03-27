@@ -75,7 +75,7 @@ const MapDisplay = React.memo(({
     }, [oevkPoligonok, selectedParty, selectedDistrict, getColor, handlePathMouseEnter, handlePathMouseLeave, handlePathMouseMove, setSelectedDistrict]);
 
     return (
-        <div className="relative w-full h-[500px] md:h-[600px] overflow-hidden rounded-2xl bg-sky-50/40 dark:bg-slate-950/40 z-0 map-wrapper">
+        <div className="relative w-full h-full overflow-hidden rounded-2xl bg-sky-50/40 dark:bg-slate-950/40 z-0 map-wrapper">
             <style>{`
                 /* Light mode: Szín-kivonás a profi kinézetért */
                 .map-tiles-custom .leaflet-tile-pane {

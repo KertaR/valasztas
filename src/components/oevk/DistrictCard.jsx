@@ -35,9 +35,18 @@ export default function DistrictCard({ dist, onSelect }) {
                         </div>
                         <div className="col-span-2 mt-1">
                             <span className="block text-slate-400 dark:text-slate-500 text-[10px] md:text-xs uppercase tracking-wider font-bold mb-0.5">Választók (ind.)</span>
-                            <span className="font-bold text-slate-800 dark:text-slate-200">
-                                {dist.letszam?.indulo ? dist.letszam.indulo.toLocaleString('hu-HU') : 'N/A'} fő
-                            </span>
+                            <div className="flex justify-between items-center">
+                                <span className="font-bold text-slate-800 dark:text-slate-200">
+                                    {dist.letszam?.indulo ? dist.letszam.indulo.toLocaleString('hu-HU') : 'N/A'} fő
+                                </span>
+                                {dist.letszam?.indulo && (
+                                    <span className="text-[10px] md:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-800/50" title="Átlagos érkezési sebesség (6:00 - 19:00)">
+                                        {(dist.letszam.indulo / 780) >= 1 
+                                            ? `${(dist.letszam.indulo / 780).toFixed(1)} fő/perc` 
+                                            : `${(dist.letszam.indulo / 13).toFixed(1)} fő/óra`}
+                                    </span>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

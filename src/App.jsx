@@ -3,7 +3,7 @@ import { Moon, Sun, X, Menu, Globe } from 'lucide-react';
 
 import {
     DashboardTab, CandidatesTab, CompareTab,
-    OrganizationsTab, OevkTab, CountiesTab, TransfersTab, SeatCalculatorTab, ChangelogTab, TrendTab, OevkMapTab, ErrorBoundary, NationalListsTab, CoalitionBuilderTab, LegalTab
+    OrganizationsTab, OevkTab, CountiesTab, TransfersTab, SeatCalculatorTab, ChangelogTab, TrendTab, OevkMapTab, ErrorBoundary, NationalListsTab, CoalitionBuilderTab, LegalTab, EvkTrafficTab
 } from './pages';
 
 import {
@@ -92,6 +92,7 @@ function AppContent() {
                             <OevkMapTab />
                         </ErrorBoundary>
                     )}
+                    {activeTab === 'evk_forgalom' && <EvkTrafficTab />}
                     {activeTab === 'jogi' && <LegalTab />}
 
                     {/* Lábjegyzet / Forrásmegjelölés */}

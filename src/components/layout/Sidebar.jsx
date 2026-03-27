@@ -1,6 +1,6 @@
 import {
     Globe, LayoutDashboard, Users, Scale, TrendingUp,
-    Building, Map, PieChart, Moon, Sun, Trash2, X, Search, ArrowRightLeft, Calculator, Activity, MapPin, List, Network
+    Building, Map, PieChart, Moon, Sun, Trash2, X, Search, ArrowRightLeft, Calculator, Activity, MapPin, List, Network, Clock
 } from 'lucide-react';
 import NavItem from '../ui/NavItem';
 
@@ -46,7 +46,7 @@ export default function Sidebar() {
                     </button>
                 </div>
 
-                <nav className="p-4 space-y-2 flex-1 overflow-y-auto w-full custom-scrollbar">
+                <nav className="p-4 space-y-1 flex-1 overflow-y-auto w-full custom-scrollbar">
                     <button
                         onClick={() => { setIsSearchOpen(true); setIsMobileMenuOpen(false); }}
                         className="w-full flex items-center justify-between px-3 py-3 mb-4 rounded-xl text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-text group"
@@ -60,19 +60,27 @@ export default function Sidebar() {
                         </div>
                     </button>
 
+                    <div className="px-3 mt-2 mb-1 text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest">Főoldal</div>
                     <NavItem icon={<LayoutDashboard className="w-5 h-5" />} label="Áttekintés" active={activeTab === 'dashboard'} onClick={() => switchTab('dashboard')} />
+                    <NavItem icon={<MapPin className="w-5 h-5 text-blue-500 font-bold" />} label="Térkép (Béta)" active={activeTab === 'terkep'} onClick={() => switchTab('terkep')} />
+
+                    <div className="px-3 mt-6 mb-1 text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest">Adatbázisok</div>
                     <NavItem icon={<Users className="w-5 h-5" />} label="Egyéni Jelöltek" badge={enrichedData.candidates?.length} active={activeTab === 'jeloltek'} onClick={() => switchTab('jeloltek')} />
-                    <NavItem icon={<Activity className="w-5 h-5 text-amber-500 font-bold" />} label="Napi Változások" active={activeTab === 'valtozasok'} onClick={() => switchTab('valtozasok')} />
-                    <NavItem icon={<TrendingUp className="w-5 h-5 text-emerald-500 font-bold" />} label="Idősáv és Trendek" active={activeTab === 'trendek'} onClick={() => switchTab('trendek')} />
-                    <NavItem icon={<ArrowRightLeft className="w-5 h-5" />} label="Átjelentkezettek" active={activeTab === 'atjelentkezes'} onClick={() => switchTab('atjelentkezes')} />
-                    <NavItem icon={<Calculator className="w-5 h-5 text-indigo-500 font-bold" />} label="Mandátumbecslő" active={activeTab === 'kalkulator'} onClick={() => switchTab('kalkulator')} />
-                    <NavItem icon={<Scale className="w-5 h-5" />} label="Összehasonlítás" active={activeTab === 'osszehasonlitas'} onClick={() => switchTab('osszehasonlitas')} />
-                    <NavItem icon={<Network className="w-5 h-5 text-indigo-500" />} label="Összefogás Tervező" active={activeTab === 'osszefoglas'} onClick={() => switchTab('osszefoglas')} />
                     <NavItem icon={<Building className="w-5 h-5" />} label="Szervezetek" badge={enrichedData.organizations?.length} active={activeTab === 'szervezetek'} onClick={() => switchTab('szervezetek')} />
                     <NavItem icon={<List className="w-5 h-5" />} label="Országos Listák" active={activeTab === 'orszagos_listak'} onClick={() => switchTab('orszagos_listak')} />
                     <NavItem icon={<Map className="w-5 h-5" />} label="Választókerületek" badge={enrichedData.districts?.length} active={activeTab === 'oevk'} onClick={() => switchTab('oevk')} />
                     <NavItem icon={<PieChart className="w-5 h-5" />} label="Vármegyék" badge={enrichedData.countiesData?.length} active={activeTab === 'megyek'} onClick={() => switchTab('megyek')} />
-                    <NavItem icon={<MapPin className="w-5 h-5 text-blue-500 font-bold" />} label="Térkép (Béta)" active={activeTab === 'terkep'} onClick={() => switchTab('terkep')} />
+
+                    <div className="px-3 mt-6 mb-1 text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest">Elemzések & Trendek</div>
+                    <NavItem icon={<Clock className="w-5 h-5 text-emerald-500 font-bold" />} label="EVK Forgalom (Béta)" active={activeTab === 'evk_forgalom'} onClick={() => switchTab('evk_forgalom')} />
+                    <NavItem icon={<Activity className="w-5 h-5 text-amber-500 font-bold" />} label="Napi Változások" active={activeTab === 'valtozasok'} onClick={() => switchTab('valtozasok')} />
+                    <NavItem icon={<TrendingUp className="w-5 h-5 text-emerald-500 font-bold" />} label="Idősáv és Trendek" active={activeTab === 'trendek'} onClick={() => switchTab('trendek')} />
+                    <NavItem icon={<ArrowRightLeft className="w-5 h-5" />} label="Átjelentkezettek" active={activeTab === 'atjelentkezes'} onClick={() => switchTab('atjelentkezes')} />
+
+                    <div className="px-3 mt-6 mb-1 text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest">Eszközök</div>
+                    <NavItem icon={<Scale className="w-5 h-5" />} label="Összehasonlítás" active={activeTab === 'osszehasonlitas'} onClick={() => switchTab('osszehasonlitas')} />
+                    <NavItem icon={<Calculator className="w-5 h-5 text-indigo-500 font-bold" />} label="Mandátumbecslő" active={activeTab === 'kalkulator'} onClick={() => switchTab('kalkulator')} />
+                    <NavItem icon={<Network className="w-5 h-5 text-indigo-500" />} label="Összefogás Tervező" active={activeTab === 'osszefoglas'} onClick={() => switchTab('osszefoglas')} />
 
                 </nav>
 
